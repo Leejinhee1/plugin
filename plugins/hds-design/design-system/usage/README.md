@@ -23,3 +23,12 @@ components: [button, ...]
 
 > 새 화면 패턴은 `/hds-planning:prototype` 이 프로토타입을 만들 때 근거로 사용합니다.
 > 반복되는 조합이 보이면 개별 화면에 남기지 말고 여기에 패턴으로 승격시키세요.
+
+## 축적된 패턴
+
+| 패턴 | 파일 | 사용 컴포넌트 | 요약 |
+| :-- | :-- | :-- | :-- |
+| 로그인 / 온보딩 진입 | [`screens/login.md`](./screens/login.md) | input, button | 이메일 한 필드 로그인. 오류(errorMessage)·로딩(Button loading) 상태 포함 |
+| 목록 → 상세 | [`screens/list-detail.md`](./screens/list-detail.md) | card, badge, modal, button | 주간 플랜 일정을 Card 리스트 + Badge 상태로 보여주고 Modal로 상세 확인 |
+| 생성 / 편집 폼 | [`screens/form.md`](./screens/form.md) | input, button | 일정 추가/수정 폼. 유효성 검사 흐름과 저장 중 상태 |
+| 공통 상태 패턴 | [`screens/feedback-states.md`](./screens/feedback-states.md) | button, card, badge, input | empty/loading/error 공통 규칙 — 카피, 스켈레톤·스피너 기준, 재시도 버튼 |
