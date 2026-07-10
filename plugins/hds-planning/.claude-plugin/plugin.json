@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "hds-planning",
+  "displayName": "HDS · 기획",
+  "version": "1.0.0",
+  "description": "제품 설계서를 AI-리더블 문서로 관리하고, 디자인·퍼블 코드베이스 기반으로 프로토타입을 생성합니다.",
+  "author": {
+    "name": "Design System Team"
+  },
+  "homepage": "https://github.com/leejinhee1/plugin",
+  "repository": "https://github.com/leejinhee1/plugin",
+  "license": "UNLICENSED",
+  "keywords": ["product-spec", "prototype", "planning", "prd"],
+  "dependencies": [
+    { "name": "hds-design", "version": "~1.0.0" }
+  ]
+}

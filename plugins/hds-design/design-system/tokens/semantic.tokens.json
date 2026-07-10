@@ -1,0 +1,57 @@
+{
+  "$schema": "https://tr.designtokens.org/format/",
+  "$description": "HDS Semantic tokens — 의미 기반 별칭. UI/컴포넌트는 반드시 이 레이어만 참조. core 값을 {color.brand.500} 형태로 alias.",
+  "color": {
+    "$type": "color",
+    "bg": {
+      "base":     { "$value": "{color.neutral.0}" },
+      "subtle":   { "$value": "{color.neutral.50}" },
+      "muted":    { "$value": "{color.neutral.100}" },
+      "inverse":  { "$value": "{color.neutral.900}" }
+    },
+    "fg": {
+      "base":     { "$value": "{color.neutral.900}" },
+      "muted":    { "$value": "{color.neutral.500}" },
+      "onBrand":  { "$value": "{color.neutral.0}" },
+      "onInverse":{ "$value": "{color.neutral.0}" }
+    },
+    "border": {
+      "base":  { "$value": "{color.neutral.200}" },
+      "strong":{ "$value": "{color.neutral.300}" }
+    },
+    "brand": {
+      "default": { "$value": "{color.brand.500}" },
+      "hover":   { "$value": "{color.brand.600}" },
+      "active":  { "$value": "{color.brand.700}" },
+      "subtle":  { "$value": "{color.brand.50}" }
+    },
+    "feedback": {
+      "success": { "$value": "{color.success.500}" },
+      "warning": { "$value": "{color.warning.500}" },
+      "danger":  { "$value": "{color.danger.500}" }
+    },
+    "focus": { "ring": { "$value": "{color.brand.400}" } }
+  },
+  "$dark": {
+    "$description": "다크 테마 오버라이드. 빌드 시 [data-theme=dark] 로 매핑.",
+    "color": {
+      "bg":  { "base": "{color.neutral.900}", "subtle": "{color.neutral.800}", "muted": "{color.neutral.700}", "inverse": "{color.neutral.0}" },
+      "fg":  { "base": "{color.neutral.50}", "muted": "{color.neutral.400}", "onBrand": "{color.neutral.0}", "onInverse": "{color.neutral.900}" },
+      "border": { "base": "{color.neutral.700}", "strong": "{color.neutral.600}" }
+    }
+  },
+  "space": {
+    "$type": "dimension",
+    "inset-sm": { "$value": "{dimension.space.2}" },
+    "inset-md": { "$value": "{dimension.space.4}" },
+    "inset-lg": { "$value": "{dimension.space.5}" },
+    "stack-sm": { "$value": "{dimension.space.2}" },
+    "stack-md": { "$value": "{dimension.space.4}" }
+  },
+  "typography": {
+    "$type": "typography",
+    "body":   { "$value": { "fontFamily": "{fontFamily.sans}", "fontSize": "{dimensionFont.size.md}", "fontWeight": "{fontWeight.regular}", "lineHeight": "1.5" } },
+    "label":  { "$value": { "fontFamily": "{fontFamily.sans}", "fontSize": "{dimensionFont.size.sm}", "fontWeight": "{fontWeight.medium}", "lineHeight": "1.4" } },
+    "heading":{ "$value": { "fontFamily": "{fontFamily.sans}", "fontSize": "{dimensionFont.size.2xl}", "fontWeight": "{fontWeight.bold}", "lineHeight": "1.25" } }
+  }
+}
