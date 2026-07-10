@@ -1,0 +1,28 @@
+<!--
+  HDS 브랜드 로고 — 라이트 배경용
+  구성: 수평선 위로 떠오르는 원(태양) + 구름 3점 + "하늘" 워드마크
+  사용 규칙: ../logo.md
+
+  토큰 출처 (tokens/core.tokens.json) — 이 SVG는 렌더링 목적상 예외적으로 hex 값을 직접 사용합니다.
+    - 원(태양)  : color.brand.500 = #2f6bff  (절대 변경 금지 — 리브랜딩 시 core 토큰과 함께만 갱신)
+    - 수평선/워드마크 : color.neutral.900 = #12141a
+    - 구름      : color.neutral.300 = #c6ccd8
+    - 폰트      : fontFamily.sans = Pretendard, Inter, system-ui, sans-serif
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 176 64" width="176" height="64" role="img" aria-labelledby="hds-logo-light-title">
+  <title id="hds-logo-light-title">하늘 (Haneul) 로고 — 라이트 배경용</title>
+
+  <!-- 구름 -->
+  <circle cx="36" cy="18" r="3.5" fill="#c6ccd8" />
+  <circle cx="42" cy="16" r="5" fill="#c6ccd8" />
+  <circle cx="48" cy="18.5" r="4" fill="#c6ccd8" />
+
+  <!-- 수평선 위로 떠오르는 원(태양) -->
+  <path d="M16 36 A16 16 0 0 1 48 36 Z" fill="#2f6bff" />
+
+  <!-- 수평선 -->
+  <line x1="8" y1="36" x2="56" y2="36" stroke="#12141a" stroke-width="3" stroke-linecap="round" />
+
+  <!-- 워드마크 -->
+  <text x="72" y="44" font-family="Pretendard, Inter, system-ui, sans-serif" font-weight="700" font-size="30" fill="#12141a">하늘</text>
+</svg>
