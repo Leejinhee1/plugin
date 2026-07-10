@@ -7,7 +7,8 @@
       "base":     { "$value": "{color.neutral.0}" },
       "subtle":   { "$value": "{color.neutral.50}" },
       "muted":    { "$value": "{color.neutral.100}" },
-      "inverse":  { "$value": "{color.neutral.900}" }
+      "inverse":  { "$value": "{color.neutral.900}" },
+      "overlay":  { "$value": "rgba(18, 20, 26, 0.55)", "$description": "Modal/Dialog 뒤 스크림. color.neutral.900(#12141a)에서 유래한 반투명값 — 알파 채널이 필요해 core alias로 표현 불가하므로 직접 값을 사용." }
     },
     "fg": {
       "base":     { "$value": "{color.neutral.900}" },
@@ -35,7 +36,7 @@
   "$dark": {
     "$description": "다크 테마 오버라이드. 빌드 시 [data-theme=dark] 로 매핑.",
     "color": {
-      "bg":  { "base": "{color.neutral.900}", "subtle": "{color.neutral.800}", "muted": "{color.neutral.700}", "inverse": "{color.neutral.0}" },
+      "bg":  { "base": "{color.neutral.900}", "subtle": "{color.neutral.800}", "muted": "{color.neutral.700}", "inverse": "{color.neutral.0}", "overlay": "rgba(0, 0, 0, 0.6)" },
       "fg":  { "base": "{color.neutral.50}", "muted": "{color.neutral.400}", "onBrand": "{color.neutral.0}", "onInverse": "{color.neutral.900}" },
       "border": { "base": "{color.neutral.700}", "strong": "{color.neutral.600}" }
     }
