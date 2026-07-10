@@ -22,9 +22,22 @@ HDS 토큰 원본(`hds-design` 의 `design-system/tokens/`)을 개발이 소비�
 3. `$dark` 블록은 `[data-theme=dark] { ... }` 로 출력.
 4. Tailwind preset은 값 대신 `var(--hds-*)` 를 참조하게 해 런타임 테마 전환을 지원.
 
-## 구현 방식(둘 중 택1)
-- **표준 도구**: [Style Dictionary](https://styledictionary.com) 또는 Terrazzo로 DTCG → 다중 포맷 빌드(권장, 유지보수 쉬움). 설정 파일을 프로젝트에 두고 이 스킬이 실행/갱신.
-- **직접 변환**: 도구 도입 전이라면 위 규칙대로 직접 생성. 로직은 결정적으로.
+## 구현 방식
+
+이 스킬은 `${CLAUDE_PLUGIN_ROOT}/scripts/build-tokens.mjs` 를 실행해 산출물을 생성한다(Node.js ≥18, 외부 의존성 없음, 출력은 항상 결정적/정렬됨).
+
+```bash
+node "${CLAUDE_PLUGIN_ROOT}/scripts/build-tokens.mjs" \
+  --tokens <hds-design 의 design-system/tokens 경로> \
+  --out <산출물을 쓸 디렉터리, 보통 대상 프로젝트의 tokens 폴더>
+```
+
+- `--tokens` 를 생략하면 이 저장소 레이아웃 기준(`../../hds-design/design-system/tokens`)으로 자동 탐색하고, 없으면 안내 메시지와 함께 종료한다.
+- `--out` 을 생략하면 현재 작업 디렉터리의 `./dist/tokens` 에 쓴다. `component-build` 스킬처럼 사용자 프로젝트에 설치할 때는 반드시 프로젝트 내 실제 경로를 지정할 것.
+- `-h`/`--help` 로 사용법 확인 가능.
+- alias(`{color.brand.500}`) 재귀 resolve, 순환 참조 감지, `$dark` 블록의 축약형(`"bg": {"base": "{color.neutral.900}"}`)과 raw 값(alias 아닌 직접 값, 예: `rgba(...)`)을 모두 처리한다.
+- 원본 `tokens/*.json` 은 읽기만 하며 스크립트가 원본을 수정하는 일은 없다.
+- (대안) 도구를 도입하고 싶다면 [Style Dictionary](https://styledictionary.com)/Terrazzo로 교체할 수 있으나, 변환 규칙(위 섹션)은 그대로 유지해야 한다.
 
 ## 재생성 트리거
 토큰 원본이 바뀌면(=version bump) 이 산출물을 재생성한다. 산출물을 손으로 고치지 말 것.
