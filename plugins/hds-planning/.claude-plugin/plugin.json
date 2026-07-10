@@ -12,6 +12,6 @@
   "license": "UNLICENSED",
   "keywords": ["product-spec", "prototype", "planning", "prd"],
   "dependencies": [
-    { "name": "hds-design", "version": "~1.0.0" }
+    { "name": "hds-design", "version": "^1.0.0" }
   ]
 }

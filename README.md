@@ -13,6 +13,7 @@ plugin/  (= 사내 플러그인 마켓플레이스)
 │   │   └── design-system/   ★ tokens · guidelines · components · usage · brand
 │   ├── hds-planning/   기획 — 제품 설계서(AI-리더블) + 프로토타입 생성
 │   └── hds-publish/    퍼블 — 개발 적용 코드 변환 · 토큰 export · 접근성
+├── examples/           (주)하늘 가상 브랜드 데모 — 설계서 + 동작 프로토타입
 ├── codex/              Codex 어댑터 (AGENTS.md · prompts · config)
 └── docs/               아키텍처 · 시작하기 · 유지보수 가이드
 ```
@@ -56,6 +57,7 @@ cp codex/prompts/*.md ~/.codex/prompts/     # /hds-tokens, /hds-component, /hds-
 | 퍼블 | `/hds-publish:token-export`, `:component-build`, `:a11y-audit` | `/hds-component` |
 
 ## 더 읽기
+- [examples/README.md](examples/README.md) — 가상 브랜드 "(주)하늘" 실사용 예시 (설계서 → 프로토타입)
 - [docs/getting-started.md](docs/getting-started.md) — 설치·역할별 첫 사용
 - [docs/architecture.md](docs/architecture.md) — 왜 이렇게 설계했는가
 - [docs/maintenance.md](docs/maintenance.md) — 토큰/컴포넌트 추가·버전·릴리스

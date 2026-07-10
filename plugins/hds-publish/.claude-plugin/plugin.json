@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "hds-publish",
   "displayName": "HDS · 퍼블",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "디자인 시스템 컴포넌트를 바로 개발에 적용 가능한 코드로 변환하고, 토큰을 내보내고, 접근성을 점검합니다.",
   "author": {
     "name": "Design System Team"
@@ -12,6 +12,6 @@
   "license": "UNLICENSED",
   "keywords": ["react", "tailwind", "components", "accessibility", "tokens"],
   "dependencies": [
-    { "name": "hds-design", "version": "~1.0.0" }
+    { "name": "hds-design", "version": "^1.0.0" }
   ]
 }
