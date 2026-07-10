@@ -53,6 +53,7 @@
     "$type": "typography",
     "body":   { "$value": { "fontFamily": "{fontFamily.sans}", "fontSize": "{dimensionFont.size.md}", "fontWeight": "{fontWeight.regular}", "lineHeight": "1.5" } },
     "label":  { "$value": { "fontFamily": "{fontFamily.sans}", "fontSize": "{dimensionFont.size.sm}", "fontWeight": "{fontWeight.medium}", "lineHeight": "1.4" } },
-    "heading":{ "$value": { "fontFamily": "{fontFamily.sans}", "fontSize": "{dimensionFont.size.2xl}", "fontWeight": "{fontWeight.bold}", "lineHeight": "1.25" } }
+    "heading":{ "$value": { "fontFamily": "{fontFamily.sans}", "fontSize": "{dimensionFont.size.2xl}", "fontWeight": "{fontWeight.bold}", "lineHeight": "1.25" } },
+    "caption":{ "$value": { "fontFamily": "{fontFamily.sans}", "fontSize": "{dimensionFont.size.xs}", "fontWeight": "{fontWeight.regular}", "lineHeight": "1.4" } }
   }
 }

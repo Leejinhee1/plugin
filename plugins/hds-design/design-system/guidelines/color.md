@@ -14,5 +14,7 @@
 
 `/hds-publish:a11y-audit` 로 자동 검증할 수 있습니다.
 
+피드백 색 + fg.onBrand 조합은 AA 검증 완료(1.2.0).
+
 ## 다크 테마
 `semantic.tokens.json` 의 `$dark` 블록이 오버라이드를 정의합니다. 컴포넌트는 테마를 몰라도 되며, `[data-theme=dark]` 스코프에서 CSS 변수만 교체됩니다.

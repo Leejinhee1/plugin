@@ -2,6 +2,17 @@
 
 이 프로젝트는 [semver](https://semver.org)를 따릅니다. 각 릴리스에서 바뀐 플러그인의 `plugin.json` 과 `marketplace.json` version을 함께 bump 합니다.
 
+## [1.2.0] — 2026-07-10
+### 접근성 — 1.1.0 검수 반영
+- **hds-design 1.2.0**
+  - `color.warning.500` 를 `#d98a00`(흰 텍스트 대비 2.77:1, WCAG AA 미달) → `#a15c00`(흰 텍스트 대비 5.19:1, AA 4.5:1 및 목표 4.6:1 확보)로 조정. 색상(hue)은 주황/앰버 계열 유지.
+    - Badge `warning` variant 배경(`color.feedback.warning`) + `color.fg.onBrand`(#ffffff) 텍스트 조합에 직접 적용(컴포넌트 코드 수정 없이 토큰만 교체).
+    - 참고로 함께 점검한 `success.500`(#1f9d55) vs 흰 텍스트 3.49:1, `danger.500`(#e23b3b) vs 흰 텍스트 4.27:1 — 둘 다 3:1 이상이라 이번 릴리스에서는 미조정(AA 4.5:1 미달이지만 보고만 하고 warning 만 수정).
+  - `guidelines/color.md` 대비 기준 표 아래에 "피드백 색 + fg.onBrand 조합은 AA 검증 완료(1.2.0)" 명시.
+  - semantic 타이포그래피에 `typography.caption`(sans/12px/regular/1.4) 신설 — 보조 설명·helper text 용도. `guidelines/typography.md` 스케일 섹션에 용도 추가.
+  - `dimension.radius.full` semantic alias 도입 여부 검토: `build-tokens.mjs` 가 이미 core `dimension.radius.*` 를 `--hds-radius-*` 로 직접 export 하고 있어(Button/Badge 선례), semantic 레이어에 별도 `radius` 그룹을 얹어도 CSS 변수 생성 루프(`color.`/`space.`/`typography.` 접두사만 처리)가 이를 훑지 않아 무출력 상태의 죽은 토큰이 됨 → 추가하지 않고 core 직접 참조 정책을 `tokens/README.md` 에 예외로 명문화.
+  - `examples/haneul-prototype/tokens.css` 를 새 토큰(경고색·caption 타이포)으로 재생성. 프로토타입은 `tokens.css` 만 유지(부산물인 `tailwind.preset.js`/`tokens.ts` 는 재생성 후 삭제).
+
 ## [1.1.0] — 2026-07-10
 ### 추가 — 가상 브랜드 "(주)하늘" 실사용 예시 완성
 - **hds-design 1.1.0**

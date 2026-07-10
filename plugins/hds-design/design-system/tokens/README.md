@@ -13,6 +13,7 @@ semantic.tokens.json  의미값 (brand.default → {color.brand.500})  ← UI/�
 
 - **왜 2레이어인가**: 리브랜딩·다크테마·그룹사별 테마를 core 한 곳만 바꿔서 대응. 컴포넌트 코드는 절대 손대지 않음. → 유지보수 비용 최소화.
 - **명명 규칙**: `category.role.variant` (예: `color.brand.hover`, `space.inset-md`). 새 토큰은 semantic 레이어에 role 기준으로 추가.
+- **예외: radius·duration·easing 은 core 를 직접 export** (Button/Badge 선례). `build-tokens.mjs` 는 `dimension.radius.*` · `duration.*` · `cubicBezier.*` · `fontFamily.*` 를 semantic alias 없이 core 에서 곧바로 `--hds-radius-*` / `--hds-duration-*` / `--hds-ease-*` / `--hds-font-*` 로 export 한다(`CORE_DIRECT_PREFIXES`). 값 자체가 브랜드마다 잘 갈리지 않는 형태값이라 semantic 별칭의 실익이 적고, 스크립트의 CSS 변수 생성 루프는 `color.` / `space.` / `typography.` 접두사만 훑기 때문에 semantic 레이어에 `radius.full` 같은 새 그룹을 얹어도 CSS 변수가 생성되지 않아(무출력) core-direct 산출물 `--hds-radius-full` 과 이름만 겹치는 죽은 토큰이 된다. 그래서 semantic alias 는 추가하지 않고 core 직접 참조를 정책으로 유지한다(1.2.0 검토 결론).
 
 ## 표준 포맷
 

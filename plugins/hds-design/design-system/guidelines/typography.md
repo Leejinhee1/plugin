@@ -3,6 +3,7 @@
 ## 스케일
 `dimensionFont.size` xs(12) · sm(14) · md(16) · lg(20) · xl(24) · 2xl(32) · 3xl(40).
 본문 기본은 `typography.body`(16/1.5), 라벨은 `typography.label`(14/medium), 제목은 `typography.heading`.
+보조 설명·helper text 에는 `typography.caption`(12/regular/1.4)을 사용합니다.
 
 ## 규칙
 - 한 화면에서 위계는 3단계 이내(제목/본문/보조)로 제한.

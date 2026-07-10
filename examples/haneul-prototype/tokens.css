@@ -19,7 +19,7 @@
   --hds-ease-standard: cubic-bezier(0.2, 0, 0, 1);
   --hds-feedback-danger: #e23b3b;
   --hds-feedback-success: #1f9d55;
-  --hds-feedback-warning: #d98a00;
+  --hds-feedback-warning: #a15c00;
   --hds-fg-base: #12141a;
   --hds-fg-muted: #6b7385;
   --hds-fg-on-brand: #ffffff;
@@ -40,6 +40,10 @@
   --hds-typo-body-line-height: 1.5;
   --hds-typo-body-size: 16px;
   --hds-typo-body-weight: 400;
+  --hds-typo-caption-family: "Pretendard", "Inter", "system-ui", "sans-serif";
+  --hds-typo-caption-line-height: 1.4;
+  --hds-typo-caption-size: 12px;
+  --hds-typo-caption-weight: 400;
   --hds-typo-heading-family: "Pretendard", "Inter", "system-ui", "sans-serif";
   --hds-typo-heading-line-height: 1.25;
   --hds-typo-heading-size: 32px;

@@ -29,7 +29,7 @@
       "900": { "$value": "#12141a" }
     },
     "success": { "500": { "$value": "#1f9d55" } },
-    "warning": { "500": { "$value": "#d98a00" } },
+    "warning": { "500": { "$value": "#a15c00", "$description": "흰 텍스트(color.fg.onBrand) 대비 5.19:1 확보 — WCAG AA 작은 텍스트(4.5:1) 기준 충족. 1.1.0의 #d98a00(2.77:1)에서 조정(1.2.0)." } },
     "danger":  { "500": { "$value": "#e23b3b" } }
   },
   "dimension": {
