@@ -1,0 +1,930 @@
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>하늘 — 오늘 브리핑 (HDS 프로토타입)</title>
+
+<!--
+  하늘(Haneul) 프로토타입 — HDS 플래그십 예시
+  설계서: examples/specs/today-briefing.md 와 1:1 대응.
+  토큰: tokens.css 는 build-tokens.mjs 산출물(수정 금지). 모든 색/간격/라디우스/모션은 var(--hds-*) 만 사용.
+  외부 CDN·네트워크 요청 없음. 브라우저에서 index.html 을 바로 열면 동작합니다.
+-->
+<link rel="stylesheet" href="tokens.css" />
+
+<style>
+  /* ========================================================================
+     기반(reset + 앱 셸) — 색은 전부 토큰. 레이아웃 구조용 px 만 최소한으로.
+     ======================================================================== */
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--hds-typo-body-family);
+    font-size: var(--hds-typo-body-size);
+    line-height: var(--hds-typo-body-line-height);
+    color: var(--hds-fg-base);
+    /* 데스크톱: 폰 프레임 주변 여백 */
+    background: var(--hds-bg-subtle);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  button { font-family: inherit; }
+
+  /* 앱 셸: 모바일 폭(~430px)으로 중앙 정렬 → 데스크톱에서도 실제 앱처럼 */
+  .app {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 430px;
+    min-height: 100vh;
+    min-height: 100dvh;
+    margin: 0 auto;
+    background: var(--hds-bg-subtle);
+    box-shadow: 0 0 0 1px var(--hds-border-base);
+  }
+  @media (min-width: 480px) {
+    body { padding: var(--hds-space-stack-md) 0; }
+    .app {
+      min-height: auto;
+      height: calc(100vh - 2 * var(--hds-space-stack-md));
+      border-radius: var(--hds-radius-lg);
+      overflow: hidden;
+    }
+  }
+
+  /* 상단 앱 바 */
+  .appbar {
+    display: flex;
+    align-items: center;
+    gap: var(--hds-space-stack-sm);
+    padding: var(--hds-space-inset-md);
+    background: var(--hds-bg-base);
+    border-bottom: 1px solid var(--hds-border-base);
+    position: sticky;
+    top: 0;
+    z-index: 5;
+  }
+  .appbar__brand { display: flex; align-items: center; gap: var(--hds-space-inset-sm); min-width: 0; }
+  .appbar__logo { height: 28px; width: auto; display: block; }
+  .appbar__date {
+    font-size: var(--hds-typo-label-size);
+    line-height: var(--hds-typo-label-line-height);
+    color: var(--hds-fg-muted);
+    white-space: nowrap;
+  }
+  .appbar__spacer { flex: 1; }
+  .appbar__actions { display: flex; align-items: center; gap: var(--hds-space-stack-sm); }
+
+  /* 스크롤 영역 */
+  .screen {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--hds-space-inset-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--hds-space-stack-md);
+  }
+  .screen[hidden] { display: none; }
+
+  .section__head {
+    display: flex;
+    align-items: center;
+    gap: var(--hds-space-stack-sm);
+    margin-bottom: var(--hds-space-stack-sm);
+  }
+  .section__title {
+    font-size: var(--hds-typo-label-size);
+    font-weight: var(--hds-typo-label-weight);
+    line-height: var(--hds-typo-label-line-height);
+    color: var(--hds-fg-muted);
+    margin: 0;
+    letter-spacing: 0.01em;
+  }
+
+  /* 하단 내비게이션 */
+  .navbar {
+    display: flex;
+    background: var(--hds-bg-base);
+    border-top: 1px solid var(--hds-border-base);
+    padding: var(--hds-space-inset-sm) var(--hds-space-inset-sm);
+    gap: var(--hds-space-inset-sm);
+  }
+  .navbar__item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: var(--hds-space-inset-sm) 0;
+    border: 0;
+    background: transparent;
+    color: var(--hds-fg-muted);
+    font-size: var(--hds-typo-label-size);
+    font-weight: var(--hds-typo-label-weight);
+    border-radius: var(--hds-radius-md);
+    cursor: pointer;
+    transition: color var(--hds-duration-fast) var(--hds-ease-standard),
+                background var(--hds-duration-fast) var(--hds-ease-standard);
+  }
+  .navbar__item[aria-current="page"] { color: var(--hds-brand-default); background: var(--hds-brand-subtle); }
+  .navbar__item:focus-visible { outline: 2px solid var(--hds-focus-ring); outline-offset: 2px; }
+  .navbar__item svg { width: 22px; height: 22px; }
+
+  .icon { display: inline-block; vertical-align: middle; }
+
+  /* ========================================================================
+     Button — components/button/spec.md
+     variant: primary | secondary | ghost | danger · size: sm | md | lg
+     ======================================================================== */
+  .hds-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--hds-space-inset-sm);
+    height: 40px;                         /* size=md */
+    padding: 0 var(--hds-space-inset-md); /* space.inset-md */
+    border: 1px solid transparent;
+    border-radius: var(--hds-radius-md);  /* dimension.radius.md */
+    font-size: var(--hds-typo-label-size);
+    font-weight: var(--hds-typo-label-weight);
+    line-height: 1;
+    cursor: pointer;
+    transition: background var(--hds-duration-fast) var(--hds-ease-standard),
+                border-color var(--hds-duration-fast) var(--hds-ease-standard),
+                color var(--hds-duration-fast) var(--hds-ease-standard);
+  }
+  .hds-btn:focus-visible { outline: 2px solid var(--hds-focus-ring); outline-offset: 2px; } /* color.focus.ring */
+  .hds-btn[disabled], .hds-btn[aria-busy="true"] { opacity: 0.6; cursor: not-allowed; }
+  .hds-btn--sm { height: 32px; padding: 0 var(--hds-space-inset-sm); }
+  .hds-btn--lg { height: 48px; padding: 0 var(--hds-space-inset-lg); }
+  /* primary: bg brand.default → hover brand.hover → active brand.active, fg on-brand */
+  .hds-btn--primary { background: var(--hds-brand-default); color: var(--hds-fg-on-brand); }
+  .hds-btn--primary:hover { background: var(--hds-brand-hover); }
+  .hds-btn--primary:active { background: var(--hds-brand-active); }
+  /* secondary: 중립 배경 + 테두리 */
+  .hds-btn--secondary { background: var(--hds-bg-base); color: var(--hds-fg-base); border-color: var(--hds-border-base); }
+  .hds-btn--secondary:hover { border-color: var(--hds-border-strong); background: var(--hds-bg-subtle); }
+  /* ghost: 낮은 강조(툴바) */
+  .hds-btn--ghost { background: transparent; color: var(--hds-fg-base); }
+  .hds-btn--ghost:hover { background: var(--hds-bg-muted); }
+  /* danger: 파괴적 액션 */
+  .hds-btn--danger { background: var(--hds-feedback-danger); color: var(--hds-fg-on-brand); }
+  .hds-btn--icon { width: 40px; padding: 0; }
+  .hds-btn--icon.hds-btn--sm { width: 32px; }
+  .hds-btn__spinner {
+    width: 14px; height: 14px;
+    border: 2px solid var(--hds-fg-on-brand);
+    border-top-color: transparent;
+    border-radius: var(--hds-radius-full);
+    animation: hds-spin var(--hds-duration-slow) linear infinite;
+  }
+  @keyframes hds-spin { to { transform: rotate(360deg); } }
+
+  /* ========================================================================
+     Card — components/card/spec.md
+     variant: default | elevated · padding: sm | md | lg
+     ======================================================================== */
+  .hds-card {
+    background: var(--hds-bg-base);               /* color.bg.base */
+    border: 1px solid var(--hds-border-base);     /* color.border.base */
+    border-radius: var(--hds-radius-lg);          /* dimension.radius.lg */
+    padding: var(--hds-space-inset-md);           /* padding=md (기본) */
+  }
+  .hds-card--pad-sm { padding: var(--hds-space-inset-sm); }
+  .hds-card--pad-lg { padding: var(--hds-space-inset-lg); }
+  /* elevated: 동일 테두리 + border-base 유래 저강도 그림자(핵심 색상 하드코딩 없이 토큰 참조) */
+  .hds-card--elevated { box-shadow: 0 6px 20px -8px var(--hds-border-strong); }
+  .hds-card__header { display: flex; align-items: center; gap: var(--hds-space-stack-sm); }
+  .hds-card__title {
+    font-family: var(--hds-typo-heading-family);
+    font-weight: var(--hds-typo-heading-weight);
+    line-height: var(--hds-typo-heading-line-height);
+    color: var(--hds-fg-base);
+    margin: 0;
+  }
+  .hds-card__body { color: var(--hds-fg-base); }
+  .hds-card__footer { display: flex; justify-content: flex-end; gap: var(--hds-space-stack-sm); }
+  .hds-card__muted { color: var(--hds-fg-muted); }  /* 부가 텍스트 */
+
+  /* ========================================================================
+     Badge — components/badge/spec.md
+     variant: neutral | brand | success | warning | danger · size: sm | md
+     비인터랙티브 <span>, 라디우스 full(알약형)
+     ======================================================================== */
+  .hds-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    height: 24px;                          /* size=md */
+    padding: 0 var(--hds-space-inset-sm);
+    border-radius: var(--hds-radius-full); /* dimension.radius.full */
+    font-size: var(--hds-typo-label-size);
+    font-weight: var(--hds-typo-label-weight);
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .hds-badge--sm { height: 20px; font-size: 12px; padding: 0 var(--hds-space-inset-sm); } /* 12px=size.xs(미export 토큰) — 구조용 px */
+  .hds-badge--neutral { background: var(--hds-bg-muted); color: var(--hds-fg-muted); }
+  .hds-badge--brand   { background: var(--hds-brand-subtle); color: var(--hds-brand-default); }
+  .hds-badge--success { background: var(--hds-feedback-success); color: var(--hds-fg-on-brand); }
+  .hds-badge--warning { background: var(--hds-feedback-warning); color: var(--hds-fg-on-brand); }
+  .hds-badge--danger  { background: var(--hds-feedback-danger); color: var(--hds-fg-on-brand); }
+
+  /* ========================================================================
+     Input — components/input/spec.md
+     label + field + helper/error, size: sm | md | lg, invalid 상태
+     ======================================================================== */
+  .hds-input { display: flex; flex-direction: column; gap: var(--hds-space-stack-sm); }
+  .hds-input__label {
+    font-size: var(--hds-typo-label-size);
+    font-weight: var(--hds-typo-label-weight);
+    color: var(--hds-fg-base);
+  }
+  .hds-input__field {
+    height: 40px;                                 /* size=md */
+    padding: 0 var(--hds-space-inset-md);
+    background: var(--hds-bg-base);               /* color.bg.base */
+    color: var(--hds-fg-base);                    /* 입력값 */
+    border: 1px solid var(--hds-border-base);     /* 기본 테두리 */
+    border-radius: var(--hds-radius-md);
+    font-size: var(--hds-typo-body-size);
+    transition: border-color var(--hds-duration-fast) var(--hds-ease-standard),
+                box-shadow var(--hds-duration-fast) var(--hds-ease-standard);
+  }
+  .hds-input__field::placeholder { color: var(--hds-fg-muted); } /* placeholder */
+  .hds-input__field:hover { border-color: var(--hds-border-strong); } /* hover 강조 */
+  .hds-input__field:focus-visible { outline: 2px solid var(--hds-focus-ring); outline-offset: 1px; }
+  .hds-input__helper { font-size: 12px; color: var(--hds-fg-muted); }
+  .hds-input__error { font-size: 12px; color: var(--hds-feedback-danger); }
+  /* invalid: 테두리 danger + 포커스 링 danger (색+텍스트 이중 신호) */
+  .hds-input[data-invalid="true"] .hds-input__field { border-color: var(--hds-feedback-danger); }
+  .hds-input[data-invalid="true"] .hds-input__field:focus-visible { outline-color: var(--hds-feedback-danger); }
+
+  /* ========================================================================
+     Modal — components/modal/spec.md
+     size=sm(384px) · 오버레이 color.bg.overlay · ESC/오버레이/버튼 닫기 · 포커스 트랩
+     ======================================================================== */
+  .hds-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--hds-space-inset-md);          /* 뷰포트 가장자리 여유 */
+    background: var(--hds-bg-overlay);            /* color.bg.overlay */
+    opacity: 0;
+    transition: opacity var(--hds-duration-base) var(--hds-ease-emphasized);
+  }
+  .hds-modal[data-open="true"] { opacity: 1; }
+  .hds-modal[hidden] { display: none; }
+  .hds-modal__panel {
+    width: 100%;
+    max-width: 384px;                            /* size=sm */
+    background: var(--hds-bg-base);
+    border: 1px solid var(--hds-border-base);
+    border-radius: var(--hds-radius-lg);
+    padding: var(--hds-space-inset-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--hds-space-stack-md);
+    transform: translateY(8px) scale(0.98);
+    transition: transform var(--hds-duration-base) var(--hds-ease-emphasized);
+  }
+  .hds-modal[data-open="true"] .hds-modal__panel { transform: none; }
+  .hds-modal__header { display: flex; align-items: center; gap: var(--hds-space-stack-sm); }
+  .hds-modal__title {
+    font-size: 20px; /* size.lg(미export 토큰) — 구조용 px */
+    font-weight: var(--hds-typo-heading-weight);
+    color: var(--hds-fg-base);
+    margin: 0;
+    flex: 1;
+  }
+  .hds-modal__body { display: flex; flex-direction: column; gap: var(--hds-space-stack-md); }
+  .hds-modal__footer { display: flex; justify-content: flex-end; gap: var(--hds-space-stack-sm); }
+
+  /* Modal 내부 스위치(로컬 요소 — spec §7: Switch 승격 후보) */
+  .setting-row { display: flex; align-items: center; gap: var(--hds-space-stack-md); }
+  .setting-row__text { flex: 1; min-width: 0; }
+  .setting-row__label { color: var(--hds-fg-base); font-weight: var(--hds-typo-label-weight); }
+  .setting-row__desc { font-size: 12px; color: var(--hds-fg-muted); }
+  .switch {
+    position: relative;
+    width: 44px; height: 26px;
+    flex: none;
+    border: 0;
+    border-radius: var(--hds-radius-full);
+    background: var(--hds-border-strong);       /* off */
+    cursor: pointer;
+    transition: background var(--hds-duration-fast) var(--hds-ease-standard);
+  }
+  .switch[aria-checked="true"] { background: var(--hds-brand-default); } /* on */
+  .switch:focus-visible { outline: 2px solid var(--hds-focus-ring); outline-offset: 2px; }
+  .switch__knob {
+    position: absolute;
+    top: 3px; left: 3px;
+    width: 20px; height: 20px;
+    border-radius: var(--hds-radius-full);
+    background: var(--hds-bg-base);
+    transition: transform var(--hds-duration-fast) var(--hds-ease-standard);
+  }
+  .switch[aria-checked="true"] .switch__knob { transform: translateX(18px); }
+
+  /* ========================================================================
+     화면 조각 — 날씨/추천/일정 (컴포넌트 위 레이아웃)
+     ======================================================================== */
+  .weather { display: flex; flex-direction: column; gap: var(--hds-space-stack-sm); }
+  .weather__top { display: flex; align-items: center; gap: var(--hds-space-stack-sm); }
+  .weather__temp {
+    font-family: var(--hds-typo-heading-family);
+    font-size: var(--hds-typo-heading-size);
+    font-weight: var(--hds-typo-heading-weight);
+    line-height: var(--hds-typo-heading-line-height);
+    color: var(--hds-fg-base);
+    margin: 0;
+  }
+  .weather__icon { width: 40px; height: 40px; color: var(--hds-brand-default); flex: none; margin-left: auto; }
+  .weather__meta { color: var(--hds-fg-muted); font-size: var(--hds-typo-label-size); }
+
+  .rec { display: flex; align-items: flex-start; gap: var(--hds-space-stack-sm); }
+  .rec__text { color: var(--hds-fg-base); flex: 1; }
+
+  .agenda { display: flex; flex-direction: column; gap: var(--hds-space-stack-sm); }
+  .agenda__item { display: flex; align-items: center; gap: var(--hds-space-stack-sm); }
+  .agenda__body { flex: 1; min-width: 0; }
+  .agenda__title { color: var(--hds-fg-base); }
+  .agenda__title--done { color: var(--hds-fg-muted); text-decoration: line-through; }
+  .agenda__desc { font-size: 12px; color: var(--hds-fg-muted); }
+
+  /* empty 상태 */
+  .empty { text-align: center; display: flex; flex-direction: column; align-items: center; gap: var(--hds-space-stack-md); }
+  .empty__text { color: var(--hds-fg-muted); }
+  .empty__icon { width: 36px; height: 36px; color: var(--hds-border-strong); }
+
+  /* error 상태 */
+  .error-block { display: flex; flex-direction: column; gap: var(--hds-space-stack-md); align-items: flex-start; }
+  .error-block__row { display: flex; align-items: center; gap: var(--hds-space-stack-sm); }
+  .error-block__icon { width: 20px; height: 20px; color: var(--hds-feedback-danger); flex: none; }
+  .error-block__text { color: var(--hds-fg-base); }
+
+  /* loading 스켈레톤 — bg.muted↔bg.subtle shimmer */
+  .skeleton {
+    border-radius: var(--hds-radius-md);
+    background: linear-gradient(90deg, var(--hds-bg-muted) 25%, var(--hds-bg-subtle) 37%, var(--hds-bg-muted) 63%);
+    background-size: 400% 100%;
+    animation: hds-shimmer var(--hds-duration-slow) var(--hds-ease-standard) infinite;
+  }
+  @keyframes hds-shimmer { from { background-position: 100% 0; } to { background-position: 0 0; } }
+  .skeleton--line { height: 14px; margin-bottom: var(--hds-space-stack-sm); }
+  .skeleton--title { height: 28px; width: 60%; margin-bottom: var(--hds-space-stack-sm); }
+  .skeleton--block { height: 56px; }
+  .skeleton--w70 { width: 70%; }
+  .skeleton--w40 { width: 40%; }
+
+  /* 상태 데모 컨트롤(작은 세그먼트) */
+  .demo-bar {
+    display: flex; align-items: center; gap: var(--hds-space-stack-sm);
+    padding: var(--hds-space-inset-sm) var(--hds-space-inset-md);
+    background: var(--hds-bg-base);
+    border-bottom: 1px solid var(--hds-border-base);
+  }
+  .demo-bar__label { font-size: 12px; color: var(--hds-fg-muted); flex: none; }
+  .segmented { display: inline-flex; background: var(--hds-bg-muted); border-radius: var(--hds-radius-md); padding: 2px; gap: 2px; }
+  .segmented__btn {
+    border: 0; background: transparent; cursor: pointer;
+    padding: 4px var(--hds-space-inset-sm);
+    border-radius: var(--hds-radius-sm);
+    font-size: 12px; color: var(--hds-fg-muted);
+    transition: background var(--hds-duration-fast) var(--hds-ease-standard),
+                color var(--hds-duration-fast) var(--hds-ease-standard);
+  }
+  .segmented__btn[aria-pressed="true"] { background: var(--hds-bg-base); color: var(--hds-fg-base); box-shadow: 0 1px 2px var(--hds-border-base); }
+  .segmented__btn:focus-visible { outline: 2px solid var(--hds-focus-ring); outline-offset: 1px; }
+
+  /* 주간 플랜 */
+  .week { display: flex; flex-direction: column; gap: var(--hds-space-stack-sm); }
+  .week__row { display: flex; align-items: center; gap: var(--hds-space-stack-md); }
+  .week__day { flex: none; width: 64px; }
+  .week__dow { color: var(--hds-fg-base); font-weight: var(--hds-typo-label-weight); }
+  .week__date { font-size: 12px; color: var(--hds-fg-muted); }
+  .week__title { flex: 1; color: var(--hds-fg-base); }
+  .add-form { display: flex; flex-direction: column; gap: var(--hds-space-stack-md); }
+  .add-form__row { display: flex; align-items: flex-end; gap: var(--hds-space-stack-sm); }
+  .add-form__row .hds-input { flex: 1; }
+
+  .u-mt-sm { margin-top: var(--hds-space-stack-sm); }
+  .visually-hidden {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+
+  /* prefers-reduced-motion 존중 — 모션 가이드 필수 */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+    .skeleton { background: var(--hds-bg-muted); }
+  }
+</style>
+
+<div class="app" role="application" aria-label="하늘 앱 프로토타입">
+
+  <!-- 상단 앱 바 -->
+  <header class="appbar">
+    <div class="appbar__brand">
+      <img class="appbar__logo" src="logo.svg" alt="하늘" />
+    </div>
+    <span class="appbar__date" id="today-date">7월 10일 (금)</span>
+    <span class="appbar__spacer"></span>
+    <div class="appbar__actions">
+      <button class="hds-btn hds-btn--ghost hds-btn--sm hds-btn--icon" id="theme-toggle" aria-label="테마 전환" title="테마 전환">
+        <svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4.5"></circle>
+          <path d="M12 2.5v2M12 19.5v2M21.5 12h-2M4.5 12h-2M18.4 5.6l-1.4 1.4M7 17l-1.4 1.4M18.4 18.4L17 17M7 7 5.6 5.6"></path>
+        </svg>
+      </button>
+      <button class="hds-btn hds-btn--ghost hds-btn--sm hds-btn--icon" id="open-notif" aria-label="알림 설정" title="알림 설정" aria-haspopup="dialog">
+        <svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6"></path>
+          <path d="M10.5 20a1.7 1.7 0 0 0 3 0"></path>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- 상태 데모 컨트롤 (loading/empty/error 를 눈으로 확인) -->
+  <div class="demo-bar" role="group" aria-label="상태 데모">
+    <span class="demo-bar__label">상태 데모</span>
+    <div class="segmented" id="state-demo">
+      <button class="segmented__btn" type="button" data-state="normal" aria-pressed="true">정상</button>
+      <button class="segmented__btn" type="button" data-state="loading" aria-pressed="false">로딩</button>
+      <button class="segmented__btn" type="button" data-state="empty" aria-pressed="false">빈 상태</button>
+      <button class="segmented__btn" type="button" data-state="error" aria-pressed="false">오류</button>
+    </div>
+  </div>
+
+  <!-- ===================== 화면 ①: 오늘 브리핑 ===================== -->
+  <main class="screen" id="screen-today" aria-labelledby="today-heading">
+    <h1 class="visually-hidden" id="today-heading">오늘 브리핑</h1>
+
+    <!-- 날씨 요약 Card(elevated) -->
+    <section aria-label="오늘 날씨">
+      <div class="hds-card hds-card--elevated hds-card--pad-lg" id="weather-card">
+        <div class="weather">
+          <div class="weather__top">
+            <p class="weather__temp">맑음, 24°</p>
+            <span class="hds-badge hds-badge--brand">맑음</span>
+            <svg class="weather__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="4.5"></circle>
+              <path d="M12 2.5v2M12 19.5v2M21.5 12h-2M4.5 12h-2M18.4 5.6l-1.4 1.4M7 17l-1.4 1.4M18.4 18.4L17 17M7 7 5.6 5.6"></path>
+            </svg>
+          </div>
+          <p class="weather__meta">최고 24° · 최저 16° · 서울</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 시간대별 추천 -->
+    <section aria-labelledby="rec-title">
+      <div class="section__head">
+        <h2 class="section__title" id="rec-title">시간대별 추천</h2>
+      </div>
+      <div class="agenda" id="rec-list">
+        <div class="hds-card">
+          <div class="rec">
+            <span class="hds-badge hds-badge--neutral hds-badge--sm">아침</span>
+            <span class="rec__text">출근길은 맑아요. 가볍게 나서기 좋아요.</span>
+          </div>
+        </div>
+        <div class="hds-card">
+          <div class="rec">
+            <span class="hds-badge hds-badge--warning hds-badge--sm">낮</span>
+            <span class="rec__text">오후 3시경 비 소식이 있어요. 우산을 챙겨보세요.</span>
+          </div>
+        </div>
+        <div class="hds-card">
+          <div class="rec">
+            <span class="hds-badge hds-badge--neutral hds-badge--sm">저녁</span>
+            <span class="rec__text">저녁엔 선선해요. 겉옷을 준비해 보세요.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 오늘 일정 -->
+    <section aria-labelledby="agenda-title">
+      <div class="section__head">
+        <h2 class="section__title" id="agenda-title">오늘 일정</h2>
+        <span class="hds-badge hds-badge--neutral hds-badge--sm" id="agenda-count">3건</span>
+      </div>
+      <div id="agenda-region" aria-live="polite">
+        <!-- JS 가 상태(normal/loading/empty/error)에 따라 렌더 -->
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================== 화면 ②: 주간 플랜 ===================== -->
+  <main class="screen" id="screen-week" aria-labelledby="week-heading" hidden>
+    <h1 class="visually-hidden" id="week-heading">주간 플랜</h1>
+
+    <section aria-labelledby="week-add-title">
+      <div class="section__head">
+        <h2 class="section__title" id="week-add-title">일정 추가</h2>
+      </div>
+      <div class="hds-card">
+        <form class="add-form" id="add-form" novalidate>
+          <div class="add-form__row">
+            <div class="hds-input" id="add-input-wrap" data-invalid="false">
+              <label class="hds-input__label" for="add-title">일정 제목</label>
+              <input class="hds-input__field" id="add-title" name="title" type="text"
+                     placeholder="예: 오후 3시 팀 회의" autocomplete="off"
+                     aria-describedby="add-help" />
+              <span class="hds-input__helper" id="add-help">추가할 날짜는 아래 목록에서 선택할 수 있어요.</span>
+            </div>
+            <button class="hds-btn hds-btn--primary" type="submit">추가</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section aria-labelledby="week-list-title">
+      <div class="section__head">
+        <h2 class="section__title" id="week-list-title">이번 주</h2>
+      </div>
+      <div class="week" id="week-list" aria-live="polite">
+        <!-- JS 렌더 -->
+      </div>
+    </section>
+  </main>
+
+  <!-- 하단 내비게이션 -->
+  <nav class="navbar" aria-label="주요 화면">
+    <button class="navbar__item" type="button" data-nav="today" aria-current="page">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="13" r="5"></circle>
+        <path d="M12 4v2M4.8 6.8l1.4 1.4M19.2 6.8l-1.4 1.4M3 21h18"></path>
+      </svg>
+      오늘
+    </button>
+    <button class="navbar__item" type="button" data-nav="week">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3.5" y="5" width="17" height="15" rx="2.5"></rect>
+        <path d="M3.5 9.5h17M8 3.5v3M16 3.5v3"></path>
+      </svg>
+      주간
+    </button>
+  </nav>
+
+</div>
+
+<!-- ===================== 알림 설정 Modal (size=sm) ===================== -->
+<div class="hds-modal" id="notif-modal" role="dialog" aria-modal="true" aria-labelledby="notif-title" hidden>
+  <div class="hds-modal__panel" role="document">
+    <div class="hds-modal__header">
+      <h2 class="hds-modal__title" id="notif-title">알림 설정</h2>
+      <button class="hds-btn hds-btn--ghost hds-btn--sm hds-btn--icon" id="notif-close" aria-label="닫기" title="닫기">
+        <svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18"></path>
+        </svg>
+      </button>
+    </div>
+    <div class="hds-modal__body">
+      <div class="setting-row">
+        <div class="setting-row__text">
+          <div class="setting-row__label">아침 브리핑 알림</div>
+          <div class="setting-row__desc">매일 오전 7시에 오늘 날씨와 일정을 알려드려요.</div>
+        </div>
+        <button class="switch" role="switch" aria-checked="true" aria-label="아침 브리핑 알림"><span class="switch__knob"></span></button>
+      </div>
+      <div class="setting-row">
+        <div class="setting-row__text">
+          <div class="setting-row__label">날씨 변화 알림</div>
+          <div class="setting-row__desc">비·눈 소식이 있으면 미리 알려드려요.</div>
+        </div>
+        <button class="switch" role="switch" aria-checked="true" aria-label="날씨 변화 알림"><span class="switch__knob"></span></button>
+      </div>
+      <div class="setting-row">
+        <div class="setting-row__text">
+          <div class="setting-row__label">일정 리마인더</div>
+          <div class="setting-row__desc">일정 시작 30분 전에 알려드려요.</div>
+        </div>
+        <button class="switch" role="switch" aria-checked="false" aria-label="일정 리마인더"><span class="switch__knob"></span></button>
+      </div>
+    </div>
+    <div class="hds-modal__footer">
+      <button class="hds-btn hds-btn--secondary" id="notif-cancel" type="button">취소</button>
+      <button class="hds-btn hds-btn--primary" id="notif-save" type="button">저장</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  "use strict";
+
+  // ----- 목업 데이터 -----
+  var agendaData = [
+    { time: "오전 9:00", title: "팀 스탠드업 회의", desc: "온라인 · 15분", status: "예정" },
+    { time: "오후 12:30", title: "점심 약속", desc: "김하늘님과 함께", status: "예정" },
+    { time: "오후 3:00", title: "우산 챙기기", desc: "오후 비 예보 연동", status: "예정" },
+    { time: "오전 7:30", title: "아침 스트레칭", desc: "완료했어요", status: "완료" }
+  ];
+
+  var weekData = [
+    { dow: "금", date: "7월 10일", title: "팀 스탠드업 · 점심 약속", dday: "오늘", variant: "brand" },
+    { dow: "토", date: "7월 11일", title: "가족 나들이", dday: "D-1", variant: "neutral" },
+    { dow: "일", date: "7월 12일", title: "일정 없음", title_muted: true, dday: "D-2", variant: "neutral" },
+    { dow: "월", date: "7월 13일", title: "분기 리뷰 발표", dday: "D-3", variant: "warning" },
+    { dow: "화", date: "7월 14일", title: "치과 예약 오후 2:00", dday: "D-4", variant: "neutral" },
+    { dow: "수", date: "7월 15일", title: "독서 모임", dday: "D-5", variant: "neutral" },
+    { dow: "목", date: "7월 16일", title: "일정 없음", title_muted: true, dday: "D-6", variant: "neutral" }
+  ];
+
+  function el(html) {
+    var t = document.createElement("template");
+    t.innerHTML = html.trim();
+    return t.content.firstChild;
+  }
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c];
+    });
+  }
+
+  // ----- 오늘 일정 렌더 (상태별) -----
+  var agendaRegion = document.getElementById("agenda-region");
+  var agendaCount = document.getElementById("agenda-count");
+  var weatherCard = document.getElementById("weather-card");
+  var recList = document.getElementById("rec-list");
+  var currentState = "normal";
+
+  function badgeForStatus(status) {
+    if (status === "완료") return '<span class="hds-badge hds-badge--success hds-badge--sm">완료</span>';
+    return '<span class="hds-badge hds-badge--brand hds-badge--sm">예정</span>';
+  }
+
+  function renderAgenda(state) {
+    currentState = state;
+    agendaRegion.innerHTML = "";
+
+    if (state === "loading") {
+      for (var i = 0; i < 3; i++) {
+        agendaRegion.appendChild(el(
+          '<div class="hds-card" style="margin-bottom:var(--hds-space-stack-sm)">' +
+          '<div class="skeleton skeleton--line skeleton--w40"></div>' +
+          '<div class="skeleton skeleton--line skeleton--w70" style="margin-bottom:0"></div></div>'
+        ));
+      }
+      return;
+    }
+
+    if (state === "empty") {
+      agendaRegion.appendChild(el(
+        '<div class="hds-card">' +
+          '<div class="empty">' +
+            '<svg class="empty__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+              '<rect x="3.5" y="5" width="17" height="15" rx="2.5"></rect><path d="M3.5 9.5h17M8 3.5v3M16 3.5v3M12 13v4M10 15h4"></path></svg>' +
+            '<p class="empty__text">아직 등록된 일정이 없어요.<br>첫 일정을 추가해 볼까요?</p>' +
+            '<button class="hds-btn hds-btn--primary" type="button" id="empty-add">일정 추가</button>' +
+          '</div>' +
+        '</div>'
+      ));
+      document.getElementById("empty-add").addEventListener("click", function () {
+        switchScreen("week");
+        document.getElementById("add-title").focus();
+      });
+      return;
+    }
+
+    if (state === "error") {
+      agendaRegion.appendChild(el(
+        '<div class="hds-card">' +
+          '<div class="error-block">' +
+            '<div class="error-block__row">' +
+              '<svg class="error-block__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+                '<circle cx="12" cy="12" r="9"></circle><path d="M12 7.5v5M12 16h.01"></path></svg>' +
+              '<span class="error-block__text">일정을 불러오지 못했어요. 잠시 후 다시 시도해 주세요.</span>' +
+            '</div>' +
+            '<button class="hds-btn hds-btn--secondary hds-btn--sm" type="button" id="retry-btn">' +
+              '<svg class="icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+                '<path d="M20 11a8 8 0 1 0-.5 4"></path><path d="M20 5v6h-6"></path></svg> 다시 시도</button>' +
+          '</div>' +
+        '</div>'
+      ));
+      document.getElementById("retry-btn").addEventListener("click", function () {
+        setState("loading");
+        window.setTimeout(function () { setState("normal"); }, 900);
+      });
+      return;
+    }
+
+    // normal
+    var list = el('<div class="agenda"></div>');
+    agendaData.forEach(function (item) {
+      list.appendChild(el(
+        '<div class="hds-card">' +
+          '<div class="agenda__item">' +
+            '<span class="hds-badge hds-badge--neutral hds-badge--sm">' + esc(item.time) + '</span>' +
+            '<div class="agenda__body">' +
+              '<div class="agenda__title' + (item.status === "완료" ? " agenda__title--done" : "") + '">' + esc(item.title) + '</div>' +
+              '<div class="agenda__desc">' + esc(item.desc) + '</div>' +
+            '</div>' +
+            badgeForStatus(item.status) +
+          '</div>' +
+        '</div>'
+      ));
+    });
+    agendaRegion.appendChild(list);
+    agendaCount.textContent = agendaData.length + "건";
+  }
+
+  // 날씨 카드/추천도 loading 상태 반영
+  var weatherNormalHTML = weatherCard.innerHTML;
+  var recNormalHTML = recList.innerHTML;
+  function renderWeather(state) {
+    if (state === "loading") {
+      weatherCard.innerHTML =
+        '<div class="skeleton skeleton--title"></div><div class="skeleton skeleton--line skeleton--w40" style="margin-bottom:0"></div>';
+      recList.innerHTML =
+        '<div class="hds-card"><div class="skeleton skeleton--line" style="margin-bottom:0"></div></div>' +
+        '<div class="hds-card"><div class="skeleton skeleton--line" style="margin-bottom:0"></div></div>';
+    } else {
+      weatherCard.innerHTML = weatherNormalHTML;
+      recList.innerHTML = recNormalHTML;
+    }
+  }
+
+  function setState(state) {
+    document.querySelectorAll("#state-demo .segmented__btn").forEach(function (b) {
+      b.setAttribute("aria-pressed", String(b.dataset.state === state));
+    });
+    // empty 는 일정만 비우고 날씨는 정상 유지(설계서 §5)
+    renderWeather(state === "loading" ? "loading" : "normal");
+    renderAgenda(state);
+    agendaCount.style.visibility = (state === "normal") ? "visible" : "hidden";
+  }
+
+  document.getElementById("state-demo").addEventListener("click", function (e) {
+    var btn = e.target.closest(".segmented__btn");
+    if (!btn) return;
+    setState(btn.dataset.state);
+  });
+
+  // ----- 주간 플랜 렌더 -----
+  var weekList = document.getElementById("week-list");
+  function renderWeek() {
+    weekList.innerHTML = "";
+    weekData.forEach(function (d) {
+      weekList.appendChild(el(
+        '<div class="hds-card">' +
+          '<div class="week__row">' +
+            '<div class="week__day"><div class="week__dow">' + esc(d.dow) + '</div><div class="week__date">' + esc(d.date) + '</div></div>' +
+            '<span class="week__title' + (d.title_muted ? ' hds-card__muted' : '') + '">' + esc(d.title) + '</span>' +
+            '<span class="hds-badge hds-badge--' + d.variant + ' hds-badge--sm">' + esc(d.dday) + '</span>' +
+          '</div>' +
+        '</div>'
+      ));
+    });
+  }
+
+  // ----- 일정 추가 폼 (Input 검증) -----
+  var addForm = document.getElementById("add-form");
+  var addInputWrap = document.getElementById("add-input-wrap");
+  var addField = document.getElementById("add-title");
+  var addHelp = document.getElementById("add-help");
+
+  function setInputError(msg) {
+    addInputWrap.setAttribute("data-invalid", "true");
+    addField.setAttribute("aria-invalid", "true");
+    var err = document.getElementById("add-error");
+    if (!err) {
+      err = el('<span class="hds-input__error" id="add-error"></span>');
+      addHelp.after(err);
+    }
+    addHelp.hidden = true;
+    err.textContent = msg;
+    addField.setAttribute("aria-describedby", "add-error");
+  }
+  function clearInputError() {
+    addInputWrap.setAttribute("data-invalid", "false");
+    addField.removeAttribute("aria-invalid");
+    var err = document.getElementById("add-error");
+    if (err) err.remove();
+    addHelp.hidden = false;
+    addField.setAttribute("aria-describedby", "add-help");
+  }
+
+  addForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var val = addField.value.trim();
+    if (!val) {
+      setInputError("일정 제목을 입력해 주세요.");
+      addField.focus();
+      return;
+    }
+    clearInputError();
+    weekData[0].title = (weekData[0].title === "일정 없음" ? "" : weekData[0].title + " · ") + val;
+    weekData[0].title_muted = false;
+    renderWeek();
+    addField.value = "";
+    addField.focus();
+  });
+  addField.addEventListener("input", function () {
+    if (addField.value.trim()) clearInputError();
+  });
+
+  // ----- 화면 전환 -----
+  function switchScreen(name) {
+    document.getElementById("screen-today").hidden = (name !== "today");
+    document.getElementById("screen-week").hidden = (name !== "week");
+    document.querySelectorAll(".navbar__item").forEach(function (b) {
+      if (b.dataset.nav === name) b.setAttribute("aria-current", "page");
+      else b.removeAttribute("aria-current");
+    });
+  }
+  document.querySelectorAll(".navbar__item").forEach(function (b) {
+    b.addEventListener("click", function () { switchScreen(b.dataset.nav); });
+  });
+
+  // ----- 다크 모드 토글 -----
+  var themeToggle = document.getElementById("theme-toggle");
+  try {
+    var saved = localStorage.getItem("hds-theme");
+    if (saved === "dark") document.documentElement.setAttribute("data-theme", "dark");
+  } catch (e) {}
+  themeToggle.addEventListener("click", function () {
+    var isDark = document.documentElement.getAttribute("data-theme") === "dark";
+    if (isDark) document.documentElement.removeAttribute("data-theme");
+    else document.documentElement.setAttribute("data-theme", "dark");
+    themeToggle.setAttribute("aria-pressed", String(!isDark));
+    try { localStorage.setItem("hds-theme", isDark ? "light" : "dark"); } catch (e) {}
+  });
+
+  // ----- 스위치(알림 설정) -----
+  document.querySelectorAll(".switch").forEach(function (sw) {
+    sw.addEventListener("click", function () {
+      sw.setAttribute("aria-checked", String(sw.getAttribute("aria-checked") !== "true"));
+    });
+  });
+
+  // ----- Modal (ESC / 오버레이 / 버튼 · 포커스 트랩 · 포커스 복귀) -----
+  var modal = document.getElementById("notif-modal");
+  var panel = modal.querySelector(".hds-modal__panel");
+  var openBtn = document.getElementById("open-notif");
+  var lastFocused = null;
+
+  function focusables() {
+    return Array.prototype.slice.call(
+      panel.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')
+    ).filter(function (n) { return !n.disabled && n.offsetParent !== null; });
+  }
+
+  function openModal() {
+    lastFocused = document.activeElement;
+    modal.hidden = false;
+    // 리플로우 후 트랜지션 트리거
+    void modal.offsetWidth;
+    modal.setAttribute("data-open", "true");
+    var f = focusables();
+    (f[0] || panel).focus();
+  }
+  function closeModal() {
+    modal.removeAttribute("data-open");
+    modal.hidden = true;
+    if (lastFocused && typeof lastFocused.focus === "function") lastFocused.focus();
+  }
+
+  openBtn.addEventListener("click", openModal);
+  document.getElementById("notif-close").addEventListener("click", closeModal);
+  document.getElementById("notif-cancel").addEventListener("click", closeModal);
+
+  var saveBtn = document.getElementById("notif-save");
+  saveBtn.addEventListener("click", function () {
+    // 저장 진행(loading) 시연 후 닫기
+    saveBtn.setAttribute("aria-busy", "true");
+    saveBtn.innerHTML = '<span class="hds-btn__spinner" aria-hidden="true"></span>';
+    window.setTimeout(function () {
+      saveBtn.removeAttribute("aria-busy");
+      saveBtn.textContent = "저장";
+      closeModal();
+    }, 700);
+  });
+
+  // 오버레이 클릭(패널 바깥) 닫기
+  modal.addEventListener("mousedown", function (e) {
+    if (e.target === modal) closeModal();
+  });
+
+  // ESC 닫기 + 포커스 트랩
+  document.addEventListener("keydown", function (e) {
+    if (modal.hidden) return;
+    if (e.key === "Escape") { e.preventDefault(); closeModal(); return; }
+    if (e.key === "Tab") {
+      var f = focusables();
+      if (f.length === 0) { e.preventDefault(); return; }
+      var first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
+
+  // ----- 초기 렌더 -----
+  setState("normal");
+  renderWeek();
+</script>

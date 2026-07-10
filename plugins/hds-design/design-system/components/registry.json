@@ -1,0 +1,61 @@
+{
+  "$description": "HDS 컴포넌트 레지스트리 — shadcn 스타일 인덱스. 퍼블/기획이 이 파일로 '무엇이 있는지'와 '어디서 가져오는지'를 조회. 새 컴포넌트는 여기에 등록.",
+  "registryVersion": "1.2.0",
+  "stack": {
+    "framework": "react",
+    "styling": "tailwind + css-variables",
+    "tokens": "../tokens/semantic.tokens.json"
+  },
+  "components": [
+    {
+      "name": "button",
+      "status": "stable",
+      "since": "1.0.0",
+      "spec": "./button/spec.md",
+      "source": "./button/Button.tsx",
+      "usage": "./button/usage.md",
+      "dependencies": [],
+      "tokens": ["color.brand.default", "color.brand.hover", "color.fg.onBrand", "dimension.radius.md", "space.inset-md"]
+    },
+    {
+      "name": "input",
+      "status": "stable",
+      "since": "1.1.0",
+      "spec": "./input/spec.md",
+      "source": "./input/Input.tsx",
+      "usage": "./input/usage.md",
+      "dependencies": [],
+      "tokens": ["color.bg.base", "color.fg.base", "color.fg.muted", "color.border.base", "color.border.strong", "color.feedback.danger", "dimension.radius.md", "space.inset-sm", "space.inset-md", "space.stack-sm", "color.focus.ring", "duration.fast", "cubicBezier.standard"]
+    },
+    {
+      "name": "badge",
+      "status": "stable",
+      "since": "1.1.0",
+      "spec": "./badge/spec.md",
+      "source": "./badge/Badge.tsx",
+      "usage": "./badge/usage.md",
+      "dependencies": [],
+      "tokens": ["color.bg.muted", "color.fg.muted", "color.brand.subtle", "color.brand.default", "color.feedback.success", "color.feedback.warning", "color.feedback.danger", "color.fg.onBrand", "dimension.radius.full"]
+    },
+    {
+      "name": "card",
+      "status": "stable",
+      "since": "1.1.0",
+      "spec": "./card/spec.md",
+      "source": "./card/Card.tsx",
+      "usage": "./card/usage.md",
+      "dependencies": [],
+      "tokens": ["color.bg.base", "color.border.base", "color.fg.base", "color.fg.muted", "dimension.radius.lg", "space.inset-sm", "space.inset-md", "space.inset-lg", "space.stack-sm", "space.stack-md"]
+    },
+    {
+      "name": "modal",
+      "status": "stable",
+      "since": "1.1.0",
+      "spec": "./modal/spec.md",
+      "source": "./modal/Modal.tsx",
+      "usage": "./modal/usage.md",
+      "dependencies": ["button"],
+      "tokens": ["color.bg.overlay", "color.bg.base", "color.border.base", "color.fg.base", "dimension.radius.lg", "space.inset-md", "space.inset-lg", "space.stack-sm", "space.stack-md", "duration.base", "cubicBezier.emphasized"]
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "$schema": "https://tr.designtokens.org/format/",
+  "$description": "HDS Core (primitive) tokens — 브랜드 원시값. 절대 UI에서 직접 참조하지 말 것. semantic.tokens.json 을 통해서만 사용.",
+  "color": {
+    "$type": "color",
+    "brand": {
+      "50":  { "$value": "#eef4ff" },
+      "100": { "$value": "#d9e6ff" },
+      "200": { "$value": "#bcd3ff" },
+      "300": { "$value": "#8db5ff" },
+      "400": { "$value": "#578cff" },
+      "500": { "$value": "#2f6bff", "$description": "Primary brand" },
+      "600": { "$value": "#1a4fe0" },
+      "700": { "$value": "#153eb4" },
+      "800": { "$value": "#163791" },
+      "900": { "$value": "#173271" }
+    },
+    "neutral": {
+      "0":   { "$value": "#ffffff" },
+      "50":  { "$value": "#f7f8fa" },
+      "100": { "$value": "#eef0f4" },
+      "200": { "$value": "#dfe3ea" },
+      "300": { "$value": "#c6ccd8" },
+      "400": { "$value": "#9aa3b5" },
+      "500": { "$value": "#6b7385" },
+      "600": { "$value": "#4c5361" },
+      "700": { "$value": "#363b46" },
+      "800": { "$value": "#22262e" },
+      "900": { "$value": "#12141a" }
+    },
+    "success": { "500": { "$value": "#1f9d55" } },
+    "warning": { "500": { "$value": "#a15c00", "$description": "흰 텍스트(color.fg.onBrand) 대비 5.19:1 확보 — WCAG AA 작은 텍스트(4.5:1) 기준 충족. 1.1.0의 #d98a00(2.77:1)에서 조정(1.2.0)." } },
+    "danger":  { "500": { "$value": "#e23b3b" } }
+  },
+  "dimension": {
+    "$type": "dimension",
+    "space": {
+      "0": { "$value": "0px" },
+      "1": { "$value": "4px" },
+      "2": { "$value": "8px" },
+      "3": { "$value": "12px" },
+      "4": { "$value": "16px" },
+      "5": { "$value": "24px" },
+      "6": { "$value": "32px" },
+      "7": { "$value": "48px" },
+      "8": { "$value": "64px" }
+    },
+    "radius": {
+      "sm": { "$value": "6px" },
+      "md": { "$value": "10px" },
+      "lg": { "$value": "16px" },
+      "full": { "$value": "9999px" }
+    }
+  },
+  "fontFamily": {
+    "$type": "fontFamily",
+    "sans": { "$value": ["Pretendard", "Inter", "system-ui", "sans-serif"] },
+    "mono": { "$value": ["JetBrains Mono", "ui-monospace", "monospace"] }
+  },
+  "fontWeight": {
+    "$type": "fontWeight",
+    "regular": { "$value": 400 },
+    "medium": { "$value": 500 },
+    "semibold": { "$value": 600 },
+    "bold": { "$value": 700 }
+  },
+  "dimensionFont": {
+    "$type": "dimension",
+    "size": {
+      "xs": { "$value": "12px" },
+      "sm": { "$value": "14px" },
+      "md": { "$value": "16px" },
+      "lg": { "$value": "20px" },
+      "xl": { "$value": "24px" },
+      "2xl": { "$value": "32px" },
+      "3xl": { "$value": "40px" }
+    }
+  },
+  "duration": {
+    "$type": "duration",
+    "fast": { "$value": "120ms" },
+    "base": { "$value": "200ms" },
+    "slow": { "$value": "320ms" }
+  },
+  "cubicBezier": {
+    "$type": "cubicBezier",
+    "standard": { "$value": [0.2, 0, 0, 1] },
+    "emphasized": { "$value": [0.3, 0, 0.1, 1] }
+  }
+}

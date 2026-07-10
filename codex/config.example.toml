@@ -1,0 +1,19 @@
+# HDS — Codex CLI 예시 설정
+# ~/.codex/config.toml 에 병합하세요. (Codex CLI 문서 기준)
+#
+# HDS의 소스 오브 트루스는 이 저장소의 파일입니다. Codex는 저장소를 열면
+# AGENTS.md 를 자동으로 읽습니다. 아래는 선택적 MCP 연동 예시입니다.
+
+# --- (선택) Figma MCP: 토큰/컴포넌트를 Figma와 동기화할 때 ---
+# [mcp_servers.figma]
+# command = "npx"
+# args = ["-y", "figma-developer-mcp", "--stdio"]
+# env = { FIGMA_API_KEY = "여기에_토큰" }
+
+# --- (선택) 프로젝트 기본 지시 ---
+# [projects."/absolute/path/to/your/product-repo"]
+# 이 제품 저장소에서 UI를 만들 때는 HDS 디자인 시스템 저장소의
+# plugins/hds-design/design-system/ 을 소스로 사용한다.
+
+# 참고: 커스텀 프롬프트(/hds-tokens 등)는 codex/prompts/*.md 를
+# ~/.codex/prompts/ 로 복사하면 슬래시 커맨드로 노출됩니다.
