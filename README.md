@@ -57,6 +57,7 @@ cp codex/prompts/*.md ~/.codex/prompts/     # /hds-tokens, /hds-component, /hds-
 | 퍼블 | `/hds-publish:token-export`, `:component-build`, `:a11y-audit` | `/hds-component` |
 
 ## 더 읽기
+- [docs/user-guide.md](docs/user-guide.md) — **사용 가이드: 파트별 업무 시나리오 → 스킬 → 환경**
 - [examples/README.md](examples/README.md) — 가상 브랜드 "(주)하늘" 실사용 예시 (설계서 → 프로토타입)
 - [docs/getting-started.md](docs/getting-started.md) — 설치·역할별 첫 사용
 - [docs/architecture.md](docs/architecture.md) — 왜 이렇게 설계했는가
