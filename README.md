@@ -52,9 +52,9 @@ cp codex/prompts/*.md ~/.codex/prompts/     # /hds-tokens, /hds-component, /hds-
 
 | 역할 | Claude 스킬 | Codex 프롬프트 |
 | :-- | :-- | :-- |
-| 기획 | `/hds-planning:product-spec`, `/hds-planning:prototype` | `/hds-spec` |
-| 디자인 | `/hds-design:design-tokens`, `:design-guide`, `:component-catalog`, `:brand-visual`, `:figma-bridge` | `/hds-tokens`, `/hds-component` |
-| 퍼블 | `/hds-publish:token-export`, `:component-build`, `:a11y-audit` | `/hds-component` |
+| 기획 | `/hds-planning:grill`, `:product-spec`, `:spec-review`, `:prototype` | `/hds-spec` |
+| 디자인 | `/hds-design:design-tokens`, `:design-guide`, `:component-catalog`, `:brand-visual`, `:figma-bridge`, `:design-audit`, `:handoff` | `/hds-tokens`, `/hds-component` |
+| 퍼블 | `/hds-publish:token-export`, `:component-build`, `:ui-review`, `:a11y-audit` | `/hds-component` |
 
 ## 더 읽기
 - [docs/user-guide.md](docs/user-guide.md) — **사용 가이드: 파트별 업무 시나리오 → 스킬 → 환경**
@@ -62,4 +62,5 @@ cp codex/prompts/*.md ~/.codex/prompts/     # /hds-tokens, /hds-component, /hds-
 - [docs/getting-started.md](docs/getting-started.md) — 설치·역할별 첫 사용
 - [docs/architecture.md](docs/architecture.md) — 왜 이렇게 설계했는가
 - [docs/maintenance.md](docs/maintenance.md) — 토큰/컴포넌트 추가·버전·릴리스
+- [docs/skill-authoring.md](docs/skill-authoring.md) — HDS 스킬 저작 규범
 - [plugins/hds-design/design-system/README.md](plugins/hds-design/design-system/README.md) — 소스 오브 트루스 규칙

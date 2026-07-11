@@ -19,7 +19,7 @@ related_components: []   # 예: [button, ...] — HDS registry의 name
 
 ## 2. 사용자 & 시나리오 (Who)
 - 주요 사용자:
-- 핵심 시나리오(User story): "…로서 …하고 싶다, 그래야 …"
+- 핵심 시나리오(User story): "<사용자>로서 <기능>을 원한다. 그래야 <이점>" 형식 고정(As an <actor>, I want <feature>, so that <benefit> 대응).
 
 ## 3. 범위 (Scope)
 - In:

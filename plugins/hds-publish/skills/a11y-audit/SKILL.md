@@ -7,6 +7,8 @@ description: 컴포넌트/화면/토큰의 접근성을 HDS 기준(WCAG AA)으�
 
 퍼블 산출물이 HDS 접근성 기준을 만족하는지 검사합니다. 기준: `hds-design` 의 `design-system/guidelines/color.md` 및 `principles.md` 원칙 3.
 
+코드 구조·스펙 정합까지 포함한 종합 리뷰는 `/hds-publish:ui-review` (이 스킬은 접근성 심층 담당).
+
 ## 검사 항목
 1. **색 대비** — 본문 4.5:1, 큰 텍스트 3:1, UI 경계/아이콘 3:1. semantic 색 조합(fg/bg)을 계산해 통과 여부 판정. 다크 테마(`$dark`)도 별도 검사.
 2. **키보드** — 모든 인터랙티브 요소 Tab 접근·조작 가능, 논리적 포커스 순서, 트랩 없음.

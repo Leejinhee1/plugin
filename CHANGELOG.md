@@ -2,6 +2,15 @@
 
 이 프로젝트는 [semver](https://semver.org)를 따릅니다. 각 릴리스에서 바뀐 플러그인의 `plugin.json` 과 `marketplace.json` version을 함께 bump 합니다.
 
+## [1.3.0] — 2026-07-10
+### 추가 — 워크플로우 스킬 확장 (mattpocock/skills · garrytan/gstack 기법 번안, 둘 다 MIT)
+- **hds-planning 1.1.0**: `grill`(설계서 전 1문1답 요구사항 인터뷰 — 사실은 registry 조회·결정만 질문), `spec-review`(0-10 반복 평점 품질 게이트, 제네릭 표현 금지). product-spec 은 "합성만" 역할로 정리.
+- **hds-design 1.3.0**: `design-audit`(렌더링 화면 감사 — 체크리스트 34항목 + 안티슬롭 10항목, Design/Slop 이중 스코어), `handoff`(파트 간 릴레이 전달 문서 표준).
+- **hds-publish 1.2.0**: `ui-review`(Spec축·Standards축 2축 병렬 리뷰 — 축 간 재랭킹 금지, 저장소 규칙 우선).
+- **docs/skill-authoring.md**: HDS 스킬 저작 규범 (예측가능성·invocation 구분·progressive disclosure·실패 모드 6종).
+### 릴레이
+grill → product-spec → spec-review → handoff → prototype/component-build → ui-review → a11y-audit / design-audit 로 스킬 간 명시적 연결.
+
 ## [1.2.0] — 2026-07-10
 ### 접근성 — 1.1.0 검수 반영
 - **hds-design 1.2.0**

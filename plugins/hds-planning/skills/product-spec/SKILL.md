@@ -19,11 +19,17 @@ description: 제품 설계서(PRD)를 AI-리더블한 구조화 문서로 작성
 - **수용 기준(Acceptance)은 검증 가능하게**: 상태(empty/loading/error) 포함, 체크 가능한 문장.
 - **미해결(Open questions)을 분리**해 결정 대기 항목을 명시.
 
+## 시작 전
+요구사항이 아직 흐릿하면 먼저 `/hds-planning:grill` 로 결정을 다진다. 이 스킬은 그 결정들을 문서로 **합성만** 한다(재인터뷰 금지).
+
 ## 워크플로
 1. 템플릿으로 초안 생성 → 문제정의·사용자·플로우·화면·수용기준 채우기.
 2. 화면 명세 시 `hds-design` 의 `registry.json`/`usage/` 를 조회해 존재하는 컴포넌트·패턴으로 표현.
 3. 없는 컴포넌트가 필요하면 "신규 컴포넌트 후보"로 표시하고 `/hds-design:component-catalog` 로 연결.
 4. 설계가 확정되면 `/hds-planning:prototype` 로 프로토타입 생성.
+
+## 완성 후
+`/hds-planning:spec-review` 로 품질 게이트를 통과시킨 뒤 `/hds-design:handoff` 로 디자인/퍼블에 전달한다.
 
 ## 업데이트 관리
 - 변경 시 프론트매터 `version`·`updated` 갱신, 변경 요지를 문서 상단 changelog에 남긴다.
