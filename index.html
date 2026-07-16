@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>HDS — 그룹 공식 디자인 시스템 하네스</title>
+<meta name="description" content="기획·디자인·퍼블리셔가 하나의 소스에서 문서·토큰·컴포넌트를 공유하고, 코덱스와 클로드에서 동일하게 호출하는 디자인 시스템 하네스." />
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<style>
+  /* ─────────────────────────────────────────────────────────────
+     HDS 토큰 → CSS 변수
+     이 페이지는 plugins/hds-design/design-system/tokens 의
+     core / semantic 토큰을 그대로 옮겨 만들었습니다. 하드코딩된
+     색·간격·크기는 없으며, 모든 값은 var(--hds-*) 로만 참조합니다.
+     ───────────────────────────────────────────────────────────── */
+  :root {
+    /* core · color.brand */
+    --hds-brand-50:#eef4ff; --hds-brand-100:#d9e6ff; --hds-brand-200:#bcd3ff;
+    --hds-brand-300:#8db5ff; --hds-brand-400:#578cff; --hds-brand-500:#2f6bff;
+    --hds-brand-600:#1a4fe0; --hds-brand-700:#153eb4; --hds-brand-800:#163791; --hds-brand-900:#173271;
+    /* core · color.neutral */
+    --hds-neutral-0:#ffffff; --hds-neutral-50:#f7f8fa; --hds-neutral-100:#eef0f4;
+    --hds-neutral-200:#dfe3ea; --hds-neutral-300:#c6ccd8; --hds-neutral-400:#9aa3b5;
+    --hds-neutral-500:#6b7385; --hds-neutral-600:#4c5361; --hds-neutral-700:#363b46;
+    --hds-neutral-800:#22262e; --hds-neutral-900:#12141a;
+    /* core · feedback */
+    --hds-success-500:#1f9d55; --hds-warning-500:#a15c00; --hds-danger-500:#e23b3b;
+    /* core · dimension.space */
+    --hds-space-0:0px; --hds-space-1:4px; --hds-space-2:8px; --hds-space-3:12px;
+    --hds-space-4:16px; --hds-space-5:24px; --hds-space-6:32px; --hds-space-7:48px; --hds-space-8:64px;
+    /* core · dimension.radius */
+    --hds-radius-sm:6px; --hds-radius-md:10px; --hds-radius-lg:16px; --hds-radius-full:9999px;
+    /* core · font */
+    --hds-font-sans:"Pretendard","Inter",system-ui,sans-serif;
+    --hds-font-mono:"JetBrains Mono",ui-monospace,monospace;
+    --hds-fw-regular:400; --hds-fw-medium:500; --hds-fw-semibold:600; --hds-fw-bold:700;
+    /* core · font size */
+    --hds-fs-xs:12px; --hds-fs-sm:14px; --hds-fs-md:16px; --hds-fs-lg:20px;
+    --hds-fs-xl:24px; --hds-fs-2xl:32px; --hds-fs-3xl:40px;
+    /* core · duration & easing */
+    --hds-dur-fast:120ms; --hds-dur-base:200ms; --hds-dur-slow:320ms;
+    --hds-ease-standard:cubic-bezier(0.2,0,0,1); --hds-ease-emphasized:cubic-bezier(0.3,0,0.1,1);
+
+    /* semantic — light (semantic.tokens.json) */
+    --hds-bg-base:var(--hds-neutral-0);
+    --hds-bg-subtle:var(--hds-neutral-50);
+    --hds-bg-muted:var(--hds-neutral-100);
+    --hds-bg-inverse:var(--hds-neutral-900);
+    --hds-bg-overlay:rgba(18,20,26,0.55);
+    --hds-fg-base:var(--hds-neutral-900);
+    --hds-fg-muted:var(--hds-neutral-500);
+    --hds-fg-onBrand:var(--hds-neutral-0);
+    --hds-fg-onInverse:var(--hds-neutral-0);
+    --hds-border-base:var(--hds-neutral-200);
+    --hds-border-strong:var(--hds-neutral-300);
+    --hds-brand-default:var(--hds-brand-500);
+    --hds-brand-hover:var(--hds-brand-600);
+    --hds-brand-active:var(--hds-brand-700);
+    --hds-brand-subtle:var(--hds-brand-50);
+    --hds-fb-success:var(--hds-success-500);
+    --hds-fb-warning:var(--hds-warning-500);
+    --hds-fb-danger:var(--hds-danger-500);
+    --hds-focus-ring:var(--hds-brand-400);
+  }
+  /* semantic — dark ($dark 오버라이드). core 색은 유지, 의미 토큰만 재매핑. */
+  [data-theme="dark"] {
+    --hds-bg-base:var(--hds-neutral-900);
+    --hds-bg-subtle:var(--hds-neutral-800);
+    --hds-bg-muted:var(--hds-neutral-700);
+    --hds-bg-inverse:var(--hds-neutral-0);
+    --hds-bg-overlay:rgba(0,0,0,0.6);
+    --hds-fg-base:var(--hds-neutral-50);
+    --hds-fg-muted:var(--hds-neutral-400);
+    --hds-fg-onInverse:var(--hds-neutral-900);
+    --hds-border-base:var(--hds-neutral-700);
+    --hds-border-strong:var(--hds-neutral-600);
+  }
+
+  *,*::before,*::after { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  @media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto;} }
+  body {
+    margin:0;
+    font-family:var(--hds-font-sans);
+    font-size:var(--hds-fs-md);
+    line-height:1.5;
+    color:var(--hds-fg-base);
+    background:var(--hds-bg-base);
+    -webkit-font-smoothing:antialiased;
+    transition:background var(--hds-dur-base) var(--hds-ease-standard),
+               color var(--hds-dur-base) var(--hds-ease-standard);
+  }
+  a { color:var(--hds-brand-default); text-decoration:none; }
+  a:hover { color:var(--hds-brand-hover); }
+  code, kbd, pre { font-family:var(--hds-font-mono); }
+  :focus-visible {
+    outline:3px solid var(--hds-focus-ring);
+    outline-offset:2px;
+    border-radius:var(--hds-radius-sm);
+  }
+  .wrap { max-width:1080px; margin:0 auto; padding:0 var(--hds-space-5); }
+  section { padding:var(--hds-space-8) 0; }
+  .eyebrow {
+    font-size:var(--hds-fs-sm); font-weight:var(--hds-fw-semibold);
+    letter-spacing:.04em; text-transform:uppercase;
+    color:var(--hds-brand-default); margin:0 0 var(--hds-space-2);
+  }
+  h2 { font-size:var(--hds-fs-2xl); font-weight:var(--hds-fw-bold); line-height:1.25; margin:0 0 var(--hds-space-3); letter-spacing:-.01em; }
+  .lead { font-size:var(--hds-fs-lg); color:var(--hds-fg-muted); margin:0 0 var(--hds-space-6); max-width:56ch; }
+
+  /* ── Header ── */
+  header.nav {
+    position:sticky; top:0; z-index:50;
+    background:color-mix(in srgb, var(--hds-bg-base) 88%, transparent);
+    backdrop-filter:saturate(1.4) blur(10px);
+    border-bottom:1px solid var(--hds-border-base);
+  }
+  .nav-inner { display:flex; align-items:center; gap:var(--hds-space-4); height:64px; }
+  .brand { display:flex; align-items:center; gap:var(--hds-space-2); font-weight:var(--hds-fw-bold); font-size:var(--hds-fs-lg); color:var(--hds-fg-base); }
+  .brand svg { display:block; }
+  .nav-links { margin-left:auto; display:flex; align-items:center; gap:var(--hds-space-5); }
+  .nav-links a.link { color:var(--hds-fg-muted); font-size:var(--hds-fs-sm); font-weight:var(--hds-fw-medium); }
+  .nav-links a.link:hover { color:var(--hds-fg-base); }
+  @media (max-width:720px){ .nav-links a.link { display:none; } }
+
+  /* ── Buttons (컴포넌트 button 스펙 반영) ── */
+  .btn {
+    display:inline-flex; align-items:center; justify-content:center; gap:var(--hds-space-2);
+    font-family:inherit; font-size:var(--hds-fs-sm); font-weight:var(--hds-fw-semibold);
+    padding:var(--hds-space-2) var(--hds-space-4);
+    border-radius:var(--hds-radius-md); border:1px solid transparent; cursor:pointer;
+    transition:background var(--hds-dur-fast) var(--hds-ease-standard),
+               border-color var(--hds-dur-fast) var(--hds-ease-standard),
+               color var(--hds-dur-fast) var(--hds-ease-standard);
+  }
+  .btn-primary { background:var(--hds-brand-default); color:var(--hds-fg-onBrand); }
+  .btn-primary:hover { background:var(--hds-brand-hover); color:var(--hds-fg-onBrand); }
+  .btn-primary:active { background:var(--hds-brand-active); }
+  .btn-secondary { background:transparent; color:var(--hds-fg-base); border-color:var(--hds-border-strong); }
+  .btn-secondary:hover { background:var(--hds-bg-muted); color:var(--hds-fg-base); }
+  .icon-btn {
+    display:inline-flex; align-items:center; justify-content:center;
+    width:40px; height:40px; border-radius:var(--hds-radius-md);
+    background:transparent; border:1px solid var(--hds-border-base); color:var(--hds-fg-base);
+    cursor:pointer; transition:background var(--hds-dur-fast) var(--hds-ease-standard);
+  }
+  .icon-btn:hover { background:var(--hds-bg-muted); }
+
+  /* ── Hero ── */
+  .hero { padding:var(--hds-space-8) 0 var(--hds-space-7); }
+  .hero-badge {
+    display:inline-flex; align-items:center; gap:var(--hds-space-2);
+    font-size:var(--hds-fs-xs); font-weight:var(--hds-fw-medium);
+    color:var(--hds-brand-default); background:var(--hds-brand-subtle);
+    padding:var(--hds-space-1) var(--hds-space-3); border-radius:var(--hds-radius-full);
+    margin-bottom:var(--hds-space-4);
+  }
+  .hero h1 { font-size:clamp(32px,6vw,var(--hds-fs-3xl)); line-height:1.15; letter-spacing:-.02em; font-weight:var(--hds-fw-bold); margin:0 0 var(--hds-space-4); max-width:20ch; }
+  .hero h1 .accent { color:var(--hds-brand-default); }
+  .hero p.sub { font-size:var(--hds-fs-lg); color:var(--hds-fg-muted); max-width:60ch; margin:0 0 var(--hds-space-6); }
+  .hero-cta { display:flex; flex-wrap:wrap; gap:var(--hds-space-3); align-items:center; }
+
+  .install {
+    /* 터미널 표면은 두 테마 모두 항상 어둡게 고정 (core neutral-900) */
+    margin-top:var(--hds-space-6); display:inline-flex; align-items:stretch;
+    background:var(--hds-neutral-900); color:var(--hds-neutral-50);
+    border:1px solid var(--hds-border-strong);
+    border-radius:var(--hds-radius-md); overflow:hidden; max-width:100%;
+  }
+  .install code { padding:var(--hds-space-3) var(--hds-space-4); font-size:var(--hds-fs-sm); white-space:nowrap; overflow:auto; }
+  .install code .prompt { color:var(--hds-brand-300); user-select:none; }
+  .install button {
+    border:0; border-left:1px solid var(--hds-neutral-700);
+    background:transparent; color:var(--hds-neutral-100); cursor:pointer;
+    padding:0 var(--hds-space-4); font-size:var(--hds-fs-xs); font-weight:var(--hds-fw-medium);
+    transition:background var(--hds-dur-fast) var(--hds-ease-standard);
+  }
+  .install button:hover { background:var(--hds-neutral-800); }
+
+  /* ── Generic cards & grids ── */
+  .grid { display:grid; gap:var(--hds-space-4); }
+  .cols-3 { grid-template-columns:repeat(3,1fr); }
+  .cols-2 { grid-template-columns:repeat(2,1fr); }
+  @media (max-width:860px){ .cols-3{grid-template-columns:1fr;} .cols-2{grid-template-columns:1fr;} }
+  .card {
+    background:var(--hds-bg-base); border:1px solid var(--hds-border-base);
+    border-radius:var(--hds-radius-lg); padding:var(--hds-space-5);
+    transition:border-color var(--hds-dur-base) var(--hds-ease-standard),
+               transform var(--hds-dur-base) var(--hds-ease-standard);
+  }
+  .card:hover { border-color:var(--hds-border-strong); }
+  .card h3 { margin:0 0 var(--hds-space-2); font-size:var(--hds-fs-lg); font-weight:var(--hds-fw-bold); }
+  .card p { margin:0; color:var(--hds-fg-muted); font-size:var(--hds-fs-sm); line-height:1.6; }
+  .num {
+    display:inline-flex; align-items:center; justify-content:center;
+    width:32px; height:32px; border-radius:var(--hds-radius-full);
+    background:var(--hds-brand-subtle); color:var(--hds-brand-default);
+    font-weight:var(--hds-fw-bold); font-size:var(--hds-fs-sm); margin-bottom:var(--hds-space-3);
+  }
+
+  /* ── Plugin cards ── */
+  .plugin-card { display:flex; flex-direction:column; gap:var(--hds-space-3); }
+  .plugin-head { display:flex; align-items:center; gap:var(--hds-space-3); }
+  .plugin-dot { width:12px; height:12px; border-radius:var(--hds-radius-full); flex:0 0 auto; }
+  .tag {
+    display:inline-block; font-size:var(--hds-fs-xs); font-weight:var(--hds-fw-medium);
+    color:var(--hds-fg-muted); background:var(--hds-bg-muted);
+    padding:2px var(--hds-space-2); border-radius:var(--hds-radius-full);
+    margin-left:auto; font-family:var(--hds-font-mono);
+  }
+  .skill-list { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:var(--hds-space-2); }
+  .skill-list li { font-size:var(--hds-fs-sm); color:var(--hds-fg-muted); }
+  .skill-list code {
+    color:var(--hds-fg-base); background:var(--hds-bg-muted);
+    padding:2px 6px; border-radius:var(--hds-radius-sm); font-size:var(--hds-fs-xs);
+  }
+
+  /* ── Token showcase ── */
+  .swatches { display:grid; grid-template-columns:repeat(10,1fr); gap:var(--hds-space-2); }
+  @media (max-width:720px){ .swatches{grid-template-columns:repeat(5,1fr);} }
+  .swatch { display:flex; flex-direction:column; gap:var(--hds-space-1); }
+  .swatch .chip { height:56px; border-radius:var(--hds-radius-md); border:1px solid var(--hds-border-base); }
+  .swatch .lbl { font-size:var(--hds-fs-xs); color:var(--hds-fg-muted); font-family:var(--hds-font-mono); }
+  .swatch .val { font-size:11px; color:var(--hds-fg-muted); font-family:var(--hds-font-mono); }
+
+  .type-row { display:flex; align-items:baseline; gap:var(--hds-space-4); padding:var(--hds-space-3) 0; border-bottom:1px solid var(--hds-border-base); }
+  .type-row .meta { flex:0 0 140px; font-family:var(--hds-font-mono); font-size:var(--hds-fs-xs); color:var(--hds-fg-muted); }
+
+  .radius-demo, .space-demo { display:flex; gap:var(--hds-space-5); flex-wrap:wrap; align-items:flex-end; }
+  .radius-box { width:72px; height:72px; background:var(--hds-brand-subtle); border:1px solid var(--hds-brand-200); display:flex; align-items:flex-end; justify-content:center; padding:var(--hds-space-1); }
+  .radius-box span, .space-bar span { font-size:11px; font-family:var(--hds-font-mono); color:var(--hds-brand-700); }
+  .space-bar { background:var(--hds-brand-default); border-radius:var(--hds-radius-sm); display:flex; align-items:center; justify-content:center; height:32px; color:var(--hds-fg-onBrand); }
+
+  /* ── Component gallery ── */
+  .demo-surface {
+    background:var(--hds-bg-subtle); border:1px solid var(--hds-border-base);
+    border-radius:var(--hds-radius-lg); padding:var(--hds-space-5);
+    display:flex; flex-direction:column; gap:var(--hds-space-3);
+  }
+  .demo-surface .cap { font-size:var(--hds-fs-xs); font-family:var(--hds-font-mono); color:var(--hds-fg-muted); }
+  .row { display:flex; flex-wrap:wrap; gap:var(--hds-space-3); align-items:center; }
+
+  .badge {
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:var(--hds-fs-xs); font-weight:var(--hds-fw-medium);
+    padding:3px var(--hds-space-3); border-radius:var(--hds-radius-full); line-height:1.4;
+  }
+  .badge-neutral { background:var(--hds-bg-muted); color:var(--hds-fg-muted); }
+  .badge-brand { background:var(--hds-brand-subtle); color:var(--hds-brand-default); }
+  .badge-success { background:var(--hds-fb-success); color:var(--hds-fg-onBrand); }
+  .badge-warning { background:var(--hds-fb-warning); color:var(--hds-fg-onBrand); }
+  .badge-danger { background:var(--hds-fb-danger); color:var(--hds-fg-onBrand); }
+
+  .field { display:flex; flex-direction:column; gap:var(--hds-space-2); max-width:280px; }
+  .field label { font-size:var(--hds-fs-sm); font-weight:var(--hds-fw-medium); }
+  .field input {
+    font-family:inherit; font-size:var(--hds-fs-md); color:var(--hds-fg-base);
+    background:var(--hds-bg-base); border:1px solid var(--hds-border-base);
+    border-radius:var(--hds-radius-md); padding:var(--hds-space-2) var(--hds-space-3);
+    transition:border-color var(--hds-dur-fast) var(--hds-ease-standard);
+  }
+  .field input::placeholder { color:var(--hds-fg-muted); }
+  .field input:focus { border-color:var(--hds-brand-default); outline:none; box-shadow:0 0 0 3px color-mix(in srgb, var(--hds-focus-ring) 40%, transparent); }
+
+  .mini-card {
+    background:var(--hds-bg-base); border:1px solid var(--hds-border-base);
+    border-radius:var(--hds-radius-lg); padding:var(--hds-space-4); max-width:320px;
+    display:flex; flex-direction:column; gap:var(--hds-space-2);
+  }
+  .mini-card .title { font-weight:var(--hds-fw-semibold); font-size:var(--hds-fs-md); }
+  .mini-card .body { font-size:var(--hds-fs-sm); color:var(--hds-fg-muted); line-height:1.6; }
+
+  /* ── Roles table ── */
+  table.roles { width:100%; border-collapse:collapse; font-size:var(--hds-fs-sm); }
+  table.roles th, table.roles td { text-align:left; padding:var(--hds-space-3) var(--hds-space-4); border-bottom:1px solid var(--hds-border-base); vertical-align:top; }
+  table.roles th { font-weight:var(--hds-fw-semibold); color:var(--hds-fg-muted); font-size:var(--hds-fs-xs); text-transform:uppercase; letter-spacing:.03em; }
+  table.roles td code { background:var(--hds-bg-muted); padding:2px 6px; border-radius:var(--hds-radius-sm); font-size:var(--hds-fs-xs); }
+  .role-name { font-weight:var(--hds-fw-semibold); color:var(--hds-fg-base); }
+  @media (max-width:720px){ table.roles thead{display:none;} table.roles td{display:block; border:0; padding:var(--hds-space-1) 0;} table.roles tr{display:block; padding:var(--hds-space-4) 0; border-bottom:1px solid var(--hds-border-base);} }
+
+  /* ── Steps / install ── */
+  .steps { counter-reset:step; display:flex; flex-direction:column; gap:var(--hds-space-4); }
+  pre.block {
+    /* 코드 블록도 항상 어두운 표면으로 고정 */
+    background:var(--hds-neutral-900); color:var(--hds-neutral-100);
+    border:1px solid var(--hds-border-strong);
+    border-radius:var(--hds-radius-md); padding:var(--hds-space-4) var(--hds-space-5);
+    overflow:auto; font-size:var(--hds-fs-sm); line-height:1.7; margin:0;
+  }
+  pre.block .prompt { color:var(--hds-brand-300); }
+  pre.block .cmt { color:var(--hds-neutral-400); }
+
+  .note {
+    display:flex; gap:var(--hds-space-3); align-items:flex-start;
+    background:var(--hds-brand-subtle); border:1px solid var(--hds-brand-200);
+    border-radius:var(--hds-radius-md); padding:var(--hds-space-4); font-size:var(--hds-fs-sm); color:var(--hds-brand-800);
+  }
+  [data-theme="dark"] .note { color:var(--hds-brand-100); background:color-mix(in srgb, var(--hds-brand-900) 40%, transparent); }
+
+  /* ── Modal (컴포넌트 modal 스펙 반영) ── */
+  .overlay {
+    position:fixed; inset:0; background:var(--hds-bg-overlay);
+    display:none; align-items:center; justify-content:center; padding:var(--hds-space-5); z-index:100;
+  }
+  .overlay.open { display:flex; animation:fade var(--hds-dur-base) var(--hds-ease-emphasized); }
+  .dialog {
+    background:var(--hds-bg-base); border:1px solid var(--hds-border-base);
+    border-radius:var(--hds-radius-lg); padding:var(--hds-space-6);
+    max-width:400px; width:100%; display:flex; flex-direction:column; gap:var(--hds-space-4);
+    animation:pop var(--hds-dur-base) var(--hds-ease-emphasized);
+  }
+  .dialog h3 { margin:0; font-size:var(--hds-fs-xl); }
+  .dialog p { margin:0; color:var(--hds-fg-muted); font-size:var(--hds-fs-sm); line-height:1.6; }
+  @keyframes fade { from{opacity:0;} to{opacity:1;} }
+  @keyframes pop { from{opacity:0; transform:translateY(8px) scale(.98);} to{opacity:1; transform:none;} }
+  @media (prefers-reduced-motion:reduce){ .overlay.open,.dialog{animation:none;} }
+
+  /* ── Footer ── */
+  footer { border-top:1px solid var(--hds-border-base); padding:var(--hds-space-7) 0; color:var(--hds-fg-muted); font-size:var(--hds-fs-sm); }
+  footer .foot-grid { display:flex; flex-wrap:wrap; gap:var(--hds-space-6); justify-content:space-between; align-items:flex-start; }
+  footer a { color:var(--hds-fg-muted); }
+  footer a:hover { color:var(--hds-fg-base); }
+
+  .section-subtle { background:var(--hds-bg-subtle); border-top:1px solid var(--hds-border-base); border-bottom:1px solid var(--hds-border-base); }
+
+  /* on-load reveal — 잔잔함(Calm) 값에 맞춰 최소한의 진입만 */
+  .reveal { opacity:0; transform:translateY(12px); }
+  .reveal.in { opacity:1; transform:none; transition:opacity var(--hds-dur-slow) var(--hds-ease-standard), transform var(--hds-dur-slow) var(--hds-ease-standard); }
+  @media (prefers-reduced-motion:reduce){ .reveal{opacity:1; transform:none;} }
+</style>
+</head>
+<body>
+
+<!-- 하늘/HDS 마크: tokens/core 의 brand.500 아크 + 수평선 + 구름. 워드마크만 HDS. -->
+<template id="mark">
+  <svg viewBox="0 0 64 44" width="30" height="21" aria-hidden="true">
+    <circle cx="28" cy="15" r="2.6" fill="var(--hds-neutral-300)"/>
+    <circle cx="33" cy="13.5" r="3.7" fill="var(--hds-neutral-300)"/>
+    <circle cx="38" cy="15.5" r="3" fill="var(--hds-neutral-300)"/>
+    <path d="M12 27 A14 14 0 0 1 40 27 Z" fill="var(--hds-brand-500)"/>
+    <line x1="6" y1="27" x2="46" y2="27" stroke="var(--hds-fg-base)" stroke-width="2.6" stroke-linecap="round"/>
+  </svg>
+</template>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <span class="brand"><span class="mark-slot"></span>HDS</span>
+    <nav class="nav-links">
+      <a class="link" href="#what">개요</a>
+      <a class="link" href="#plugins">플러그인</a>
+      <a class="link" href="#tokens">토큰</a>
+      <a class="link" href="#components">컴포넌트</a>
+      <a class="link" href="#install">시작하기</a>
+      <button class="icon-btn" id="themeToggle" aria-label="라이트/다크 테마 전환" title="테마 전환">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+        </svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="wrap reveal">
+    <span class="hero-badge">디자인 시스템 하네스 · v1.2.0</span>
+    <h1>하나의 소스에서 <span class="accent">문서·토큰·컴포넌트</span>를 함께 씁니다.</h1>
+    <p class="sub">HDS는 기획·디자인·퍼블리셔가 같은 정본을 공유하고, 코덱스와 클로드에서 동일하게 호출하는 사내 디자인 시스템 하네스입니다. skill · MCP · plugin으로 불러 쓰고, 부서에서 시작해 그룹사 공식 가이드로 확장하도록 설계했습니다.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#install">시작하기</a>
+      <a class="btn btn-secondary" href="https://github.com/Leejinhee1/plugin" target="_blank" rel="noopener">GitHub 저장소</a>
+    </div>
+    <div class="install" role="group" aria-label="설치 명령">
+      <code><span class="prompt">/</span>plugin marketplace add Leejinhee1/plugin</code>
+      <button id="copyInstall" aria-label="설치 명령 복사">복사</button>
+    </div>
+  </div>
+</section>
+
+<!-- ── WHAT / 핵심 설계 ── -->
+<section id="what" class="section-subtle">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="eyebrow">왜 하네스인가</p>
+      <h2>유지보수를 최우선으로 설계했습니다</h2>
+      <p class="lead">내용은 한 곳에만 존재하고, 하네스(클로드·코덱스)와 역할(기획·디자인·퍼블)은 같은 파일을 읽는 얇은 어댑터입니다. 정본을 고치면 모든 곳에 반영됩니다.</p>
+    </div>
+    <div class="grid cols-3">
+      <article class="card reveal">
+        <span class="num">1</span>
+        <h3>단일 소스 오브 트루스</h3>
+        <p>토큰·컴포넌트·가이드의 실제 내용은 <code>hds-design/design-system/</code>에 한 번만 존재합니다. 여기서 고치면 전 하네스·전 역할에 전파됩니다.</p>
+      </article>
+      <article class="card reveal">
+        <span class="num">2</span>
+        <h3>얇은 하네스 어댑터</h3>
+        <p>클로드 스킬과 코덱스 프롬프트는 같은 파일을 가리키는 얇은 포인터입니다. 하네스가 늘어도 내용은 한 곳에 머뭅니다.</p>
+      </article>
+      <article class="card reveal">
+        <span class="num">3</span>
+        <h3>2레이어 토큰</h3>
+        <p>core(원시값) → semantic(의미값). 리브랜딩·다크테마·그룹사 테마를 core만 바꿔 대응합니다.</p>
+      </article>
+      <article class="card reveal">
+        <span class="num">4</span>
+        <h3>표준 포맷</h3>
+        <p>토큰은 W3C DTCG, 컴포넌트는 레지스트리(shadcn 방식). 벤더 종속 없이 장기 유지합니다.</p>
+      </article>
+      <article class="card reveal">
+        <span class="num">5</span>
+        <h3>명시적 버전 관리</h3>
+        <p>공식 릴리스는 semver + CHANGELOG. 팀은 통제된 시점에만 업데이트를 받습니다.</p>
+      </article>
+      <article class="card reveal">
+        <span class="num">✳</span>
+        <h3>이 페이지 자체가 데모</h3>
+        <p>지금 보는 색·간격·타이포·모션·컴포넌트는 모두 HDS 토큰으로 그렸습니다. 우측 상단 테마 토글로 다크 오버라이드를 확인해 보세요.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ── PLUGINS ── -->
+<section id="plugins">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="eyebrow">세 개의 플러그인, 하나의 정본</p>
+      <h2>역할별로 설치하고, 같은 소스를 봅니다</h2>
+      <p class="lead">디자인 본체(hds-design)를 기획·퍼블 플러그인이 참조합니다. 필요한 역할만 골라 설치하면 됩니다.</p>
+    </div>
+    <div class="grid cols-3">
+      <article class="card plugin-card reveal">
+        <div class="plugin-head">
+          <span class="plugin-dot" style="background:var(--hds-brand-default)"></span>
+          <strong>hds-design</strong>
+          <span class="tag">v1.2.0</span>
+        </div>
+        <p style="color:var(--hds-fg-muted); font-size:var(--hds-fs-sm); margin:0;">디자인 — 단일 소스 오브 트루스. 토큰·가이드·컴포넌트 카탈로그·브랜드 비주얼을 관리합니다.</p>
+        <ul class="skill-list">
+          <li><code>design-tokens</code> · <code>design-guide</code></li>
+          <li><code>component-catalog</code> · <code>brand-visual</code></li>
+          <li><code>figma-bridge</code> · <em>design-reviewer</em> 에이전트</li>
+        </ul>
+      </article>
+      <article class="card plugin-card reveal">
+        <div class="plugin-head">
+          <span class="plugin-dot" style="background:var(--hds-fb-success)"></span>
+          <strong>hds-planning</strong>
+          <span class="tag">v1.0.0</span>
+        </div>
+        <p style="color:var(--hds-fg-muted); font-size:var(--hds-fs-sm); margin:0;">기획 — 제품 설계서를 AI-리더블 문서로 관리하고, 디자인·퍼블 코드 기반으로 프로토타입을 생성합니다.</p>
+        <ul class="skill-list">
+          <li><code>product-spec</code> — 표준 설계서</li>
+          <li><code>prototype</code> — 동작 프로토타입</li>
+          <li>의존: <code>hds-design</code> 자동 동반</li>
+        </ul>
+      </article>
+      <article class="card plugin-card reveal">
+        <div class="plugin-head">
+          <span class="plugin-dot" style="background:var(--hds-fb-warning)"></span>
+          <strong>hds-publish</strong>
+          <span class="tag">v1.1.0</span>
+        </div>
+        <p style="color:var(--hds-fg-muted); font-size:var(--hds-fs-sm); margin:0;">퍼블 — 컴포넌트를 개발 적용 코드로 변환하고, 토큰을 export하고, 접근성을 점검합니다.</p>
+        <ul class="skill-list">
+          <li><code>component-build</code> — React/Tailwind</li>
+          <li><code>token-export</code> — CSS/JSON</li>
+          <li><code>a11y-audit</code> — 접근성 점검</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ── TOKENS ── -->
+<section id="tokens" class="section-subtle">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="eyebrow">디자인 토큰 (W3C DTCG)</p>
+      <h2>core → semantic, 두 레이어</h2>
+      <p class="lead">원시값(core)을 의미값(semantic)으로 별칭합니다. 컴포넌트는 semantic만 참조하므로, core 한 곳을 바꾸면 전체가 따라옵니다.</p>
+    </div>
+
+    <h3 style="font-size:var(--hds-fs-md); margin:var(--hds-space-5) 0 var(--hds-space-3);">Brand scale — <code style="font-family:var(--hds-font-mono); font-size:var(--hds-fs-xs); color:var(--hds-fg-muted)">color.brand.*</code></h3>
+    <div class="swatches" id="brandSwatches"></div>
+
+    <h3 style="font-size:var(--hds-fs-md); margin:var(--hds-space-6) 0 var(--hds-space-3);">Neutral scale — <code style="font-family:var(--hds-font-mono); font-size:var(--hds-fs-xs); color:var(--hds-fg-muted)">color.neutral.*</code></h3>
+    <div class="swatches" id="neutralSwatches"></div>
+
+    <h3 style="font-size:var(--hds-fs-md); margin:var(--hds-space-6) 0 var(--hds-space-3);">Feedback — <code style="font-family:var(--hds-font-mono); font-size:var(--hds-fs-xs); color:var(--hds-fg-muted)">color.feedback.*</code></h3>
+    <div class="row">
+      <span class="badge badge-success">success · #1f9d55</span>
+      <span class="badge badge-warning">warning · #a15c00</span>
+      <span class="badge badge-danger">danger · #e23b3b</span>
+    </div>
+    <p style="font-size:var(--hds-fs-xs); color:var(--hds-fg-muted); margin-top:var(--hds-space-2);">warning은 1.2.0에서 흰 텍스트 대비 5.19:1(WCAG AA)을 확보하도록 조정됐습니다.</p>
+
+    <div class="grid cols-2" style="margin-top:var(--hds-space-7);">
+      <div class="reveal">
+        <h3 style="font-size:var(--hds-fs-md); margin:0 0 var(--hds-space-3);">Typography</h3>
+        <div class="type-row"><span class="meta">heading · 32/700</span><span style="font-size:var(--hds-fs-2xl); font-weight:var(--hds-fw-bold); line-height:1.25;">일상을 하늘에 맞추다</span></div>
+        <div class="type-row"><span class="meta">body · 16/400</span><span style="font-size:var(--hds-fs-md);">필요한 정보만 먼저 보여줍니다.</span></div>
+        <div class="type-row"><span class="meta">label · 14/500</span><span style="font-size:var(--hds-fs-sm); font-weight:var(--hds-fw-medium);">오늘 브리핑</span></div>
+        <div class="type-row" style="border:0;"><span class="meta">caption · 12/400</span><span style="font-size:var(--hds-fs-xs); color:var(--hds-fg-muted);">최고 24° · 최저 16°</span></div>
+      </div>
+      <div class="reveal">
+        <h3 style="font-size:var(--hds-fs-md); margin:0 0 var(--hds-space-3);">Radius</h3>
+        <div class="radius-demo" style="margin-bottom:var(--hds-space-6);">
+          <div class="radius-box" style="border-radius:var(--hds-radius-sm)"><span>sm 6</span></div>
+          <div class="radius-box" style="border-radius:var(--hds-radius-md)"><span>md 10</span></div>
+          <div class="radius-box" style="border-radius:var(--hds-radius-lg)"><span>lg 16</span></div>
+          <div class="radius-box" style="border-radius:var(--hds-radius-full); width:72px;"><span>full</span></div>
+        </div>
+        <h3 style="font-size:var(--hds-fs-md); margin:0 0 var(--hds-space-3);">Spacing · Motion</h3>
+        <div class="space-demo">
+          <div class="space-bar" style="width:16px;"></div>
+          <div class="space-bar" style="width:24px;"></div>
+          <div class="space-bar" style="width:32px;"></div>
+          <div class="space-bar" style="width:48px;"><span style="color:var(--hds-fg-onBrand)">space</span></div>
+        </div>
+        <p style="font-size:var(--hds-fs-xs); color:var(--hds-fg-muted); margin-top:var(--hds-space-3); font-family:var(--hds-font-mono);">duration: fast 120 · base 200 · slow 320 &nbsp;|&nbsp; ease: standard · emphasized</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── COMPONENTS ── -->
+<section id="components">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="eyebrow">컴포넌트 레지스트리 · 5종 stable</p>
+      <h2>토큰으로 조립한 컴포넌트</h2>
+      <p class="lead">registry.json에 등록된 컴포넌트를 실제 토큰으로 렌더링했습니다. 새 컴포넌트는 spec + 코드 + usage 3종 세트로 추가되고 버전과 함께 배포됩니다.</p>
+    </div>
+    <div class="grid cols-2">
+      <div class="demo-surface reveal">
+        <span class="cap">button — primary · secondary</span>
+        <div class="row">
+          <button class="btn btn-primary">저장</button>
+          <button class="btn btn-secondary">취소</button>
+          <button class="btn btn-primary" id="openModal">모달 열기</button>
+        </div>
+      </div>
+      <div class="demo-surface reveal">
+        <span class="cap">badge — 5 variants</span>
+        <div class="row">
+          <span class="badge badge-neutral">기본</span>
+          <span class="badge badge-brand">브랜드</span>
+          <span class="badge badge-success">맑음</span>
+          <span class="badge badge-warning">우산 필요</span>
+          <span class="badge badge-danger">경보</span>
+        </div>
+      </div>
+      <div class="demo-surface reveal">
+        <span class="cap">input — with focus ring</span>
+        <div class="field">
+          <label for="demoInput">도시</label>
+          <input id="demoInput" type="text" placeholder="서울" />
+        </div>
+      </div>
+      <div class="demo-surface reveal">
+        <span class="cap">card — heading · body · caption</span>
+        <div class="mini-card">
+          <span class="title">오늘 브리핑</span>
+          <span class="body">오후 3시경 비 소식이 있어요. 우산을 챙겨보세요.</span>
+          <span style="font-size:var(--hds-fs-xs); color:var(--hds-fg-muted);">7월 15일 (수) · 최고 24° · 최저 16°</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ROLES ── -->
+<section class="section-subtle">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="eyebrow">역할별 진입점</p>
+      <h2>내 파트에서 무엇을 부르나</h2>
+    </div>
+    <table class="roles reveal">
+      <thead>
+        <tr><th>역할</th><th>클로드 스킬</th><th>코덱스 프롬프트</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="role-name">기획</span></td>
+          <td><code>/hds-planning:product-spec</code> <code>:prototype</code></td>
+          <td><code>/hds-spec</code></td>
+        </tr>
+        <tr>
+          <td><span class="role-name">디자인</span></td>
+          <td><code>/hds-design:design-tokens</code> <code>:design-guide</code> <code>:component-catalog</code> <code>:brand-visual</code> <code>:figma-bridge</code></td>
+          <td><code>/hds-tokens</code> <code>/hds-component</code></td>
+        </tr>
+        <tr>
+          <td><span class="role-name">퍼블</span></td>
+          <td><code>/hds-publish:token-export</code> <code>:component-build</code> <code>:a11y-audit</code></td>
+          <td><code>/hds-component</code></td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size:var(--hds-fs-sm); color:var(--hds-fg-muted); margin-top:var(--hds-space-4);">스킬은 <code style="background:var(--hds-bg-muted); padding:2px 6px; border-radius:var(--hds-radius-sm);">/hds-design:component-catalog</code>처럼 직접 호출하거나, 자연어로 "HDS 컴포넌트 뭐 있어?"라고 물어도 클로드가 알아서 사용합니다.</p>
+  </div>
+</section>
+
+<!-- ── INSTALL ── -->
+<section id="install">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="eyebrow">시작하기</p>
+      <h2>1분이면 설치됩니다</h2>
+      <p class="lead">Claude Code 안에서 사내 마켓플레이스를 등록하고 역할별로 설치하세요. 개발 중에는 설치 없이 로컬 폴더를 바로 연결할 수 있습니다.</p>
+    </div>
+
+    <div class="grid cols-2">
+      <div class="reveal">
+        <h3 style="font-size:var(--hds-fs-md); margin:0 0 var(--hds-space-3);">Claude Code — 마켓플레이스</h3>
+<pre class="block"><span class="cmt"># 사내 마켓플레이스 등록 (private repo 가능)</span>
+<span class="prompt">/</span>plugin marketplace add Leejinhee1/plugin
+
+<span class="cmt"># 역할별 설치 — hds-design은 공통</span>
+<span class="prompt">/</span>plugin install hds-design@hds
+<span class="prompt">/</span>plugin install hds-planning@hds
+<span class="prompt">/</span>plugin install hds-publish@hds</pre>
+      </div>
+      <div class="reveal">
+        <h3 style="font-size:var(--hds-fs-md); margin:0 0 var(--hds-space-3);">개발 모드 — 설치 없이 로컬</h3>
+<pre class="block"><span class="cmt"># 새 제품 폴더에서 로컬 플러그인을 직접 연결</span>
+claude \
+  --plugin-dir ./plugins/hds-design \
+  --plugin-dir ./plugins/hds-planning \
+  --plugin-dir ./plugins/hds-publish</pre>
+        <div class="note" style="margin-top:var(--hds-space-4);">
+          <span>제품 작업물은 이 저장소가 아니라 <strong>별도 폴더</strong>에서 만드세요. HDS 저장소는 디자인 시스템 정본이고, 소비(사용)는 밖에서 합니다.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-grid">
+    <div>
+      <span class="brand" style="font-size:var(--hds-fs-md);"><span class="mark-slot"></span>HDS</span>
+      <p style="margin:var(--hds-space-3) 0 0; max-width:32ch;">그룹 공식 디자인 시스템 하네스. 하나의 소스에서 문서·토큰·컴포넌트를 공유합니다.</p>
+    </div>
+    <div style="display:flex; gap:var(--hds-space-6);">
+      <div style="display:flex; flex-direction:column; gap:var(--hds-space-2);">
+        <a href="https://github.com/Leejinhee1/plugin" target="_blank" rel="noopener">GitHub</a>
+        <a href="docs/user-guide.md">사용 가이드</a>
+        <a href="docs/getting-started.md">시작하기</a>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:var(--hds-space-2);">
+        <a href="docs/architecture.md">아키텍처</a>
+        <a href="docs/maintenance.md">유지보수</a>
+        <a href="examples/README.md">예시 (주)하늘</a>
+      </div>
+    </div>
+  </div>
+  <div class="wrap" style="margin-top:var(--hds-space-6); font-size:var(--hds-fs-xs);">© Design System Team · v1.2.0 · UNLICENSED — 이 페이지는 HDS 토큰과 보이스 규범으로 제작되었습니다.</div>
+</footer>
+
+<!-- ── Modal ── -->
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="dlgTitle">
+  <div class="dialog">
+    <h3 id="dlgTitle">스마트 알림</h3>
+    <p>오늘 오후 3시경 비 소식이 있어요. 우산을 챙겨보세요. 이 모달은 <code>color.bg.overlay</code> 스크림과 <code>cubicBezier.emphasized</code> 모션으로 열렸습니다.</p>
+    <div class="row" style="justify-content:flex-end;">
+      <button class="btn btn-secondary" id="closeModal">닫기</button>
+      <button class="btn btn-primary" id="okModal">확인</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // 마크 삽입
+  const markTpl = document.getElementById('mark').content;
+  document.querySelectorAll('.mark-slot').forEach(s => s.appendChild(markTpl.cloneNode(true)));
+
+  // 테마 토글 (다크 오버라이드 시연) — 선택을 localStorage에 유지
+  const root = document.documentElement;
+  const saved = localStorage.getItem('hds-theme');
+  if (saved) root.setAttribute('data-theme', saved);
+  document.getElementById('themeToggle').addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    localStorage.setItem('hds-theme', next);
+  });
+
+  // 설치 명령 복사
+  const copyBtn = document.getElementById('copyInstall');
+  copyBtn.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText('/plugin marketplace add Leejinhee1/plugin');
+      const t = copyBtn.textContent; copyBtn.textContent = '복사됨';
+      setTimeout(() => copyBtn.textContent = t, 1400);
+    } catch (e) { /* clipboard 불가 환경은 무시 */ }
+  });
+
+  // 토큰 스와치 렌더 (core 값 그대로)
+  const brand = ['50','100','200','300','400','500','600','700','800','900'];
+  const neutral = ['0','50','100','200','300','400','500','600','700','800','900'];
+  const hex = {
+    'brand-50':'#eef4ff','brand-100':'#d9e6ff','brand-200':'#bcd3ff','brand-300':'#8db5ff','brand-400':'#578cff',
+    'brand-500':'#2f6bff','brand-600':'#1a4fe0','brand-700':'#153eb4','brand-800':'#163791','brand-900':'#173271',
+    'neutral-0':'#ffffff','neutral-50':'#f7f8fa','neutral-100':'#eef0f4','neutral-200':'#dfe3ea','neutral-300':'#c6ccd8',
+    'neutral-400':'#9aa3b5','neutral-500':'#6b7385','neutral-600':'#4c5361','neutral-700':'#363b46','neutral-800':'#22262e','neutral-900':'#12141a'
+  };
+  function fillSwatches(id, scale, prefix){
+    const el = document.getElementById(id);
+    el.innerHTML = scale.map(s => {
+      const key = prefix + '-' + s;
+      return `<div class="swatch"><div class="chip" style="background:var(--hds-${key})"></div><span class="lbl">${s}</span><span class="val">${hex[key]}</span></div>`;
+    }).join('');
+  }
+  fillSwatches('brandSwatches', brand, 'brand');
+  fillSwatches('neutralSwatches', neutral, 'neutral');
+
+  // 모달
+  const overlay = document.getElementById('overlay');
+  const open = () => { overlay.classList.add('open'); document.getElementById('okModal').focus(); };
+  const close = () => overlay.classList.remove('open');
+  document.getElementById('openModal').addEventListener('click', open);
+  document.getElementById('closeModal').addEventListener('click', close);
+  document.getElementById('okModal').addEventListener('click', close);
+  overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+
+  // 진입 리빌
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => { if (en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
