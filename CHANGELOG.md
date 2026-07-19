@@ -2,6 +2,14 @@
 
 이 프로젝트는 [semver](https://semver.org)를 따릅니다. 각 릴리스에서 `.claude-plugin/plugin.json` 과 `marketplace.json` version을 함께 bump 합니다.
 
+## [2.1.0] — 2026-07-19
+### 추가 — `/hds:ask-hds` 라우터 스킬
+- mattpocock/skills 의 `ask-matt` 를 참고한 **스킬 라우터**: 상황을 설명하면 어떤 스킬을 어떤 순서(플로우)로 쓸지 안내. 일은 직접 하지 않음.
+  - 첫 분기(시스템을 바꾸는가/쓰는가) → 메인 플로우(기능→배포) · 정비 레인 · 단독 스킬로 라우팅.
+  - 헷갈리는 짝 구분 수록: `component-catalog` vs `component-build`, `design-tokens` vs `token-export`, `prototype` vs `component-build`.
+  - `disable-model-invocation: true` — 사용자가 직접 호출하는 스킬(모델이 자동 실행하지 않음).
+- 파트 공통 스킬 버킷 `skills/general/` 신설.
+
 ## [2.0.0] — 2026-07-19
 ### 파괴적 변경 — 플러그인 3종 → 단일 플러그인 `hds` (mattpocock/skills 구조)
 설치를 세 번 해야 하는 불편과 플러그인 간 파일 참조 문제를 없애기 위해, [mattpocock/skills](https://github.com/mattpocock/skills)의 단일 플러그인 구조로 전면 재구성.

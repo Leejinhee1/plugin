@@ -11,6 +11,7 @@ plugin/  (= 저장소 루트가 곧 플러그인이자 마켓플레이스)
 │   ├── plugin.json        # 단일 플러그인 "hds" — skills 배열에 배포 스킬을 명시
 │   └── marketplace.json   # source: "./" 단일 플러그인 마켓플레이스
 ├── skills/                # 역할별 스킬 버킷 (설치는 한 번에 전부)
+│   ├── general/           공통 — ask-hds (어떤 스킬을 쓸지 알려주는 라우터)
 │   ├── planning/          기획 — product-spec · prototype
 │   ├── design/            디자인 — design-tokens · design-guide · component-catalog · brand-visual · figma-bridge
 │   └── publish/           퍼블 — token-export · component-build · a11y-audit
@@ -49,6 +50,8 @@ cp codex/prompts/*.md ~/.codex/prompts/     # /hds-tokens, /hds-component, /hds-
 ```
 
 ## 역할별 진입점
+
+**어떤 스킬을 써야 할지 모르겠으면 `/hds:ask-hds`** — 상황을 설명하면 맞는 스킬과 순서를 알려주는 라우터입니다.
 
 | 역할 | Claude 스킬 | Codex 프롬프트 |
 | :-- | :-- | :-- |
