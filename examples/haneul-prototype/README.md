@@ -38,7 +38,7 @@ today-briefing.md           variant·prop 를 미러링          → build-token
 ```
 
 1. **설계서 → 화면**: `examples/specs/today-briefing.md` 의 §5 화면 명세가 이 `index.html` 과 1:1로 대응합니다. 설계서에서 "날씨 요약 = Card(variant=elevated)"라고 적으면, 프로토타입에는 `hds-card hds-card--elevated` 로 나타납니다.
-2. **레지스트리 조립**: 모든 UI는 `plugins/hds-design/design-system/components/{button,input,badge,card,modal}/spec.md` 의 variant·prop 체계를 그대로 클래스 이름으로 미러링합니다. 각 컴포넌트 CSS 블록 상단에 대응 `spec.md` 경로가 주석으로 달려 있습니다.
+2. **레지스트리 조립**: 모든 UI는 `design-system/components/{button,input,badge,card,modal}/spec.md` 의 variant·prop 체계를 그대로 클래스 이름으로 미러링합니다. 각 컴포넌트 CSS 블록 상단에 대응 `spec.md` 경로가 주석으로 달려 있습니다.
 3. **토큰 파생**: 색·간격·라디우스·모션은 **하드코딩 없이** `var(--hds-*)` 만 사용합니다. 이 변수들은 DTCG 토큰(`core.tokens.json` + `semantic.tokens.json`)에서 `build-tokens.mjs` 로 파생된 `tokens.css` 에 정의되어 있습니다. 다크 테마는 `[data-theme="dark"]` 스코프에서 같은 변수만 교체됩니다.
 
 ## tokens.css 재생성
@@ -46,8 +46,8 @@ today-briefing.md           variant·prop 를 미러링          → build-token
 `tokens.css` 는 빌드 산출물입니다(수정 금지). 원본 토큰이 바뀌면 다음 명령으로 다시 생성하세요. 저장소 루트에서 실행합니다.
 
 ```
-node plugins/hds-publish/scripts/build-tokens.mjs \
-  --tokens plugins/hds-design/design-system/tokens \
+node skills/publish/token-export/scripts/build-tokens.mjs \
+  --tokens design-system/tokens \
   --out examples/haneul-prototype
 ```
 

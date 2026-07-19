@@ -10,7 +10,7 @@
 <style>
   /* ─────────────────────────────────────────────────────────────
      HDS 토큰 → CSS 변수
-     이 페이지는 plugins/hds-design/design-system/tokens 의
+     이 페이지는 design-system/tokens 의
      core / semantic 토큰을 그대로 옮겨 만들었습니다. 하드코딩된
      색·간격·크기는 없으며, 모든 값은 var(--hds-*) 로만 참조합니다.
      ───────────────────────────────────────────────────────────── */
@@ -390,7 +390,7 @@
       <article class="card reveal">
         <span class="num">1</span>
         <h3>단일 소스 오브 트루스</h3>
-        <p>토큰·컴포넌트·가이드의 실제 내용은 <code>hds-design/design-system/</code>에 한 번만 존재합니다. 여기서 고치면 전 하네스·전 역할에 전파됩니다.</p>
+        <p>토큰·컴포넌트·가이드의 실제 내용은 <code>design-system/</code>에 한 번만 존재합니다. 여기서 고치면 전 하네스·전 역할에 전파됩니다.</p>
       </article>
       <article class="card reveal">
         <span class="num">2</span>
@@ -425,16 +425,15 @@
 <section id="plugins">
   <div class="wrap">
     <div class="reveal">
-      <p class="eyebrow">세 개의 플러그인, 하나의 정본</p>
-      <h2>역할별로 설치하고, 같은 소스를 봅니다</h2>
-      <p class="lead">디자인 본체(hds-design)를 기획·퍼블 플러그인이 참조합니다. 필요한 역할만 골라 설치하면 됩니다.</p>
+      <p class="eyebrow">하나의 플러그인, 하나의 정본</p>
+      <h2>한 번 설치하고, 역할별 스킬을 씁니다</h2>
+      <p class="lead">플러그인은 <code>hds</code> 하나입니다. 설치 한 번으로 기획·디자인·퍼블 스킬 전체가 들어오고, 모든 스킬이 같은 정본(<code>design-system/</code>)을 봅니다.</p>
     </div>
     <div class="grid cols-3">
       <article class="card plugin-card reveal">
         <div class="plugin-head">
           <span class="plugin-dot" style="background:var(--hds-brand-default)"></span>
-          <strong>hds-design</strong>
-          <span class="tag">v1.2.0</span>
+          <strong>skills/design</strong>
         </div>
         <p style="color:var(--hds-fg-muted); font-size:var(--hds-fs-sm); margin:0;">디자인 — 단일 소스 오브 트루스. 토큰·가이드·컴포넌트 카탈로그·브랜드 비주얼을 관리합니다.</p>
         <ul class="skill-list">
@@ -446,21 +445,18 @@
       <article class="card plugin-card reveal">
         <div class="plugin-head">
           <span class="plugin-dot" style="background:var(--hds-fb-success)"></span>
-          <strong>hds-planning</strong>
-          <span class="tag">v1.0.0</span>
+          <strong>skills/planning</strong>
         </div>
         <p style="color:var(--hds-fg-muted); font-size:var(--hds-fs-sm); margin:0;">기획 — 제품 설계서를 AI-리더블 문서로 관리하고, 디자인·퍼블 코드 기반으로 프로토타입을 생성합니다.</p>
         <ul class="skill-list">
           <li><code>product-spec</code> — 표준 설계서</li>
           <li><code>prototype</code> — 동작 프로토타입</li>
-          <li>의존: <code>hds-design</code> 자동 동반</li>
         </ul>
       </article>
       <article class="card plugin-card reveal">
         <div class="plugin-head">
           <span class="plugin-dot" style="background:var(--hds-fb-warning)"></span>
-          <strong>hds-publish</strong>
-          <span class="tag">v1.1.0</span>
+          <strong>skills/publish</strong>
         </div>
         <p style="color:var(--hds-fg-muted); font-size:var(--hds-fs-sm); margin:0;">퍼블 — 컴포넌트를 개발 적용 코드로 변환하고, 토큰을 export하고, 접근성을 점검합니다.</p>
         <ul class="skill-list">
@@ -585,22 +581,22 @@
       <tbody>
         <tr>
           <td><span class="role-name">기획</span></td>
-          <td><code>/hds-planning:product-spec</code> <code>:prototype</code></td>
+          <td><code>/hds:product-spec</code> <code>:prototype</code></td>
           <td><code>/hds-spec</code></td>
         </tr>
         <tr>
           <td><span class="role-name">디자인</span></td>
-          <td><code>/hds-design:design-tokens</code> <code>:design-guide</code> <code>:component-catalog</code> <code>:brand-visual</code> <code>:figma-bridge</code></td>
+          <td><code>/hds:design-tokens</code> <code>:design-guide</code> <code>:component-catalog</code> <code>:brand-visual</code> <code>:figma-bridge</code></td>
           <td><code>/hds-tokens</code> <code>/hds-component</code></td>
         </tr>
         <tr>
           <td><span class="role-name">퍼블</span></td>
-          <td><code>/hds-publish:token-export</code> <code>:component-build</code> <code>:a11y-audit</code></td>
+          <td><code>/hds:token-export</code> <code>:component-build</code> <code>:a11y-audit</code></td>
           <td><code>/hds-component</code></td>
         </tr>
       </tbody>
     </table>
-    <p style="font-size:var(--hds-fs-sm); color:var(--hds-fg-muted); margin-top:var(--hds-space-4);">스킬은 <code style="background:var(--hds-bg-muted); padding:2px 6px; border-radius:var(--hds-radius-sm);">/hds-design:component-catalog</code>처럼 직접 호출하거나, 자연어로 "HDS 컴포넌트 뭐 있어?"라고 물어도 클로드가 알아서 사용합니다.</p>
+    <p style="font-size:var(--hds-fs-sm); color:var(--hds-fg-muted); margin-top:var(--hds-space-4);">스킬은 <code style="background:var(--hds-bg-muted); padding:2px 6px; border-radius:var(--hds-radius-sm);">/hds:component-catalog</code>처럼 직접 호출하거나, 자연어로 "HDS 컴포넌트 뭐 있어?"라고 물어도 클로드가 알아서 사용합니다.</p>
   </div>
 </section>
 
@@ -610,7 +606,7 @@
     <div class="reveal">
       <p class="eyebrow">시작하기</p>
       <h2>1분이면 설치됩니다</h2>
-      <p class="lead">Claude Code 안에서 사내 마켓플레이스를 등록하고 역할별로 설치하세요. 개발 중에는 설치 없이 로컬 폴더를 바로 연결할 수 있습니다.</p>
+      <p class="lead">Claude Code 안에서 사내 마켓플레이스를 등록하고 플러그인 하나만 설치하세요. 개발 중에는 설치 없이 로컬 폴더를 바로 연결할 수 있습니다.</p>
     </div>
 
     <div class="grid cols-2">
@@ -619,18 +615,13 @@
 <pre class="block"><span class="cmt"># 사내 마켓플레이스 등록 (private repo 가능)</span>
 <span class="prompt">/</span>plugin marketplace add Leejinhee1/plugin
 
-<span class="cmt"># 역할별 설치 — hds-design은 공통</span>
-<span class="prompt">/</span>plugin install hds-design@hds
-<span class="prompt">/</span>plugin install hds-planning@hds
-<span class="prompt">/</span>plugin install hds-publish@hds</pre>
+<span class="cmt"># 설치는 한 번 — 기획·디자인·퍼블 스킬 전체</span>
+<span class="prompt">/</span>plugin install hds@hds</pre>
       </div>
       <div class="reveal">
         <h3 style="font-size:var(--hds-fs-md); margin:0 0 var(--hds-space-3);">개발 모드 — 설치 없이 로컬</h3>
 <pre class="block"><span class="cmt"># 새 제품 폴더에서 로컬 플러그인을 직접 연결</span>
-claude \
-  --plugin-dir ./plugins/hds-design \
-  --plugin-dir ./plugins/hds-planning \
-  --plugin-dir ./plugins/hds-publish</pre>
+claude --plugin-dir /path/to/hds-repo</pre>
         <div class="note" style="margin-top:var(--hds-space-4);">
           <span>제품 작업물은 이 저장소가 아니라 <strong>별도 폴더</strong>에서 만드세요. HDS 저장소는 디자인 시스템 정본이고, 소비(사용)는 밖에서 합니다.</span>
         </div>

@@ -13,7 +13,7 @@
 # --- (선택) 프로젝트 기본 지시 ---
 # [projects."/absolute/path/to/your/product-repo"]
 # 이 제품 저장소에서 UI를 만들 때는 HDS 디자인 시스템 저장소의
-# plugins/hds-design/design-system/ 을 소스로 사용한다.
+# design-system/ 을 소스로 사용한다.
 
 # 참고: 커스텀 프롬프트(/hds-tokens 등)는 codex/prompts/*.md 를
 # ~/.codex/prompts/ 로 복사하면 슬래시 커맨드로 노출됩니다.

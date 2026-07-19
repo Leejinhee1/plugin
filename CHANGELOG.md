@@ -1,6 +1,17 @@
 # Changelog
 
-이 프로젝트는 [semver](https://semver.org)를 따릅니다. 각 릴리스에서 바뀐 플러그인의 `plugin.json` 과 `marketplace.json` version을 함께 bump 합니다.
+이 프로젝트는 [semver](https://semver.org)를 따릅니다. 각 릴리스에서 `.claude-plugin/plugin.json` 과 `marketplace.json` version을 함께 bump 합니다.
+
+## [2.0.0] — 2026-07-19
+### 파괴적 변경 — 플러그인 3종 → 단일 플러그인 `hds` (mattpocock/skills 구조)
+설치를 세 번 해야 하는 불편과 플러그인 간 파일 참조 문제를 없애기 위해, [mattpocock/skills](https://github.com/mattpocock/skills)의 단일 플러그인 구조로 전면 재구성.
+- **저장소 루트가 곧 플러그인**: `marketplace.json` 의 `source: "./"`. `hds-design`/`hds-planning`/`hds-publish` 3개 플러그인을 `hds` 하나로 통합 — 설치는 `/plugin install hds@hds` 한 번.
+- **스킬은 역할별 버킷으로 이동**: `plugins/<플러그인>/skills/*` → `skills/planning|design|publish/*`. 10개 스킬 전부를 `.claude-plugin/plugin.json` 의 `skills` 배열에 명시(배열에 없는 폴더는 배포되지 않음 — 초안/보류 스킬을 두는 공간으로 활용 가능).
+- **소스 오브 트루스 승격**: `plugins/hds-design/design-system/` → 루트 `design-system/`. 모든 스킬이 `${CLAUDE_PLUGIN_ROOT}/design-system/` 하나를 참조 — 크로스 플러그인 상대경로 제거.
+- **에이전트/스크립트 이동**: `design-reviewer` → 루트 `agents/` (자동 발견). `build-tokens.mjs` → `skills/publish/token-export/scripts/` (스킬 전속 스크립트는 스킬 폴더 안에).
+- **스킬 호출명 변경**: `/hds-design:design-tokens` → `/hds:design-tokens` 등 전부 `/hds:*` 네임스페이스로 통일.
+- **v1 마이그레이션**: `forceRemoveDeletedPlugins: true` — 마켓플레이스 업데이트 시 옛 플러그인 3종이 자동 제거됨. 이후 `/plugin install hds@hds` 한 번이면 끝.
+- 문서(README·getting-started·user-guide·architecture·maintenance)·codex 어댑터·examples·랜딩 페이지를 새 구조에 맞게 갱신.
 
 ## [1.2.0] — 2026-07-10
 ### 접근성 — 1.1.0 검수 반영

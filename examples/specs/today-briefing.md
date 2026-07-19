@@ -127,9 +127,9 @@ related_components: [card, badge, button, input, modal]
 - [ ] 날씨 데이터 실패 시 마지막 성공 값을 캐시로 보여줄지, 전면 error 상태로 둘지(정직함 원칙과 최신성 사이 균형).
 
 ## 8. 참고
-- 디자인: `plugins/hds-design/design-system/guidelines/{color,typography,motion}.md`, `brand/{voice-tone,visual-style}.md`
-- 컴포넌트: `plugins/hds-design/design-system/components/{card,badge,button,input,modal}/spec.md`
-- 토큰: `plugins/hds-design/design-system/tokens/{core,semantic}.tokens.json` → `examples/haneul-prototype/tokens.css`
+- 디자인: `design-system/guidelines/{color,typography,motion}.md`, `brand/{voice-tone,visual-style}.md`
+- 컴포넌트: `design-system/components/{card,badge,button,input,modal}/spec.md`
+- 토큰: `design-system/tokens/{core,semantic}.tokens.json` → `examples/haneul-prototype/tokens.css`
 - 프로토타입: `examples/haneul-prototype/index.html`
 - 관련 설계서: 주간 플랜(예정)
 </content>

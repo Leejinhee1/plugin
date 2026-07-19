@@ -41,11 +41,11 @@ specs/today-briefing.md    →     haneul-prototype/index.html
 
 ## 이 예시를 자기 제품으로 복제하는 법 (3단계)
 
-1. **설계서를 복제한다.** `plugins/hds-planning/skills/product-spec/templates/spec-template.md` 를 채워 새 화면 설계서를 씁니다. `specs/today-briefing.md` 처럼 §5 화면 명세를 반드시 HDS 컴포넌트·토큰 이름으로 적으세요(`related_components` 에 사용할 컴포넌트 나열).
+1. **설계서를 복제한다.** `skills/planning/product-spec/templates/spec-template.md` 를 채워 새 화면 설계서를 씁니다. `specs/today-briefing.md` 처럼 §5 화면 명세를 반드시 HDS 컴포넌트·토큰 이름으로 적으세요(`related_components` 에 사용할 컴포넌트 나열).
 2. **토큰을 파생한다.** 저장소 루트에서 빌드를 돌려 `tokens.css` 를 생성합니다.
    ```
-   node plugins/hds-publish/scripts/build-tokens.mjs \
-     --tokens plugins/hds-design/design-system/tokens \
+   node skills/publish/token-export/scripts/build-tokens.mjs \
+     --tokens design-system/tokens \
      --out <내-프로토타입-폴더>
    ```
 3. **컴포넌트로 조립한다.** `haneul-prototype/index.html` 을 출발점으로 삼아 화면을 만듭니다. 컴포넌트 클래스는 `components/*/spec.md` 의 variant 체계를 미러링하고, 색·간격·라디우스·모션은 반드시 `var(--hds-*)` 만 사용합니다(hex/rgb 하드코딩 금지). 다크 테마는 `[data-theme="dark"]` 로 자동 전환됩니다.

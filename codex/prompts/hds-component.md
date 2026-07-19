@@ -1,4 +1,4 @@
-HDS 컴포넌트 작업. 소스: `plugins/hds-design/design-system/components/` (인덱스: `registry.json`).
+HDS 컴포넌트 작업. 소스: `design-system/components/` (인덱스: `registry.json`).
 
 요청($ARGUMENTS)을 처리하기 전에 `registry.json` 을 읽어 존재하는 컴포넌트를 파악하라. `components/button/` 을 구조 정본 예시로 삼는다.
 

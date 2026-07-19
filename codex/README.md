@@ -21,5 +21,5 @@ cp codex/prompts/*.md ~/.codex/prompts/
 ```
 
 ## 왜 얇은가 (유지보수)
-디자인 시스템의 진짜 내용(토큰·컴포넌트·가이드)은 `plugins/hds-design/design-system/` 에 **한 번만** 존재합니다.
+디자인 시스템의 진짜 내용(토큰·컴포넌트·가이드)은 `design-system/` 에 **한 번만** 존재합니다.
 Codex 프롬프트와 Claude 스킬은 모두 그 파일을 읽는 포인터일 뿐이라, 내용을 한 곳에서 고치면 두 하네스에 동시에 반영됩니다.

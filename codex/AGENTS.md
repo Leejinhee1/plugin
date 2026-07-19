@@ -4,11 +4,11 @@
 Claude Code 플러그인과 **동일한 소스 오브 트루스**를 공유합니다 — 하네스만 다릅니다.
 
 ## 소스 오브 트루스 (항상 여기서 시작)
-- 토큰: `plugins/hds-design/design-system/tokens/`  (`core.tokens.json`, `semantic.tokens.json`, DTCG 포맷)
-- 가이드: `plugins/hds-design/design-system/guidelines/`  (원칙·색·타이포·모션)
-- 컴포넌트: `plugins/hds-design/design-system/components/`  (인덱스: `registry.json`)
-- 화면 패턴: `plugins/hds-design/design-system/usage/`
-- 브랜드: `plugins/hds-design/design-system/brand/`
+- 토큰: `design-system/tokens/`  (`core.tokens.json`, `semantic.tokens.json`, DTCG 포맷)
+- 가이드: `design-system/guidelines/`  (원칙·색·타이포·모션)
+- 컴포넌트: `design-system/components/`  (인덱스: `registry.json`)
+- 화면 패턴: `design-system/usage/`
+- 브랜드: `design-system/brand/`
 
 ## 불변 규칙
 1. 색·간격·타이포·모션을 **하드코딩 금지**. 항상 semantic 토큰을 참조. (컴포넌트는 `--hds-*` CSS 변수 사용)
@@ -26,5 +26,5 @@ Claude Code 플러그인과 **동일한 소스 오브 트루스**를 공유합�
 각 프롬프트는 위 소스 경로를 읽고 Claude 플러그인 스킬과 같은 규칙으로 동작합니다.
 
 ## Claude Code 플러그인과의 관계
-Claude 사용자는 마켓플레이스로 `hds-design`/`hds-planning`/`hds-publish` 를 설치해 같은 콘텐츠를 스킬로 사용합니다.
+Claude 사용자는 마켓플레이스에서 `hds` 플러그인 하나를 설치해 같은 콘텐츠를 스킬(`/hds:*`)로 사용합니다.
 두 하네스가 같은 파일을 참조하므로, 콘텐츠를 한 번 고치면 양쪽에 반영됩니다.

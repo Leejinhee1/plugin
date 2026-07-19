@@ -7,17 +7,16 @@
 ```
                 ┌─────────────────────────────────────────────┐
                 │  단일 소스 오브 트루스 (SoT)                  │
-                │  plugins/hds-design/design-system/           │
+                │  design-system/           │
                 │    tokens · guidelines · components · usage   │
                 └───────────────┬──────────────────────────────┘
                                 │ (참조; 파일은 한 벌)
         ┌───────────────────────┼───────────────────────┐
         ▼                       ▼                        ▼
-  Claude 플러그인          Codex 어댑터            파생 산출물
-  (skills/agents)         (AGENTS.md/prompts)     tokens.css · Tailwind
-   hds-design                                     preset · Figma vars
-   hds-planning                                   (항상 재생성 가능)
-   hds-publish
+  Claude 플러그인 (hds 하나)  Codex 어댑터            파생 산출물
+  skills/planning·design·    (AGENTS.md/prompts)     tokens.css · Tailwind
+  publish + agents/                                  preset · Figma vars
+  (설치 한 번에 전부)                                  (항상 재생성 가능)
 ```
 
 ## 결정 1 — 내용과 하네스의 분리
@@ -36,10 +35,11 @@
 - 컴포넌트: shadcn식 **레지스트리 + vendoring** — 런타임 의존 라이브러리가 아니라 프로젝트로 복사해 소유.
 - **효과**: 특정 툴이 사라져도 자산이 살아남습니다. 그룹사 전체 확장 시 유리.
 
-## 결정 4 — 역할별 플러그인 + 의존성
-- `hds-design`(내용+디자인) · `hds-planning`(기획) · `hds-publish`(퍼블) 3개로 분리.
-- planning/publish는 `hds-design` 에 `dependencies` 로 의존 → 설치 시 자동 동반, 항상 같은 SoT를 봄.
-- **효과**: 역할별로 필요한 것만 설치하되, 내용은 항상 하나로 수렴.
+## 결정 4 — 단일 플러그인 + 역할별 스킬 버킷 (v2.0)
+- v1은 역할별 플러그인 3개(`hds-design`/`hds-planning`/`hds-publish`)였으나, **설치를 세 번 해야 하고** 플러그인 간 파일 참조가 깨지기 쉬웠습니다.
+- v2는 [mattpocock/skills](https://github.com/mattpocock/skills) 방식으로 재구성: **저장소 루트가 곧 플러그인**(`marketplace.json` 의 `source: "./"`), 스킬은 `skills/planning|design|publish/` 버킷으로 분류하되 `plugin.json` 의 `skills` 배열에 명시적으로 나열.
+- 스킬은 여전히 역할별로 구분되지만(`/hds:product-spec`, `/hds:design-tokens`, `/hds:token-export`), **설치는 한 번**입니다.
+- **효과**: 설치·업데이트가 명령 하나. 모든 스킬이 같은 플러그인 루트(`${CLAUDE_PLUGIN_ROOT}/design-system/`)를 보므로 크로스 플러그인 경로 문제가 사라짐. 버킷에 나중에 `in-progress/`·`deprecated/` 를 추가해도 `skills` 배열에 없으면 배포되지 않음.
 
 ## 결정 5 — 코드가 소스, Figma는 브릿지
 - AI가 직접 읽고 고치기 가장 쉬운 형태는 텍스트(코드/JSON/MD)입니다 → 코드를 원본으로.
