@@ -1,6 +1,7 @@
 {
   "$description": "HDS 컴포넌트 레지스트리 — shadcn 스타일 인덱스. 퍼블/기획이 이 파일로 '무엇이 있는지'와 '어디서 가져오는지'를 조회. 새 컴포넌트는 여기에 등록.",
-  "registryVersion": "1.2.0",
+  "registryVersion": "1.3.0",
+  "figmaSource": "[공식] Hana Experience System — 🧱 Template 페이지 (branch 0F4A8OTZzApAJIjFjeQULz, node 691:3060). 각 컴포넌트 spec.md 프런트매터의 figma 필드가 원본 프레임을 가리킴.",
   "stack": {
     "framework": "react",
     "styling": "tailwind + css-variables",
@@ -56,6 +57,86 @@
       "usage": "./modal/usage.md",
       "dependencies": ["button"],
       "tokens": ["color.bg.overlay", "color.bg.base", "color.border.base", "color.fg.base", "dimension.radius.lg", "space.inset-md", "space.inset-lg", "space.stack-sm", "space.stack-md", "duration.base", "cubicBezier.emphasized"]
+    },
+    {
+      "name": "checkbox",
+      "status": "stable",
+      "since": "3.1.0",
+      "spec": "./checkbox/spec.md",
+      "source": "./checkbox/Checkbox.tsx",
+      "usage": "./checkbox/usage.md",
+      "dependencies": [],
+      "tokens": ["color.brand.default", "color.fg.onBrand", "color.border.strong", "color.border.base", "color.bg.base", "color.fg.base", "dimension.radius.full", "dimension.radius.sm", "color.focus.ring", "duration.fast", "cubicBezier.standard"]
+    },
+    {
+      "name": "radio",
+      "status": "stable",
+      "since": "3.1.0",
+      "spec": "./radio/spec.md",
+      "source": "./radio/Radio.tsx",
+      "usage": "./radio/usage.md",
+      "dependencies": [],
+      "tokens": ["color.brand.default", "color.border.strong", "color.border.base", "color.bg.base", "color.bg.subtle", "color.fg.base", "color.fg.muted", "dimension.radius.xs", "color.focus.ring", "duration.fast", "cubicBezier.standard"]
+    },
+    {
+      "name": "switch",
+      "status": "stable",
+      "since": "3.1.0",
+      "spec": "./switch/spec.md",
+      "source": "./switch/Switch.tsx",
+      "usage": "./switch/usage.md",
+      "dependencies": [],
+      "tokens": ["color.brand.default", "color.fg.onBrand", "color.bg.muted", "dimension.radius.full", "color.focus.ring", "duration.fast", "cubicBezier.standard"]
+    },
+    {
+      "name": "select",
+      "status": "stable",
+      "since": "3.1.0",
+      "spec": "./select/spec.md",
+      "source": "./select/Select.tsx",
+      "usage": "./select/usage.md",
+      "dependencies": [],
+      "tokens": ["color.fg.base", "color.fg.muted", "color.border.strong", "color.feedback.danger", "color.bg.base", "color.bg.subtle", "color.bg.overlay", "color.brand.default", "dimension.radius.md", "dimension.radius.xl", "space.inset-md", "space.inset-lg", "color.focus.ring", "duration.fast", "duration.base", "cubicBezier.standard", "cubicBezier.emphasized"]
+    },
+    {
+      "name": "textarea",
+      "status": "stable",
+      "since": "3.1.0",
+      "spec": "./textarea/spec.md",
+      "source": "./textarea/Textarea.tsx",
+      "usage": "./textarea/usage.md",
+      "dependencies": [],
+      "tokens": ["color.fg.base", "color.fg.muted", "color.border.strong", "color.feedback.danger", "color.brand.default", "color.bg.subtle", "dimension.radius.md", "space.inset-md", "color.focus.ring", "duration.fast", "cubicBezier.standard"]
+    },
+    {
+      "name": "tab",
+      "status": "stable",
+      "since": "3.1.0",
+      "spec": "./tab/spec.md",
+      "source": "./tab/Tab.tsx",
+      "usage": "./tab/usage.md",
+      "dependencies": [],
+      "tokens": ["color.fg.base", "color.fg.muted", "color.fg.onBrand", "color.border.base", "color.border.strong", "color.brand.default", "color.bg.base", "color.bg.subtle", "dimension.radius.full", "dimension.radius.sm", "color.focus.ring", "duration.fast", "cubicBezier.standard"]
+    },
+    {
+      "name": "toast",
+      "status": "stable",
+      "since": "3.1.0",
+      "spec": "./toast/spec.md",
+      "source": "./toast/Toast.tsx",
+      "usage": "./toast/usage.md",
+      "dependencies": [],
+      "tokens": ["color.bg.inverse", "color.fg.onInverse", "dimension.radius.sm", "space.inset-md", "color.focus.ring", "duration.base", "cubicBezier.emphasized"]
+    },
+    {
+      "name": "tooltip",
+      "status": "stable",
+      "since": "3.1.0",
+      "spec": "./tooltip/spec.md",
+      "source": "./tooltip/Tooltip.tsx",
+      "usage": "./tooltip/usage.md",
+      "dependencies": [],
+      "tokens": ["color.bg.base", "color.border.base", "color.fg.base", "color.fg.muted", "dimension.radius.sm", "space.inset-md", "color.focus.ring", "duration.fast", "cubicBezier.standard"]
     }
   ]
 }

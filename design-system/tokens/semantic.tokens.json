@@ -1,59 +1,164 @@
 {
   "$schema": "https://tr.designtokens.org/format/",
-  "$description": "HDS Semantic tokens — 의미 기반 별칭. UI/컴포넌트는 반드시 이 레이어만 참조. core 값을 {color.brand.500} 형태로 alias.",
+  "$description": "HDS Semantic tokens — 의미 기반 별칭. UI/컴포넌트는 반드시 이 레이어만 참조. Figma HES theme 컬렉션의 매핑을 따르되 토큰 이름은 HDS 관례(category.role.variant)를 유지. core 값을 {color.teal.110} 형태로 alias.",
   "color": {
     "$type": "color",
     "bg": {
-      "base":     { "$value": "{color.neutral.0}" },
-      "subtle":   { "$value": "{color.neutral.50}" },
-      "muted":    { "$value": "{color.neutral.100}" },
-      "inverse":  { "$value": "{color.neutral.900}" },
-      "overlay":  { "$value": "rgba(18, 20, 26, 0.55)", "$description": "Modal/Dialog 뒤 스크림. color.neutral.900(#12141a)에서 유래한 반투명값 — 알파 채널이 필요해 core alias로 표현 불가하므로 직접 값을 사용." }
+      "base":     { "$value": "{color.grayScale.white}", "$description": "HES bg/0" },
+      "subtle":   { "$value": "{color.grayScale.10}", "$description": "HES bg/10" },
+      "muted":    { "$value": "{color.grayScale.20}", "$description": "HES bg/20" },
+      "inverse":  { "$value": "{color.grayScale.100}", "$description": "HES bg/100" },
+      "overlay":  { "$value": "rgba(0, 0, 0, 0.55)", "$description": "Modal/Dialog 뒤 스크림. HES layer/dim(#000000) 유래 반투명값 — 알파 채널이 필요해 core alias로 표현 불가하므로 직접 값을 사용." }
     },
     "fg": {
-      "base":     { "$value": "{color.neutral.900}" },
-      "muted":    { "$value": "{color.neutral.500}" },
-      "onBrand":  { "$value": "{color.neutral.0}" },
-      "onInverse":{ "$value": "{color.neutral.0}" }
+      "base":     { "$value": "{color.grayScale.100}", "$description": "HES text/01" },
+      "muted":    { "$value": "{color.grayScale.70}", "$description": "HES text/04. 흰 배경 대비 4.6:1 — 본문 보조 텍스트 AA 충족. text/05 이하(grayScale 60~35)는 대비 미달이라 semantic 승격하지 않음." },
+      "onBrand":  { "$value": "{color.grayScale.white}", "$description": "HES text/white" },
+      "onInverse":{ "$value": "{color.grayScale.white}" }
     },
     "border": {
-      "base":  { "$value": "{color.neutral.200}" },
-      "strong":{ "$value": "{color.neutral.300}" }
+      "base":  { "$value": "{color.grayScale.25}", "$description": "HES border/25" },
+      "strong":{ "$value": "{color.grayScale.30}", "$description": "HES border/30" }
     },
     "brand": {
-      "default": { "$value": "{color.brand.500}" },
-      "hover":   { "$value": "{color.brand.600}" },
-      "active":  { "$value": "{color.brand.700}" },
-      "subtle":  { "$value": "{color.brand.50}" }
+      "default": { "$value": "{color.hana.green}", "$description": "HES brand/primary(하나그린). 버튼 solid primary 배경 등 핵심 액션." },
+      "hover":   { "$value": "{color.teal.115}", "$description": "HDS 자체 토큰 — HES 에 hover/active 정의 없음." },
+      "active":  { "$value": "{color.teal.120}", "$description": "HDS 자체 토큰." },
+      "subtle":  { "$value": "{color.teal.70}", "$description": "HES bg/teal/70" },
+      "secondary": { "$value": "#6479ea", "$description": "HES brand/secondary — core 램프에 없는 theme 레벨 원시값(HES 원본 그대로 유지). solid/soft/line secondary 버튼 계열의 기준색. purple 계열인 secondary/default(text.point.30)와 다른 값이니 혼동 주의." },
+      "lightgray": { "$value": "#77879f", "$description": "HES brand/lightgray — theme 레벨 원시값." },
+      "darkgray":  { "$value": "{color.grayScale.80}", "$description": "HES brand/darkgray." },
+      "disabled": {
+        "$description": "HES brand/disabled/* — solid 버튼 비활성 배경(8자리 hex, 25% 알파).",
+        "primary":   { "$value": "#2d938140" },
+        "secondary": { "$value": "#697ad740" },
+        "lightgray": { "$value": "#77879f40" },
+        "darkgray":  { "$value": "#53606740" }
+      },
+      "boxbg": {
+        "$description": "HES brand/boxbg/* — soft 버튼/박스 배경(저알파 틴트).",
+        "primary":   { "$value": "#0091781a" },
+        "secondary": { "$value": "#6479ea1f" },
+        "lightgray": { "$value": "#77879f21" },
+        "trans":     { "$value": "#ffffffbf" },
+        "disabled": {
+          "primary":   { "$value": "#2d93810f" },
+          "secondary": { "$value": "#697ad70f" },
+          "lightgray": { "$value": "#77879f12" },
+          "trans":     { "$value": "#d1d1d166" }
+        }
+      },
+      "boxfg": {
+        "$description": "HES brand/boxfg/disabled/* — soft/line 버튼 비활성 전경(40% 알파).",
+        "disabled": {
+          "primary":   { "$value": "#2d938166" },
+          "secondary": { "$value": "#697ad766" },
+          "lightgray": { "$value": "#77879f66" },
+          "trans":     { "$value": "#ffffff4d" }
+        }
+      },
+      "boxborder": {
+        "$description": "HES brand/boxborder/* — line 버튼 테두리(70% 알파).",
+        "primary":   { "$value": "#009178b2" },
+        "secondary": { "$value": "#6479eab2" },
+        "lightgray": { "$value": "#77879fb2" },
+        "trans":     { "$value": "#ffffff80" },
+        "disabled": {
+          "primary":   { "$value": "#2d938140" },
+          "secondary": { "$value": "#697ad740" },
+          "lightgray": { "$value": "#77879f40" },
+          "trans":     { "$value": "#ffffff12" }
+        }
+      }
     },
     "feedback": {
-      "success": { "$value": "{color.success.500}" },
-      "warning": { "$value": "{color.warning.500}" },
-      "danger":  { "$value": "{color.danger.500}" }
+      "success": { "$value": "{color.hana.green}", "$description": "HES status/success = brand/primary" },
+      "warning": { "$value": "{color.orange.100}", "$description": "HES status/warning. 흰 텍스트 대비 3.14:1 — 큰 텍스트/아이콘/뱃지 한정, 본문 텍스트 금지(guidelines/color.md)." },
+      "danger":  { "$value": "{color.pink.100}", "$description": "HES status/err. 흰 텍스트 대비 3.8:1 — 큰 텍스트/아이콘 한정." }
     },
-    "focus": { "ring": { "$value": "{color.brand.400}" } }
+    "focus": { "ring": { "$value": "{color.teal.100}", "$description": "HES primary/lighter(text/point/10)" } },
+    "text": {
+      "$description": "HES text/01~08 위계 원본 이식. fg.* 는 이 중 접근성 통과분만 큐레이션한 HDS 별칭(01=fg.base, 04=fg.muted). 05 이하(grayScale 60~35)는 흰 배경 대비 AA 미달 — 본문 금지, 비활성/장식 한정. HES 의 *fixed* 변형(다크에서 안 뒤집히는 값)은 DTCG 에선 '$dark 오버라이드 없음'과 동일하므로 별도 토큰을 만들지 않는다.",
+      "black": { "$value": "{color.grayScale.black}", "$description": "HES text/black — theme 컬렉션에서 유일하게 다크 반전(black↔white)되는 토큰." },
+      "01": { "$value": "{color.grayScale.100}" },
+      "02": { "$value": "{color.grayScale.90}" },
+      "03": { "$value": "{color.grayScale.80}" },
+      "04": { "$value": "{color.grayScale.70}" },
+      "05": { "$value": "{color.grayScale.60}" },
+      "06": { "$value": "{color.grayScale.50}" },
+      "07": { "$value": "{color.grayScale.40}" },
+      "08": { "$value": "{color.grayScale.35}" },
+      "white": { "$value": "{color.grayScale.white}" },
+      "point": {
+        "$description": "HES text/point/* — 포인트 텍스트 색.",
+        "10": { "$value": "{color.teal.100}", "$description": "HES primary/lighter." },
+        "20": { "$value": "{color.feedback.warning}" },
+        "30": { "$value": "{color.purple.100}", "$description": "HES secondary/default(퍼플) — brand.secondary(블루)와 다름." },
+        "40": { "$value": "{color.feedback.danger}" },
+        "50": { "$value": "{color.feedback.success}" }
+      }
+    },
+    "chart": {
+      "$description": "HES chart — 국내 금융 관행: 상승=적, 하락=청.",
+      "up":   { "$value": "#ff5166" },
+      "down": { "$value": "#308fff" }
+    },
+    "risk": {
+      "$description": "HES risk/lv1~5 — 투자위험등급 색(lv1 낮음 → lv5 높음).",
+      "lv1": { "$value": "#53bc8a" },
+      "lv2": { "$value": "#81bc53" },
+      "lv3": { "$value": "#e5b509" },
+      "lv4": { "$value": "#e1792d" },
+      "lv5": { "$value": "{color.pink.100}", "$description": "HES 원본은 리터럴 #ec4361 — status/err 와 동일값이라 core alias 로 정규화." }
+    }
   },
   "$dark": {
-    "$description": "다크 테마 오버라이드. 빌드 시 [data-theme=dark] 로 매핑.",
+    "$description": "다크 테마 오버라이드. 빌드 시 [data-theme=dark] 로 매핑. HES Dark 모드는 현재 Light와 거의 동일하게 정의되어 있어(텍스트 black↔white 반전만 존재) HDS 자체 반전 규칙을 grayScale 램프로 구성.",
     "color": {
-      "bg":  { "base": "{color.neutral.900}", "subtle": "{color.neutral.800}", "muted": "{color.neutral.700}", "inverse": "{color.neutral.0}", "overlay": "rgba(0, 0, 0, 0.6)" },
-      "fg":  { "base": "{color.neutral.50}", "muted": "{color.neutral.400}", "onBrand": "{color.neutral.0}", "onInverse": "{color.neutral.900}" },
-      "border": { "base": "{color.neutral.700}", "strong": "{color.neutral.600}" }
+      "bg":  { "base": "{color.grayScale.100}", "subtle": "{color.grayScale.90}", "muted": "{color.grayScale.80}", "inverse": "{color.grayScale.white}", "overlay": "rgba(0, 0, 0, 0.6)" },
+      "fg":  { "base": "{color.grayScale.10}", "muted": "{color.grayScale.40}", "onBrand": "{color.grayScale.white}", "onInverse": "{color.grayScale.100}" },
+      "border": { "base": "{color.grayScale.90}", "strong": "{color.grayScale.80}" },
+      "text": { "black": "{color.grayScale.white}" }
     }
   },
   "space": {
     "$type": "dimension",
-    "inset-sm": { "$value": "{dimension.space.2}" },
-    "inset-md": { "$value": "{dimension.space.4}" },
-    "inset-lg": { "$value": "{dimension.space.5}" },
-    "stack-sm": { "$value": "{dimension.space.2}" },
-    "stack-md": { "$value": "{dimension.space.4}" }
+    "$description": "HES spacing 스텝 참조: inset-sm=spacing/40(8) · inset-md=spacing/80(16) · inset-lg=spacing/100(24).",
+    "inset-sm": { "$value": "{dimension.space.40}" },
+    "inset-md": { "$value": "{dimension.space.80}" },
+    "inset-lg": { "$value": "{dimension.space.100}" },
+    "stack-sm": { "$value": "{dimension.space.40}" },
+    "stack-md": { "$value": "{dimension.space.80}" },
+    "elements": {
+      "$description": "HES spacing/elements — 요소 간 간격 의미 스케일(HES 스텝 참조: xxxs=10 · xxs=20 · xs=30 · s=40 · sm=50 · m=60 · l=70 · xxl=90). xl 은 HES 원본에 없음 — 임의로 채우지 말 것.",
+      "xxxs": { "$value": "{dimension.space.10}" },
+      "xxs":  { "$value": "{dimension.space.20}" },
+      "xs":   { "$value": "{dimension.space.30}" },
+      "s":    { "$value": "{dimension.space.40}" },
+      "sm":   { "$value": "{dimension.space.50}" },
+      "m":    { "$value": "{dimension.space.60}" },
+      "l":    { "$value": "{dimension.space.70}" },
+      "xxl":  { "$value": "{dimension.space.90}" }
+    },
+    "section": {
+      "$description": "HES spacing/section — 섹션 간 간격 의미 스케일(none=0 · xxs=80 · xs=100 · s=110 · m=120 · l=130 · xl=140 · xxl=150 · xxxl=160).",
+      "none": { "$value": "{dimension.space.0}" },
+      "xxs":  { "$value": "{dimension.space.80}" },
+      "xs":   { "$value": "{dimension.space.100}" },
+      "s":    { "$value": "{dimension.space.110}" },
+      "m":    { "$value": "{dimension.space.120}" },
+      "l":    { "$value": "{dimension.space.130}" },
+      "xl":   { "$value": "{dimension.space.140}" },
+      "xxl":  { "$value": "{dimension.space.150}" },
+      "xxxl": { "$value": "{dimension.space.160}" }
+    }
   },
   "typography": {
     "$type": "typography",
-    "body":   { "$value": { "fontFamily": "{fontFamily.sans}", "fontSize": "{dimensionFont.size.md}", "fontWeight": "{fontWeight.regular}", "lineHeight": "1.5" } },
-    "label":  { "$value": { "fontFamily": "{fontFamily.sans}", "fontSize": "{dimensionFont.size.sm}", "fontWeight": "{fontWeight.medium}", "lineHeight": "1.4" } },
-    "heading":{ "$value": { "fontFamily": "{fontFamily.sans}", "fontSize": "{dimensionFont.size.2xl}", "fontWeight": "{fontWeight.bold}", "lineHeight": "1.25" } },
-    "caption":{ "$value": { "fontFamily": "{fontFamily.sans}", "fontSize": "{dimensionFont.size.xs}", "fontWeight": "{fontWeight.regular}", "lineHeight": "1.4" } }
+    "$description": "HES 타이포 규칙: 자간 -5%(HES letterSpacing/default), 본문 줄높이 132%(lineHeight/body), 헤드라인 128%(lineHeight/headline), 두께는 light/regular/bold 3단계.",
+    "body":   { "$value": { "fontFamily": "{fontFamily.sans}", "fontSize": "{dimensionFont.size.md}", "fontWeight": "{fontWeight.regular}", "lineHeight": "{lineHeight.300}", "letterSpacing": "-0.05em" } },
+    "label":  { "$value": { "fontFamily": "{fontFamily.sans}", "fontSize": "{dimensionFont.size.sm}", "fontWeight": "{fontWeight.bold}", "lineHeight": "{lineHeight.300}", "letterSpacing": "-0.05em" } },
+    "heading":{ "$value": { "fontFamily": "{fontFamily.sans}", "fontSize": "{dimensionFont.size.2xl}", "fontWeight": "{fontWeight.bold}", "lineHeight": "{lineHeight.200}", "letterSpacing": "-0.05em" } },
+    "caption":{ "$value": { "fontFamily": "{fontFamily.sans}", "fontSize": "{dimensionFont.size.xs}", "fontWeight": "{fontWeight.regular}", "lineHeight": "{lineHeight.300}", "letterSpacing": "-0.05em" } }
   }
 }

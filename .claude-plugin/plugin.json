@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "hds",
-  "version": "2.1.0",
+  "version": "3.4.0",
   "description": "그룹 공식 디자인 시스템 하네스. 기획·디자인·퍼블 스킬 전체와 디자인 시스템 소스(토큰·컴포넌트·가이드·브랜드)를 플러그인 하나로 설치합니다.",
   "author": {
     "name": "Design System Team"
@@ -30,6 +30,7 @@
     "./skills/design/brand-visual",
     "./skills/design/figma-bridge",
     "./skills/publish/token-export",
+    "./skills/publish/registry-export",
     "./skills/publish/component-build",
     "./skills/publish/a11y-audit"
   ]

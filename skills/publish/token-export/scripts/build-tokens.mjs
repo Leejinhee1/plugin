@@ -2,8 +2,9 @@
 /**
  * build-tokens.mjs
  *
- * DTCG 토큰(core.tokens.json + semantic.tokens.json) → 개발 산출물 변환.
- * Node.js >= 18, 외부 의존성 없음(fs/path/url 만 사용). 출력은 결정적(정렬됨).
+ * DTCG 토큰(core + semantic + component + platform .tokens.json) → 개발 산출물 변환.
+ * component/platform 파일은 없으면 건너뛴다(하위호환). Node.js >= 18, 외부 의존성 없음.
+ * 출력은 결정적(정렬됨).
  *
  * 사용법:
  *   node build-tokens.mjs [--tokens <토큰디렉터리>] [--out <출력디렉터리>]
@@ -13,8 +14,9 @@
  *   --out     현재 작업 디렉터리 기준 ./dist/tokens
  *
  * 산출물:
- *   tokens.css          — :root { --hds-*: ...; } + [data-theme="dark"] 오버라이드
- *   tailwind.preset.js  — theme.extend 가 var(--hds-*) 를 참조
+ *   tokens.css          — :root { --hds-*: ...; } + [data-theme="dark"] + [data-platform="ios|pc|min"] 오버라이드
+ *   tailwind.preset.js  — theme.extend 가 var(--hds-*) 를 참조 (semantic + core-direct 만 — comp/platform 토큰은
+ *                         컴포넌트 CSS 에서 var() 직접 참조가 원칙이고, breakpoint 는 미디어쿼리에 var() 불가)
  *   tokens.ts           — 토큰 이름 -> CSS 변수명 상수 맵 (as const) + 타입
  *
  * 원본 tokens/*.json 은 읽기 전용으로만 다룬다. 이 스크립트는 그 어떤 원본 파일도 쓰지 않는다.
@@ -97,7 +99,7 @@ function loadJsonFile(path, label) {
 // DTCG 트리 평탄화
 //
 // 두 가지 형태를 모두 처리한다:
-//   1) 표준형: { "500": { "$value": "#2f6bff", "$description": "..." } }
+//   1) 표준형: { "green": { "$value": "#009178", "$description": "..." } }
 //   2) semantic.tokens.json 의 $dark 축약형: { "base": "{color.neutral.900}" }
 //      (앞뒤에 $value 래핑 없이 값이 바로 온다 — alias 문자열이든 raw 값이든)
 // ---------------------------------------------------------------------------
@@ -215,6 +217,7 @@ function formatCubicBezierValue(resolvedArray) {
 function formatScalarValue(v, contextKey) {
   if (typeof v === "string") return v;
   if (typeof v === "number") return String(v);
+  if (typeof v === "boolean") return String(v); // platform isNotch 같은 참조 데이터
   throw new Error(`예상치 못한 값 형태 (${contextKey}): ${JSON.stringify(v)}`);
 }
 
@@ -225,21 +228,27 @@ function formatScalarValue(v, contextKey) {
 function build(tokensDir, outDir) {
   const corePath = join(tokensDir, "core.tokens.json");
   const semanticPath = join(tokensDir, "semantic.tokens.json");
+  const componentPath = join(tokensDir, "component.tokens.json");
+  const platformPath = join(tokensDir, "platform.tokens.json");
 
   const coreJson = loadJsonFile(corePath, "core.tokens.json");
   const semanticJson = loadJsonFile(semanticPath, "semantic.tokens.json");
+  // component/platform 은 선택 파일 — 없으면 해당 산출 섹션만 비운다.
+  const componentJson = existsSync(componentPath) ? loadJsonFile(componentPath, "component.tokens.json") : null;
+  const platformJson = existsSync(platformPath) ? loadJsonFile(platformPath, "platform.tokens.json") : null;
 
   const mapCore = flattenRoot(coreJson);
   const mapSemanticLight = flattenRoot(semanticJson); // $dark 는 flatten 단계에서 자동 제외됨($ 로 시작하는 키 skip)
+  const mapComponent = componentJson ? flattenRoot(componentJson) : {};
 
   const darkRoot = semanticJson.$dark && typeof semanticJson.$dark === "object" ? semanticJson.$dark : {};
   const mapDark = {};
   flatten(darkRoot, "", mapDark);
   delete mapDark[""];
 
-  // resolve 용 그래프: core + semantic(light) 통합. dark 오버라이드 resolve 시에는 dark 값 우선.
-  const resolveMapLight = { ...mapCore, ...mapSemanticLight };
-  const resolveMapDark = { ...mapCore, ...mapSemanticLight, ...mapDark };
+  // resolve 용 그래프: core + semantic(light) + component 통합. dark 오버라이드 resolve 시에는 dark 값 우선.
+  const resolveMapLight = { ...mapCore, ...mapSemanticLight, ...mapComponent };
+  const resolveMapDark = { ...mapCore, ...mapSemanticLight, ...mapComponent, ...mapDark };
 
   const resolvedLight = {};
   for (const [key, val] of Object.entries(mapSemanticLight)) {
@@ -249,6 +258,36 @@ function build(tokensDir, outDir) {
   const resolvedDark = {};
   for (const [key, val] of Object.entries(mapDark)) {
     resolvedDark[key] = resolveValue(val, resolveMapDark, [key]);
+  }
+
+  const resolvedComponent = {};
+  for (const [key, val] of Object.entries(mapComponent)) {
+    resolvedComponent[key] = resolveValue(val, resolveMapLight, [key]);
+  }
+
+  // platform: 각 토큰의 $value 가 {AOS, iOS, PC, Min} 모드 맵. 모드별로 평탄화 후 개별 resolve —
+  // 모드 내 alias({breakpoint.*} 등)는 같은 모드의 값으로 해석된다.
+  const platformModes = platformJson?.$modes ?? [];
+  const platformDefaultMode = platformJson?.$defaultMode ?? platformModes[0];
+  const mapPlatform = platformJson ? flattenRoot(platformJson) : {};
+  const resolvedPlatformByMode = {};
+  for (const mode of platformModes) {
+    const modeFlat = {};
+    for (const [key, modeMap] of Object.entries(mapPlatform)) {
+      if (!modeMap || typeof modeMap !== "object" || Array.isArray(modeMap)) {
+        throw new Error(`platform 토큰 ${key} 의 $value 가 모드 맵({AOS,...})이 아닙니다.`);
+      }
+      if (!(mode in modeMap)) {
+        throw new Error(`platform 토큰 ${key} 에 ${mode} 모드 값이 없습니다.`);
+      }
+      modeFlat[key] = modeMap[mode];
+    }
+    const resolveMap = { ...mapCore, ...mapSemanticLight, ...mapComponent, ...modeFlat };
+    const resolved = {};
+    for (const [key, val] of Object.entries(modeFlat)) {
+      resolved[key] = resolveValue(val, resolveMap, [key]);
+    }
+    resolvedPlatformByMode[mode] = resolved;
   }
 
   const CORE_DIRECT_PREFIXES = ["dimension.radius.", "duration.", "cubicBezier.", "fontFamily."];
@@ -287,6 +326,7 @@ function build(tokensDir, outDir) {
     fontSize: "size",
     fontWeight: "weight",
     lineHeight: "line-height",
+    letterSpacing: "letter-spacing",
   };
   for (const [key, resolved] of sortedEntries(resolvedLight)) {
     if (!key.startsWith("typography.")) continue;
@@ -329,7 +369,34 @@ function build(tokensDir, outDir) {
     }
   }
 
-  // 5) dark 오버라이드 (color.* 만 존재 — semantic.tokens.json 의 $dark 구조상)
+  // 5) component.tokens.json — 전 토큰을 --hds-<경로 kebab> 으로 export (comp.* / layout.* / sizing.* / font.* / letterSpacing.*)
+  for (const [key, resolved] of sortedEntries(resolvedComponent)) {
+    const cssVar = `--hds-${dottedToKebab(key)}`;
+    rootVars.push({ cssVar, value: formatScalarValue(resolved, key), tokenName: key });
+  }
+
+  // 6) platform.tokens.json — 기본 모드는 :root, 나머지 모드는 [data-platform] 오버라이드(차이값만)
+  /** @type {Array<{mode: string, vars: Array<{cssVar: string, value: string}>}>} */
+  const platformOverrideBlocks = [];
+  if (platformJson) {
+    const defaults = resolvedPlatformByMode[platformDefaultMode];
+    for (const [key, resolved] of sortedEntries(defaults)) {
+      const cssVar = `--hds-platform-${dottedToKebab(key)}`;
+      rootVars.push({ cssVar, value: formatScalarValue(resolved, `platform.${key}`), tokenName: `platform.${key}` });
+    }
+    for (const mode of platformModes) {
+      if (mode === platformDefaultMode) continue;
+      const vars = [];
+      for (const [key, resolved] of sortedEntries(resolvedPlatformByMode[mode])) {
+        const value = formatScalarValue(resolved, `platform.${key}(${mode})`);
+        if (value === formatScalarValue(defaults[key], `platform.${key}`)) continue;
+        vars.push({ cssVar: `--hds-platform-${dottedToKebab(key)}`, value });
+      }
+      platformOverrideBlocks.push({ mode, vars });
+    }
+  }
+
+  // 7) dark 오버라이드 (color.* 만 존재 — semantic.tokens.json 의 $dark 구조상)
   for (const [key, resolved] of sortedEntries(resolvedDark)) {
     if (!key.startsWith("color.")) continue;
     const rest = key.slice("color.".length);
@@ -354,7 +421,7 @@ function build(tokensDir, outDir) {
   // --- tokens.css ---
   const cssLines = [];
   cssLines.push("/* generated by build-tokens.mjs — do not edit */");
-  cssLines.push("/* source: DTCG tokens (core.tokens.json + semantic.tokens.json) */");
+  cssLines.push("/* source: DTCG tokens (core + semantic + component + platform .tokens.json) */");
   cssLines.push(":root {");
   for (const { cssVar, value } of rootVars) {
     cssLines.push(`  ${cssVar}: ${value};`);
@@ -366,6 +433,14 @@ function build(tokensDir, outDir) {
     cssLines.push(`  ${cssVar}: ${value};`);
   }
   cssLines.push("}");
+  for (const { mode, vars } of platformOverrideBlocks) {
+    cssLines.push("");
+    cssLines.push(`[data-platform="${mode.toLowerCase()}"] {`);
+    for (const { cssVar, value } of vars) {
+      cssLines.push(`  ${cssVar}: ${value};`);
+    }
+    cssLines.push("}");
+  }
   cssLines.push("");
   const tokensCss = cssLines.join("\n");
 
@@ -466,7 +541,13 @@ function build(tokensDir, outDir) {
   tsLines.push("");
   const tokensTs = tsLines.join("\n");
 
-  return { tokensCss, tailwindPreset, tokensTs, stats: { rootVars: rootVars.length, darkVars: darkVars.length } };
+  const platformOverrideCount = platformOverrideBlocks.reduce((n, b) => n + b.vars.length, 0);
+  return {
+    tokensCss,
+    tailwindPreset,
+    tokensTs,
+    stats: { rootVars: rootVars.length, darkVars: darkVars.length, platformOverrides: platformOverrideCount },
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -513,7 +594,7 @@ function main() {
   }
 
   console.log(
-    `[build-tokens] OK — ${result.stats.rootVars}개 변수(:root) + ${result.stats.darkVars}개 다크 오버라이드 -> ${outDir}\n` +
+    `[build-tokens] OK — ${result.stats.rootVars}개 변수(:root) + ${result.stats.darkVars}개 다크 + ${result.stats.platformOverrides}개 플랫폼 오버라이드 -> ${outDir}\n` +
       `  tokens: ${tokensDir}\n` +
       `  out:    ${outDir}/{tokens.css, tailwind.preset.js, tokens.ts}`
   );

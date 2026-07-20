@@ -1,24 +1,24 @@
 # Input 사용 사례 (화면별)
 
-## 일정 만들기 — 제목 입력
+## 거래 메모 입력
 ```tsx
 <Input
-  label="일정 제목"
-  placeholder="예: 우산 챙기기, 저녁 산책"
-  value={title}
-  onChange={(e) => setTitle(e.target.value)}
+  label="거래 메모"
+  placeholder="예: 점심값, 회식비"
+  value={memo}
+  onChange={(e) => setMemo(e.target.value)}
 />
 ```
-> 일정 목록에서 바로 눈에 띄어야 하므로 `label` 을 생략하지 않는다.
+> 내역 목록에서 바로 눈에 띄어야 하므로 `label` 을 생략하지 않는다.
 
-## 일정 만들기 — 제목 입력 실패(빈 값 제출)
+## 거래 메모 입력 실패(빈 값 제출)
 ```tsx
 <Input
-  label="일정 제목"
+  label="거래 메모"
   invalid
-  errorMessage="제목을 입력해 주세요"
-  value={title}
-  onChange={(e) => setTitle(e.target.value)}
+  errorMessage="메모를 입력해 주세요"
+  value={memo}
+  onChange={(e) => setMemo(e.target.value)}
 />
 ```
 > `errorMessage` 가 있으면 `aria-invalid` 와 `aria-describedby` 가 자동으로 붙는다. 테두리 색만 바꾸지 않고 항상 문구를 함께 보여준다.
@@ -29,7 +29,7 @@
   label="알림 시간"
   type="time"
   size="sm"
-  helperText="하늘 앱이 이 시간에 오늘 날씨를 알려드려요"
+  helperText="하나머니가 이 시간에 결제 브리핑을 알려드려요"
   value={notifyAt}
   onChange={(e) => setNotifyAt(e.target.value)}
 />
@@ -39,9 +39,9 @@
 ## 헤더 검색
 ```tsx
 <Input
-  aria-label="일정 검색"
+  aria-label="거래 내역 검색"
   size="md"
-  placeholder="일정 검색"
+  placeholder="거래 내역 검색"
   leadingIcon={<SearchIcon aria-hidden />}
   value={query}
   onChange={(e) => setQuery(e.target.value)}
@@ -52,7 +52,7 @@
 ## 안티패턴 ❌
 ```tsx
 // placeholder 를 라벨 대용으로 사용 — 입력 시작하면 정보가 사라짐
-<Input placeholder="일정 제목" />
+<Input placeholder="거래 메모" />
 
 // 오류를 색으로만 표시하고 메시지 생략
 <Input invalid />

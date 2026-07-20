@@ -12,8 +12,8 @@ Figma MCP 도구가 연결되어 있어야 합니다. 없으면 사용자에게 
 
 ## 방향별 작업
 ### 코드 → Figma (토큰/라이브러리 발행)
-1. `design-system/tokens/semantic.tokens.json` 을 읽는다.
-2. Figma Variables로 매핑해 발행한다(컬렉션=브랜드, 모드=light/dark). 라이브러리 생성은 `figma-generate-library` 규칙을 따른다.
+1. `design-system/tokens/` 의 4파일(core·semantic·component·platform)을 읽는다.
+2. Figma Variables로 매핑해 발행한다 — HES 컬렉션 구조 대응: core→`base`, semantic+component→`theme`(모드 Light/Dark), platform→`platform`(모드 AOS/iOS/PC/Min). 라이브러리 생성은 `figma-generate-library` 규칙을 따른다.
 
 ### Figma → 코드 (대조/역동기화)
 1. Figma 변수/컴포넌트를 읽어 코드 토큰과 diff.

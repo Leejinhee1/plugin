@@ -2,6 +2,7 @@
 name: Modal
 status: stable
 since: 1.1.0
+figma: "🧱 Template / layer (7897:48910) — Alert/Modal 상당. BottomSheet·Full 팝업은 미구현"
 ---
 
 # Modal 스펙
