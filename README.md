@@ -11,12 +11,13 @@ plugin/  (= 저장소 루트가 곧 플러그인이자 마켓플레이스)
 │   ├── plugin.json        # 단일 플러그인 "hds" — skills 배열에 배포 스킬을 명시
 │   └── marketplace.json   # source: "./" 단일 플러그인 마켓플레이스
 ├── skills/                # 역할별 스킬 버킷 (설치는 한 번에 전부)
-│   ├── general/           공통 — ask-hds (어떤 스킬을 쓸지 알려주는 라우터)
+│   ├── general/           공통 — ask-hds (스킬 라우터) · mcp-connectors (MCP 커넥터 조회·관리)
 │   ├── planning/          기획 — product-spec · prototype
 │   ├── design/            디자인 — design-tokens · design-guide · component-catalog · brand-visual · figma-bridge
 │   └── publish/           퍼블 — token-export · component-build · a11y-audit
 ├── agents/                design-reviewer 검수 에이전트
 ├── design-system/         ★ 단일 소스 오브 트루스 — tokens · guidelines · components · usage · brand
+├── mcp/                    MCP 커넥터 레지스트리(SoT) — registry.json · 예시 .mcp.json
 ├── examples/              (주)하늘 가상 브랜드 데모 — 설계서 + 동작 프로토타입
 ├── codex/                 Codex 어댑터 (AGENTS.md · prompts · config)
 └── docs/                  아키텍처 · 시작하기 · 사용 가이드 · 유지보수

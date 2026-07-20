@@ -8,7 +8,7 @@ description: HDS 코드 기반 디자인 시스템과 Figma를 동기화합니�
 HDS의 **소스 오브 트루스는 코드**(`design-system/`)입니다. Figma는 소비/협업 채널로, 이 스킬로 양방향 동기화합니다.
 
 ## 전제
-Figma MCP 도구가 연결되어 있어야 합니다. 없으면 사용자에게 Figma 플러그인/MCP 연결을 안내하세요. Figma의 `use_figma` 계열 호출 전에는 반드시 `figma-use` 스킬 규칙을 따릅니다.
+Figma MCP 도구가 연결되어 있어야 합니다. 없으면 사용자에게 Figma 플러그인/MCP 연결을 안내하세요(연결법·상태는 `/hds:mcp-connectors` 및 `${CLAUDE_PLUGIN_ROOT}/mcp/registry.json` 의 `figma` 항목 참조 — HDS는 이 커넥터를 번들하지 않고 `user` 스코프로 각자 연결). Figma의 `use_figma` 계열 호출 전에는 반드시 `figma-use` 스킬 규칙을 따릅니다.
 
 ## 방향별 작업
 ### 코드 → Figma (토큰/라이브러리 발행)

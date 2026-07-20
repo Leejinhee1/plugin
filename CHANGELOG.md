@@ -2,6 +2,15 @@
 
 이 프로젝트는 [semver](https://semver.org)를 따릅니다. 각 릴리스에서 `.claude-plugin/plugin.json` 과 `marketplace.json` version을 함께 bump 합니다.
 
+## [2.2.0] — 2026-07-20
+### 추가 — MCP 커넥터 레지스트리 + `/hds:mcp-connectors` 스킬
+HDS에서 **사용가능한 MCP 커넥터 목록을 조회·관리**하는 기능. 컴포넌트가 `components/registry.json` 으로 관리되듯, 커넥터도 단일 소스로 관리.
+- **`mcp/registry.json`** 신설 — 커넥터 SoT. `name·status·scope·transport·usedBy·connect`. 첫 등록: `figma`(status `active`, scope `user`, `figma-bridge`·`brand-visual` 이 사용).
+- **`mcp/mcp.example.json`** — `user` 스코프 커넥터를 각자 연결할 때 참고하는 복사용 `.mcp.json` 예시(자격증명 미포함).
+- **`skills/general/mcp-connectors/SKILL.md`** 신설 — 레지스트리 조회 + 커넥터 등록/연결/번들 관리. `.claude-plugin/plugin.json` 의 `skills` 배열에 등록.
+- 스코프 정책: `bundled`(plugin.json/.mcp.json 자동 연결, **자격증명 없는 것만**) · `user`(각자 연결) · `project`(팀 `.mcp.json` 커밋). 비밀은 커밋 금지.
+- 연동: `figma-bridge`·`brand-visual` 에 커넥터 전제/폴백을 레지스트리로 링크. `ask-hds` 라우팅·README 구성도·`docs/architecture.md`·`docs/maintenance.md`·`docs/getting-started.md` 에 반영.
+
 ## [2.1.0] — 2026-07-19
 ### 추가 — `/hds:ask-hds` 라우터 스킬
 - mattpocock/skills 의 `ask-matt` 를 참고한 **스킬 라우터**: 상황을 설명하면 어떤 스킬을 어떤 순서(플로우)로 쓸지 안내. 일은 직접 하지 않음.

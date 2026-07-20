@@ -3,7 +3,7 @@
 ## 1. 사전 준비
 - Claude Code 최신 버전(`/plugin` 명령이 보여야 함).
 - (퍼블) Node.js + React/Tailwind 프로젝트.
-- (선택) Figma MCP 연결 — Figma 동기화를 쓸 경우.
+- (선택) Figma MCP 연결 — Figma 동기화를 쓸 경우. 연결법·목록은 `/hds:mcp-connectors`(SoT: `mcp/registry.json`).
 
 ## 2. 설치
 

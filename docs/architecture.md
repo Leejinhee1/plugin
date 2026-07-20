@@ -52,6 +52,11 @@
 3. 퍼블: `token-export` + `component-build` 로 프로토타입을 개발 코드로 승격.
 4. 새 요구는 화면에 임시 반영하지 않고 **디자인 시스템(SoT)에 승격** → 다음부터 모두가 재사용.
 
+## 결정 6 — 외부 MCP 커넥터도 레지스트리로 (SoT 패턴 확장)
+- 일부 스킬은 외부 MCP 서버를 씁니다(예: `figma-bridge` 의 Figma MCP). "어떤 커넥터를 왜/어떻게 쓰는지"의 진실을 `mcp/registry.json` **한 곳**에 둡니다(컴포넌트 `registry.json` 과 같은 패턴). 스킬 문서는 이를 가리키는 얇은 포인터.
+- **scope 로 소유권을 분리**: `bundled`(플러그인이 `plugin.json`/`.mcp.json` 로 자동 연결 — 자격증명 없는 것만) · `user`(각자 연결/인증) · `project`(팀 `.mcp.json` 커밋). Figma처럼 개인 인증이 필요한 커넥터는 번들하지 않고 `user` 로 둡니다 — **번들에 비밀 없음**.
+- **효과**: 새 커넥터가 늘어도 소비 스킬은 레지스트리만 보고, 자격증명이 레포로 새지 않으며, 무엇이 필요한지(`registry.json`)와 무엇이 연결됐는지(`/mcp`)를 대조할 수 있습니다. 관리는 `/hds:mcp-connectors`.
+
 ## 확장 시나리오 (부서 → 그룹사)
 - 그룹사 공통은 이 마켓플레이스에, 계열사 특화는 `core` 토큰 오버라이드 또는 별도 플러그인 + `dependencies`.
 - 여러 마켓플레이스로 나뉘면 `allowCrossMarketplaceDependenciesOn` 으로 의존 허용.

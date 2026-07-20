@@ -1,0 +1,35 @@
+{
+  "$description": "HDS MCP 커넥터 레지스트리 — HDS 스킬이 사용하는 MCP 서버(커넥터)의 단일 소스. '무엇을 쓰는지·누가 쓰는지·어떻게 연결하는지'를 조회하고, 새 커넥터를 등록/관리한다. design-system/components/registry.json 과 같은 shadcn식 인덱스 패턴.",
+  "$schema-note": "connectors[].transport 는 Claude Code MCP 규격을 따른다: stdio | http | sse | ws. url 을 쓰는 커넥터는 transport(=config.type)를 반드시 명시해야 한다(누락 시 Claude Code가 서버를 건너뜀).",
+  "registryVersion": "1.0.0",
+  "policy": {
+    "scope": "커넥터는 scope 로 '누가 연결/인증하는가'를 구분한다. bundled=플러그인이 plugin.json/.mcp.json 으로 번들(설치 시 자동 연결, 자격증명 불필요한 것만). user=사용자가 각자 연결/인증. project=팀이 프로젝트 .mcp.json 에 커밋(첫 사용 시 승인).",
+    "noBundledSecrets": "자격증명/개인 인증이 필요한 커넥터(예: Figma)는 절대 bundled 로 두지 않는다. 토큰·키는 레포에 커밋 금지(.gitignore). bundled 는 자격증명 없는 로컬 stdio 나 공개 http 만.",
+    "noFabrication": "실제로 HDS 스킬이 참조/사용하는 커넥터만 status=active 로 등록한다. 검토 중인 후보는 status=candidate 로 두고 usedBy 를 비운다."
+  },
+  "connectors": [
+    {
+      "name": "figma",
+      "status": "active",
+      "since": "2.2.0",
+      "transport": "http",
+      "scope": "user",
+      "required": false,
+      "usedBy": ["figma-bridge", "brand-visual"],
+      "purpose": "코드 토큰 ↔ Figma Variables 동기화, Code Connect(디자인↔구현 매핑), 디자인 컨텍스트/에셋 조회. HDS의 소스 오브 트루스는 코드이며 Figma는 브릿지(충돌 시 코드가 진실).",
+      "connect": {
+        "how": "Figma 데스크톱 앱의 Dev Mode MCP 서버를 켜거나(로컬), 호스티드 Figma MCP를 클라이언트에 등록한다. 인증은 사용자 Figma 계정 — HDS는 서버를 번들하지 않고 '연결되어 있을 것'만 요구한다.",
+        "verify": "연결 여부는 `/mcp` 패널 또는 `claude mcp list` 로 확인. 미연결이면 figma-bridge 가 수동 안내로 폴백한다.",
+        "docs": "https://help.figma.com/hc/en-us/articles/32132100833559 (Dev Mode MCP 서버 — 현재 엔드포인트/transport 는 이 문서를 기준으로 확인)",
+        "exampleConfig": {
+          "$note": "예시일 뿐. 실제 URL/transport 는 Figma 문서에서 확인 후 사용. url 을 쓰면 type 을 반드시 명시.",
+          "figma": {
+            "type": "http",
+            "url": "http://127.0.0.1:3845/mcp"
+          }
+        }
+      },
+      "fallback": "MCP 미연결 시 figma-bridge/brand-visual 은 수동 안내로 폴백(각 스킬에 명시)."
+    }
+  ]
+}

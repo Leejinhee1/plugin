@@ -1,0 +1,9 @@
+{
+  "$comment": "복사용 예시 .mcp.json — user 스코프 커넥터를 각자 연결할 때 참고. 프로젝트 루트에 `.mcp.json` 으로 두면 팀 공유(첫 사용 시 승인). 자격증명은 여기 넣지 말고 헤더/환경변수로. 실제 url/type 은 각 커넥터의 공식 문서를 기준으로 확인(mcp/registry.json 의 connect.docs 참조).",
+  "mcpServers": {
+    "figma": {
+      "type": "http",
+      "url": "http://127.0.0.1:3845/mcp"
+    }
+  }
+}
