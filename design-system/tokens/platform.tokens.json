@@ -1,0 +1,77 @@
+{
+  "$schema": "https://tr.designtokens.org/format/",
+  "$description": "HDS Platform tokens — Figma HES platform 컬렉션 이식(2026-07-20, 브랜치 0F4A8OTZzApAJIjFjeQULz). DTCG 에는 모드 표준이 없어 각 토큰의 $value 를 {AOS, iOS, PC, Min} 모드 맵으로 표현한다(HDS 자체 확장). 기본 모드는 AOS — 빌드 시 :root 에 AOS 값, [data-platform=\"ios\"|\"pc\"|\"min\"] 에 차이값만 오버라이드로 출력. Min 은 최소 지원 폭(280px 갤럭시 폴드 커버 등) 대응 모드. breakpoint 는 CSS 미디어쿼리에서 var() 를 못 쓰므로 참조 데이터로만 노출된다.",
+  "$modes": ["AOS", "iOS", "PC", "Min"],
+  "$defaultMode": "AOS",
+  "breakpoint": {
+    "mobile": {
+      "sm": {
+        "min": { "$value": { "AOS": "280px", "iOS": "320px", "PC": "728px", "Min": "280px" } },
+        "max": { "$value": { "AOS": "359px", "iOS": "374px", "PC": "728px", "Min": "359px" } }
+      },
+      "md": {
+        "min": { "$value": { "AOS": "360px", "iOS": "375px", "PC": "728px", "Min": "280px" } },
+        "max": { "$value": { "AOS": "440px", "iOS": "440px", "PC": "728px", "Min": "440px" } }
+      },
+      "foldable": {
+        "min": { "$value": { "AOS": "441px", "iOS": "441px", "PC": "728px", "Min": "441px" } },
+        "max": { "$value": { "AOS": "728px", "iOS": "728px", "PC": "728px", "Min": "728px" } }
+      }
+    },
+    "pc": {
+      "min": { "$value": { "AOS": "729px", "iOS": "729px", "PC": "729px", "Min": "729px" } }
+    }
+  },
+  "layout": {
+    "vw": {
+      "$value": {
+        "AOS": "{breakpoint.mobile.md.min}",
+        "iOS": "{breakpoint.mobile.md.min}",
+        "PC":  "{breakpoint.mobile.md.min}",
+        "Min": "{breakpoint.mobile.sm.min}"
+      },
+      "$description": "디자인 기준 뷰포트 폭."
+    },
+    "vh": { "$value": { "AOS": "720px", "iOS": "812px", "PC": "720px", "Min": "720px" }, "$description": "디자인 기준 뷰포트 높이." }
+  },
+  "safeArea": {
+    "top":    { "$value": { "AOS": "44px", "iOS": "44px", "PC": "0px", "Min": "44px" } },
+    "bottom": { "$value": { "AOS": "16px", "iOS": "34px", "PC": "0px", "Min": "16px" } }
+  },
+  "isNotch": {
+    "$value": { "AOS": false, "iOS": true, "PC": false, "Min": false },
+    "$description": "노치 유무 — CSS 값이 아닌 참조 데이터."
+  },
+  "content": {
+    "spacing": {
+      "top":         { "$value": { "AOS": "94px", "iOS": "94px", "PC": "94px", "Min": "94px" } },
+      "bottom":      { "$value": { "AOS": "{layout.content.sizing.bottom}", "iOS": "98px", "PC": "{layout.content.sizing.bottom}", "Min": "{layout.content.sizing.bottom}" } },
+      "hasFixedBtn": { "$value": { "AOS": "{comp.button.fixed.height}", "iOS": "118px", "PC": "{comp.button.fixed.height}", "Min": "{comp.button.fixed.height}" } },
+      "hasFixedTab": { "$value": { "AOS": "148px", "iOS": "148px", "PC": "148px", "Min": "148px" } }
+    }
+  },
+  "toast": {
+    "spacing": {
+      "top":          { "$value": { "AOS": "102px", "iOS": "116px", "PC": "99px", "Min": "99px" } },
+      "bottom":       { "$value": { "AOS": "{space.section.xs}", "iOS": "58px", "PC": "{space.section.xs}", "Min": "{space.section.xs}" } },
+      "withFixedBtn": { "$value": { "AOS": "{comp.button.fixed.height}", "iOS": "118px", "PC": "{comp.button.fixed.height}", "Min": "{comp.button.fixed.height}" } },
+      "withFixedTab": { "$value": { "AOS": "150px", "iOS": "164px", "PC": "147px", "Min": "147px" } }
+    }
+  },
+  "button": {
+    "wrap":      { "width": { "$value": { "AOS": "312px", "iOS": "327px", "PC": "312px", "Min": "236.8px" } } },
+    "secondary": { "width": { "$value": { "AOS": "123.2px", "iOS": "129.2px", "PC": "123.2px", "Min": "82.08px" } } },
+    "layer": {
+      "layerAlert": {
+        "secondary": { "width": { "$value": { "AOS": "123.2px", "iOS": "122.8px", "PC": "116.8px", "Min": "76.32px" } } }
+      }
+    }
+  },
+  "layer": {
+    "bottomSheet": {
+      "bottom": {
+        "default": { "$value": { "AOS": "{comp.layer.content.bottom}", "iOS": "66px", "PC": "{comp.layer.content.bottom}", "Min": "{comp.layer.content.bottom}" } }
+      }
+    }
+  }
+}

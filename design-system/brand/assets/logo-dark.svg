@@ -1,28 +1,16 @@
 <!--
-  HDS 브랜드 로고 — 다크 배경용 (다크 테마 / 브랜드색 배경 위)
-  구성: 수평선 위로 떠오르는 원(태양) + 구름 3점 + "하늘" 워드마크
-  사용 규칙: ../logo.md
+  하나머니 워드마크 플레이스홀더 — 다크 배경용
+  ⚠️ 공식 하나금융그룹 CI 심볼/시그니처가 아닙니다. CI팀 제공 원본 수급 시 교체.
+  사용 규칙: ../logo.md (하나그린 위에서는 전체 흰색 변형 사용)
 
   토큰 출처 (tokens/core.tokens.json) — 이 SVG는 렌더링 목적상 예외적으로 hex 값을 직접 사용합니다.
-    - 원(태양)  : color.brand.500 = #2f6bff  (라이트/다크 공통, 절대 변경 금지)
-    - 수평선/워드마크 : color.neutral.0 = #ffffff
-    - 구름      : color.neutral.500 = #6b7385
-    - 폰트      : fontFamily.sans = Pretendard, Inter, system-ui, sans-serif
+    - "하나"  : color.hana.green = #009178 (다크 배경 #252e33 대비 3.5:1)
+    - "머니"  : color.grayScale.white = #ffffff
+    - 폰트    : fontFamily.sans = Spoqa Han Sans Neo, Pretendard, system-ui, sans-serif
 -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 176 64" width="176" height="64" role="img" aria-labelledby="hds-logo-dark-title">
-  <title id="hds-logo-dark-title">하늘 (Haneul) 로고 — 다크 배경용</title>
-
-  <!-- 구름 -->
-  <circle cx="36" cy="18" r="3.5" fill="#6b7385" />
-  <circle cx="42" cy="16" r="5" fill="#6b7385" />
-  <circle cx="48" cy="18.5" r="4" fill="#6b7385" />
-
-  <!-- 수평선 위로 떠오르는 원(태양) -->
-  <path d="M16 36 A16 16 0 0 1 48 36 Z" fill="#2f6bff" />
-
-  <!-- 수평선 -->
-  <line x1="8" y1="36" x2="56" y2="36" stroke="#ffffff" stroke-width="3" stroke-linecap="round" />
-
-  <!-- 워드마크 -->
-  <text x="72" y="44" font-family="Pretendard, Inter, system-ui, sans-serif" font-weight="700" font-size="30" fill="#ffffff">하늘</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 176 48" width="176" height="48" role="img" aria-labelledby="hds-logo-dark-title">
+  <title id="hds-logo-dark-title">하나머니 (Hana Money) 워드마크 — 다크 배경용</title>
+  <text x="8" y="34" font-family="Spoqa Han Sans Neo, Pretendard, system-ui, sans-serif" font-weight="700" font-size="28" letter-spacing="-1.4">
+    <tspan fill="#009178">하나</tspan><tspan fill="#ffffff">머니</tspan>
+  </text>
 </svg>

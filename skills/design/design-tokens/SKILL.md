@@ -8,11 +8,12 @@ description: HDS 디자인 토큰(색·타이포·간격·모션)을 조회·추
 토큰은 디자인 시스템의 뿌리입니다. 이 스킬은 `${CLAUDE_PLUGIN_ROOT}/design-system/tokens/` 의 원본을 다룹니다.
 
 ## 먼저 읽기
-1. `${CLAUDE_PLUGIN_ROOT}/design-system/tokens/README.md` — 2레이어 규칙
-2. `core.tokens.json` (원시값) / `semantic.tokens.json` (의미값)
+1. `${CLAUDE_PLUGIN_ROOT}/design-system/tokens/README.md` — 레이어 규칙(HES 이식 기준)과 이식 각색 결정 목록
+2. `core.tokens.json` (HES base 원시값) / `semantic.tokens.json` (의미값) / `component.tokens.json` (HES comp/layout 스펙) / `platform.tokens.json` (AOS·iOS·PC·Min 모드)
 
 ## 작업 규칙
-- **UI가 참조할 토큰**은 항상 semantic 레이어에 있어야 한다. UI가 core를 직접 참조하려 하면 semantic alias를 먼저 만든다.
+- **일반 UI가 참조할 토큰**은 semantic 레이어에 있어야 한다. UI가 core를 직접 참조하려 하면 semantic alias를 먼저 만든다. 단, **HES 컴포넌트 1:1 이식**은 component 레이어(`comp.*`)를 참조한다.
+- HES 원본에 없는 값을 임의로 만들어 채우지 말 것(예: `space.elements.xl` 은 HES 에 없음). HDS 자체 토큰을 추가할 땐 `$description` 에 "HDS 자체 토큰"을 명시.
 - 새 토큰은 `category.role.variant` 명명. DTCG 포맷(`$value`/`$type`)을 지킨다.
 - 색 추가 시 다크(`$dark`) 대응과 대비(WCAG AA)를 함께 확인한다 → 필요하면 `/hds:a11y-audit` 안내.
 - 값 변경은 파급이 크므로: 변경 후 반드시 (1) `CHANGELOG.md` 기록, (2) `plugin.json`/`marketplace.json` version bump, (3) 소비처(퍼블 export, Figma) 재생성 안내.

@@ -2,6 +2,7 @@
 name: Input
 status: stable
 since: 1.1.0
+figma: "🧱 Template / input (691:3116)"
 ---
 
 # Input 스펙

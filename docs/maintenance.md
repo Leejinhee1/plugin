@@ -8,7 +8,7 @@
 3. **바꾸면 버전과 함께** → `CHANGELOG.md` + `.claude-plugin/plugin.json` · `marketplace.json` `version` bump (둘을 항상 같이).
 
 ## 토큰 바꾸기
-1. `design-system/tokens/core.tokens.json`(원시값) 또는 `semantic.tokens.json`(의미값) 수정.
+1. `design-system/tokens/` 의 해당 레이어 수정 — `core`(원시값)·`semantic`(의미값)·`component`(HES comp/layout 스펙)·`platform`(모드별 값).
 2. 색이면 대비(WCAG AA)·다크(`$dark`) 확인 → `/hds:a11y-audit`.
 3. `CHANGELOG.md` 기록 + version bump.
 4. 소비처 재생성: `/hds:token-export`, (Figma 쓰면) `/hds:figma-bridge`.

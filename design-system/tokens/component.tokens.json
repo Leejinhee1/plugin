@@ -1,0 +1,340 @@
+{
+  "$schema": "https://tr.designtokens.org/format/",
+  "$description": "HDS Component tokens — Figma HES theme 컬렉션의 컴포넌트/레이아웃/아이콘 레이어 이식(2026-07-20, 브랜치 0F4A8OTZzApAJIjFjeQULz). core·semantic 을 alias 하는 3번째 레이어로, HES 원본 이름 체계를 보존한다(HDS role 재작명 없음 — HES 이식이 목표). 이식 각색: (1) HES 'bg/N'·'border/N' 램프는 grayScale 1:1 패스스루라 별도 토큰 없이 {color.grayScale.N} 직접 참조 (2) HES 오타 'disabeldFg' 는 disabledFg 로 정정 (3) *fixed* 변형은 '$dark 오버라이드 없음'과 동일해 생략 (4) DTCG $type 은 생략 — 빌드는 $value 만 사용. 소수점 픽셀(123.2/142.4)은 HES 원본값 반올림.",
+  "letterSpacing": {
+    "$description": "HES letterSpacing — default -5%(전 텍스트 기본), increased 0(숫자·영문 가독 예외). typography 컴포짓에도 동일값 내장.",
+    "default":   { "$value": "-0.05em" },
+    "increased": { "$value": "0em" }
+  },
+  "font": {
+    "size": {
+      "$description": "HES font/size 의미 스케일(theme) — base 스텝 참조. body/default(16) 가 본문 기준.",
+      "body": {
+        "xxs":     { "$value": "{dimensionFont.size.10}" },
+        "xs":      { "$value": "{dimensionFont.size.20}" },
+        "s":       { "$value": "{dimensionFont.size.30}" },
+        "m":       { "$value": "{dimensionFont.size.40}" },
+        "default": { "$value": "{dimensionFont.size.50}" },
+        "l":       { "$value": "{dimensionFont.size.70}" },
+        "xl":      { "$value": "{dimensionFont.size.80}" },
+        "xxl":     { "$value": "{dimensionFont.size.90}" },
+        "xxxl":    { "$value": "{dimensionFont.size.100}" }
+      },
+      "headline": {
+        "s":  { "$value": "{dimensionFont.size.110}" },
+        "m":  { "$value": "{dimensionFont.size.120}" },
+        "l":  { "$value": "{dimensionFont.size.130}" },
+        "xl": { "$value": "{dimensionFont.size.140}" },
+        "xxl":{ "$value": "{dimensionFont.size.150}" }
+      }
+    }
+  },
+  "sizing": {
+    "icon": {
+      "$description": "HES sizing/icon — product(상품/일러스트성)·function(기능성) 아이콘 크기. product 는 default(30)<s(32) 로 순서가 어긋나 있으나 HES 원본 그대로.",
+      "product": {
+        "s":       { "$value": "{dimension.sizing.110}" },
+        "default": { "$value": "{dimension.sizing.107}" },
+        "m":       { "$value": "{dimension.sizing.120}" },
+        "l":       { "$value": "{dimension.sizing.130}" },
+        "xl":      { "$value": "{dimension.sizing.137}" },
+        "xxl":     { "$value": "{dimension.sizing.145}" }
+      },
+      "function": {
+        "xxs":     { "$value": "{dimension.sizing.50}" },
+        "xs":      { "$value": "{dimension.sizing.70}" },
+        "s":       { "$value": "{dimension.sizing.80}" },
+        "m":       { "$value": "{dimension.sizing.90}" },
+        "default": { "$value": "{dimension.sizing.100}" },
+        "l":       { "$value": "{dimension.sizing.105}" },
+        "xl":      { "$value": "{dimension.sizing.107}" }
+      }
+    }
+  },
+  "layout": {
+    "$description": "HES layout — 화면 공통 레이아웃 스펙.",
+    "content": {
+      "sizing": {
+        "top":            { "$value": "{space.section.s}" },
+        "bottom":         { "$value": "{space.section.xxl}" },
+        "hasFixedBottom": { "$value": "{space.section.l}", "$description": "하단 고정 버튼이 있을 때의 콘텐츠 하단 여백." }
+      }
+    },
+    "spacing": {
+      "side": { "$value": "{space.section.xs}", "$description": "화면 좌우 기본 마진(24)." }
+    },
+    "side": {
+      "box":      { "$value": "{space.section.xxs}", "$description": "박스형 요소 좌우 여백(16)." },
+      "text":     { "$value": "{space.elements.xxl}", "$description": "텍스트 요소 좌우 여백(20)." },
+      "text-add": { "$value": "{space.elements.xxs}", "$description": "텍스트 보조 여백(4)." }
+    },
+    "header": {
+      "bg":     { "$value": "#ffffffcc", "$description": "헤더 반투명 배경(80%)." },
+      "border": { "default": { "$value": "#ffffffe5" } },
+      "sizing": {
+        "height": { "$value": "{dimension.sizing.133}" },
+        "icon":   { "$value": "{sizing.icon.function.default}" }
+      }
+    }
+  },
+  "comp": {
+    "button": {
+      "$description": "HES comp/button — solid/soft/line 3계열 × primary/secondary/lightgray/darkgray/trans 색상군이 현행 체계. primary·primary2·primary3·secondary 단일군은 구세대 버튼(HES deprecated 후보)이므로 신규 컴포넌트에 쓰지 말 것.",
+      "solid": {
+        "primary": {
+          "bg":         { "$value": "{color.brand.default}" },
+          "fg":         { "$value": "{color.text.white}" },
+          "disabled":   { "$value": "{color.brand.disabled.primary}" },
+          "disabledFg": { "$value": "{color.text.white}", "$description": "HES 원본 키는 오타 'disabeldFg'." }
+        },
+        "secondary": {
+          "bg":         { "$value": "{color.brand.secondary}" },
+          "fg":         { "$value": "{color.text.white}" },
+          "disabled":   { "$value": "{color.brand.disabled.secondary}" },
+          "disabledFg": { "$value": "{color.text.white}" }
+        },
+        "lightgray": {
+          "bg":         { "$value": "{color.brand.lightgray}" },
+          "fg":         { "$value": "{color.text.white}" },
+          "disabled":   { "$value": "{color.brand.disabled.lightgray}" },
+          "disabledFg": { "$value": "{color.text.white}" }
+        },
+        "darkgray": {
+          "bg":         { "$value": "{color.brand.darkgray}" },
+          "fg":         { "$value": "{color.text.white}" },
+          "disabled":   { "$value": "{color.brand.disabled.darkgray}" },
+          "disabledFg": { "$value": "{color.text.white}" }
+        },
+        "trans": {
+          "bg":             { "$value": "{color.brand.boxbg.trans}" },
+          "border":         { "$value": "{color.brand.boxborder.trans}" },
+          "fg":             { "$value": "{color.text.02}" },
+          "disabled":       { "$value": "{color.brand.boxbg.disabled.trans}" },
+          "disabledFg":     { "$value": "{color.brand.boxfg.disabled.trans}" },
+          "disabledBorder": { "$value": "{color.brand.boxborder.disabled.trans}" }
+        }
+      },
+      "soft": {
+        "primary": {
+          "bg":         { "$value": "{color.brand.boxbg.primary}" },
+          "fg":         { "$value": "{color.brand.default}" },
+          "disabled":   { "$value": "{color.brand.boxbg.disabled.primary}" },
+          "disabledFg": { "$value": "{color.brand.boxfg.disabled.primary}" }
+        },
+        "secondary": {
+          "bg":         { "$value": "{color.brand.boxbg.secondary}" },
+          "fg":         { "$value": "{color.brand.secondary}" },
+          "disabled":   { "$value": "{color.brand.boxbg.disabled.secondary}" },
+          "disabledFg": { "$value": "{color.brand.boxfg.disabled.secondary}" }
+        },
+        "lightgray": {
+          "bg":         { "$value": "{color.brand.boxbg.lightgray}" },
+          "fg":         { "$value": "{color.brand.lightgray}" },
+          "disabled":   { "$value": "{color.brand.boxbg.disabled.lightgray}" },
+          "disabledFg": { "$value": "{color.brand.boxfg.disabled.lightgray}" }
+        }
+      },
+      "line": {
+        "primary": {
+          "border":     { "$value": "{color.brand.boxborder.primary}" },
+          "fg":         { "$value": "{color.brand.default}" },
+          "disabled":   { "$value": "{color.brand.boxborder.disabled.primary}" },
+          "disabledFg": { "$value": "{color.brand.boxfg.disabled.primary}" }
+        },
+        "secondary": {
+          "border":     { "$value": "{color.brand.boxborder.secondary}" },
+          "fg":         { "$value": "{color.brand.secondary}" },
+          "disabled":   { "$value": "{color.brand.boxborder.disabled.secondary}" },
+          "disabledFg": { "$value": "{color.brand.boxfg.disabled.secondary}" }
+        },
+        "lightgray": {
+          "border":     { "$value": "{color.brand.boxborder.lightgray}" },
+          "fg":         { "$value": "{color.brand.lightgray}" },
+          "disabled":   { "$value": "{color.brand.boxborder.disabled.lightgray}" },
+          "disabledFg": { "$value": "{color.brand.boxfg.disabled.lightgray}" }
+        },
+        "border": {
+          "default":   { "$value": "{color.grayScale.100}", "$description": "HES border/100." },
+          "secondary": { "$value": "{color.grayScale.40}", "$description": "HES border/40." }
+        },
+        "text": {
+          "default":   { "$value": "{color.text.01}" },
+          "secondary": { "$value": "{color.text.04}" }
+        },
+        "bg": { "default": { "$value": "#00000000" } }
+      },
+      "primary": {
+        "$description": "구세대 버튼 — teal lighter 기반. 신규 사용 금지.",
+        "default":  { "$value": "{color.teal.100}" },
+        "disabled": { "$value": "#cce3df" },
+        "text": {
+          "default":  { "$value": "{color.text.white}" },
+          "disabled": { "$value": "{color.text.white}" }
+        }
+      },
+      "primary2": { "disabled": { "$value": "#dfe3f7" } },
+      "primary3": {
+        "default":  { "$value": "{color.purple.110}", "$description": "HES 원본 리터럴 #6242bc = purple/110 이라 alias 정규화." },
+        "disabled": { "$value": "{color.purple.60}", "$description": "HES 원본 리터럴 #eeedf4 = purple/60." }
+      },
+      "secondary": {
+        "$description": "구세대 버튼.",
+        "default":  { "$value": "#7b9cae" },
+        "disabled": { "$value": "#d3d9e2" },
+        "text": {
+          "default":  { "$value": "{color.text.white}" },
+          "disabled": { "$value": "{color.text.white}" }
+        }
+      },
+      "txt": { "spacing": { "top": { "$value": "5px" } } },
+      "txtLink": { "default": { "$value": "{color.text.04}" } },
+      "link": {
+        "default": { "$value": "{color.text.03}" },
+        "dark":    { "$value": "{color.text.01}" },
+        "ico":     { "s": { "$value": "{sizing.icon.function.xxs}" } }
+      },
+      "round": {
+        "bg": {
+          "01": { "$value": "{color.grayScale.70}", "$description": "HES bg/70." },
+          "02": { "$value": "{color.grayScale.100}", "$description": "HES bg/100." }
+        },
+        "line": {
+          "text":   { "default": { "$value": "{color.text.04}" } },
+          "border": { "default": { "$value": "{color.grayScale.40}", "$description": "HES border/40." } },
+          "icon":   { "default": { "$value": "{color.grayScale.50}", "$description": "HES bg/50." } }
+        },
+        "spacing": {
+          "default": {
+            "side":   { "$value": "{space.elements.m}" },
+            "top":    { "$value": "7px", "$description": "HES 리터럴 7." },
+            "bottom": { "$value": "{space.elements.xs}" }
+          },
+          "m": {
+            "side": { "$value": "{space.elements.xxl}" },
+            "top":  { "$value": "{space.elements.s}" }
+          },
+          "icon": { "default": { "$value": "{space.elements.s}" } },
+          "s": {
+            "side":   { "$value": "{space.elements.m}" },
+            "top":    { "$value": "{space.elements.s}" },
+            "bottom": { "$value": "{space.elements.xs}" }
+          }
+        }
+      },
+      "box": {
+        "secondary": { "$value": "123.2px", "$description": "HES 원본 123.1999… 반올림." },
+        "borderRadius": {
+          "default": { "$value": "{dimension.radius.30}", "$description": "HES borderRadius/xs(8)." },
+          "rounded": { "$value": "{dimension.radius.60}", "$description": "HES borderRadius/m(14)." },
+          "none":    { "$value": "0px" },
+          "s":       { "$value": "{dimension.radius.20}" }
+        },
+        "sm": {
+          "bg":   { "default": { "$value": "{color.grayScale.10}", "$description": "HES bg/10." } },
+          "text": { "default": { "$value": "{color.text.point.50}" } },
+          "line": {
+            "text":   { "$value": "{color.text.02}" },
+            "border": { "$value": "{color.grayScale.25}", "$description": "HES border/25." }
+          }
+        },
+        "s": {
+          "bg":   { "default": { "$value": "{color.grayScale.50}", "$description": "HES bg/50." } },
+          "text": { "default": { "$value": "{color.text.white}" } },
+          "line": {
+            "border": { "$value": "{color.grayScale.25}" },
+            "text":   { "$value": "{color.text.04}" }
+          }
+        },
+        "spacing": {
+          "ico":     { "$value": "{space.elements.s}" },
+          "default": { "side": { "$value": "{space.elements.l}" } },
+          "m":       { "side": { "$value": "{space.elements.l}" } },
+          "big":     { "side": { "$value": "{space.section.xxs}" } },
+          "sm": {
+            "top":  { "$value": "{space.elements.xs}" },
+            "side": { "$value": "{space.elements.l}" }
+          },
+          "s": {
+            "top":  { "$value": "{space.elements.xs}" },
+            "side": { "$value": "{space.elements.m}" }
+          }
+        },
+        "size": {
+          "default": { "$value": "{dimension.sizing.120}" },
+          "m":       { "$value": "{dimension.sizing.130}" },
+          "big":     { "$value": "{dimension.sizing.140}" }
+        }
+      },
+      "group": {
+        "spacing": {
+          "gap":  { "$value": "{space.elements.xxs}" },
+          "none": { "$value": "0px" }
+        }
+      },
+      "fixed": {
+        "$description": "하단 고정 버튼 스펙.",
+        "button": { "$value": "{dimension.sizing.135}" },
+        "height": { "$value": "84px" },
+        "secondary": { "width": { "$value": "142.4px", "$description": "HES 원본 142.3999… 반올림." } },
+        "spacing": {
+          "gap":    { "$value": "{space.elements.xxs}" },
+          "side":   { "$value": "{layout.spacing.side}" },
+          "top":    { "$value": "{space.section.xxs}" },
+          "bottom": { "$value": "16px", "$description": "HES 원본이 spacing alias 아닌 리터럴 16." }
+        }
+      },
+      "sizing": {
+        "$description": "버튼 높이 스케일: s=24 · m=32 · l=40 · xl=48.",
+        "s":  { "$value": "{dimension.sizing.100}" },
+        "m":  { "$value": "{dimension.sizing.110}" },
+        "l":  { "$value": "{dimension.sizing.120}" },
+        "xl": { "$value": "{dimension.sizing.130}" },
+        "fixed": { "height": { "$value": "84px" } },
+        "box":   { "secondary": { "$value": "142.4px" } }
+      }
+    },
+    "layer": {
+      "$description": "HES comp/layer — 알럿/모달/바텀시트 등 레이어 컴포넌트 스펙.",
+      "sizing": { "button": { "$value": "{comp.button.sizing.xl}" } },
+      "alert": {
+        "spacing": {
+          "button": { "$value": "{space.section.s}" },
+          "txtGap": { "$value": "{space.elements.sm}" },
+          "top":    { "$value": "{space.section.xs}" }
+        }
+      },
+      "bottomSeat": {
+        "borderRadius": { "$value": "{dimension.radius.90}", "$description": "HES borderRadius/xl(24). HES 원 키명 'bottomSeat'(bottomSheet 오기로 추정) 보존." }
+      },
+      "modal": {
+        "borderRadius": { "$value": "{dimension.radius.60}", "$description": "HES borderRadius/m(14)." },
+        "spacing": {
+          "bottom": { "$value": "{space.elements.m}" },
+          "top":    { "$value": "{space.section.s}" },
+          "none":   { "$value": "0px" },
+          "side":   { "$value": "{layout.side.box}" },
+          "btn": {
+            "margin": { "$value": "{space.elements.s}" },
+            "gap":    { "$value": "{space.elements.xxs}" }
+          }
+        }
+      },
+      "head": {
+        "spacing": {
+          "top":    { "$value": "30px" },
+          "right":  { "$value": "55px", "$description": "닫기 버튼 영역 확보." },
+          "height": { "$value": "{dimension.sizing.145}" },
+          "left":   { "$value": "{layout.side.text}" }
+        }
+      },
+      "content": {
+        "bottom":         { "$value": "{space.section.s}" },
+        "none":           { "$value": "0px" },
+        "hasFixedBottom": { "$value": "{space.section.xxs}" }
+      },
+      "dim": {
+        "default": { "$value": "#000000", "$description": "HES layer/dim 원시값. 실제 스크림은 알파를 얹은 semantic color.bg.overlay 를 사용할 것." }
+      }
+    }
+  }
+}

@@ -27,5 +27,5 @@
 // primary 2개 — 위계 붕괴
 <Button variant="primary">저장</Button><Button variant="primary">발행</Button>
 // 색 하드코딩 — 토큰 우회
-<Button className="bg-[#2f6bff]">저장</Button>
+<Button className="bg-[#009178]">저장</Button>
 ```

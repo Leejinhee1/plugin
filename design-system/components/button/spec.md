@@ -2,6 +2,7 @@
 name: Button
 status: stable
 since: 1.0.0
+figma: "🧱 Template / Buttons (691:3084)"
 ---
 
 # Button 스펙

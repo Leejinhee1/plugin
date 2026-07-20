@@ -1,28 +1,28 @@
 # Card 사용 사례 (화면별)
 
-## 오늘 브리핑 카드 (날씨 요약) — 홈 화면
+## 결제 브리핑 카드 (오늘 요약) — 홈 화면
 ```tsx
 <Card variant="elevated">
   <CardHeader>
-    <CardTitle>오늘의 하늘</CardTitle>
-    <span className="text-sm text-[var(--hds-fg-muted)]">서울 · 오후 2시 기준</span>
+    <CardTitle>결제 브리핑</CardTitle>
+    <span className="text-sm text-[var(--hds-fg-muted)]">7월 20일 · 오후 2시 기준</span>
   </CardHeader>
   <CardBody>
-    <p>맑음, 22°C. 저녁부터 구름이 많아져요. 우산은 필요 없어요.</p>
+    <p>오늘 3건, 12,400원을 결제했어요. 124머니가 적립됐어요.</p>
   </CardBody>
 </Card>
 ```
 > 홈 화면에서 가장 먼저 눈에 띄어야 하는 카드이므로 `elevated`. 화면당 elevated 카드는 1개 권장.
 
-## 일정 카드 — 오늘 목록
+## 거래 카드 — 오늘 내역 목록
 ```tsx
 <Card padding="sm">
   <CardHeader>
-    <CardTitle as="h4">팀 회의</CardTitle>
-    <span className="text-sm text-[var(--hds-fg-muted)]">14:00–15:00</span>
+    <CardTitle as="h4">스타벅스</CardTitle>
+    <span className="text-sm text-[var(--hds-fg-muted)]">오후 2:00</span>
   </CardHeader>
   <CardBody>
-    <p className="text-[var(--hds-fg-muted)]">우산 챙기기 — 오후에 비 예보</p>
+    <p className="text-[var(--hds-fg-muted)]">5,600원 결제 · 56머니 적립</p>
   </CardBody>
 </Card>
 ```
@@ -35,7 +35,7 @@
     <CardTitle>알림</CardTitle>
   </CardHeader>
   <CardBody>
-    <p className="text-[var(--hds-fg-muted)]">날씨 급변 시 알림을 받아요.</p>
+    <p className="text-[var(--hds-fg-muted)]">결제·적립이 일어나면 알림을 받아요.</p>
   </CardBody>
   <CardFooter>
     <Button variant="ghost">나중에</Button>
@@ -51,11 +51,11 @@
 <Card className="bg-white border-gray-300">...</Card>
 
 // div onClick 만으로 클릭 가능한 카드 구현 — 키보드 접근 불가
-<Card onClick={() => router.push("/schedule/1")}>...</Card>
+<Card onClick={() => router.push("/transactions/1")}>...</Card>
 
 // elevated 남용 — 목록 전체를 강조하면 강조가 사라짐
-<Card variant="elevated">일정 1</Card>
-<Card variant="elevated">일정 2</Card>
-<Card variant="elevated">일정 3</Card>
+<Card variant="elevated">거래 1</Card>
+<Card variant="elevated">거래 2</Card>
+<Card variant="elevated">거래 3</Card>
 ```
 > 클릭 가능한 카드가 필요하면 `<a>` 로 감싸거나 내부에 네이티브 버튼을 두어 포커스·키보드 동작을 보장할 것.

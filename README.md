@@ -17,6 +17,8 @@ plugin/  (= 저장소 루트가 곧 플러그인이자 마켓플레이스)
 │   └── publish/           퍼블 — token-export · component-build · a11y-audit
 ├── agents/                design-reviewer 검수 에이전트
 ├── design-system/         ★ 단일 소스 오브 트루스 — tokens · guidelines · components · usage · brand
+├── cli/                   hds.mjs — `npx hds add` 컴포넌트 설치 CLI
+├── package.json           bin: hds (컴포넌트를 쓰는 프로젝트가 devDependency 로 설치)
 ├── examples/              (주)하늘 가상 브랜드 데모 — 설계서 + 동작 프로토타입
 ├── codex/                 Codex 어댑터 (AGENTS.md · prompts · config)
 └── docs/                  아키텍처 · 시작하기 · 사용 가이드 · 유지보수
@@ -27,8 +29,8 @@ plugin/  (= 저장소 루트가 곧 플러그인이자 마켓플레이스)
 1. **단일 소스 오브 트루스** — 디자인 시스템의 실제 내용은 `design-system/` 에 **한 번만** 존재합니다. 토큰·컴포넌트·가이드를 여기서 고치면 모든 하네스·역할에 반영됩니다.
 2. **단일 플러그인, 역할별 스킬 버킷** — 플러그인은 `hds` 하나. 스킬은 `skills/planning|design|publish/` 로 분류하되 `plugin.json` 의 `skills` 배열에 명시적으로 나열합니다. 배열에 없는 폴더(초안 등)는 배포되지 않습니다.
 3. **얇은 하네스 어댑터** — Claude 스킬과 Codex 프롬프트는 같은 파일을 읽는 얇은 포인터입니다. 하네스가 늘어도 내용은 한 곳.
-4. **2레이어 토큰** — core(원시값) → semantic(의미값). 리브랜딩·다크테마·그룹사 테마를 core만 바꿔 대응.
-5. **표준 포맷** — 토큰은 W3C DTCG, 컴포넌트는 레지스트리(shadcn 방식). 벤더 종속 없이 장기 유지.
+4. **HES 구조 그대로, 4레이어 토큰** — core(원시값) → semantic(의미값) → component(HES 컴포넌트 스펙) + platform(AOS·iOS·PC·Min). 리브랜딩·다크테마·그룹사 테마를 core/semantic만 바꿔 대응.
+5. **표준 포맷** — 토큰은 W3C DTCG, 컴포넌트는 레지스트리(shadcn 호환). 벤더 종속 없이 장기 유지.
 6. **명시적 버전 관리** — 공식 릴리스는 semver + CHANGELOG. 팀은 통제된 시점에만 업데이트를 받습니다.
 
 ## 빠른 시작
@@ -48,6 +50,16 @@ claude --plugin-dir .                       # 저장소 루트가 곧 플러그�
 cp codex/prompts/*.md ~/.codex/prompts/     # /hds-tokens, /hds-component, /hds-spec
 # 저장소를 열면 codex/AGENTS.md 규칙이 적용됩니다.
 ```
+
+### 컴포넌트 가져다 쓰기 (제품 프로젝트에서)
+디자인 시스템을 만드는 게 아니라 **컴포넌트를 소비**한다면, 위 플러그인 대신 자체 CLI를 씁니다.
+```bash
+npm i -D github:leejinhee1/plugin   # 또는 사내 npm 발행본
+npx hds list                        # 설치 가능한 컴포넌트 13종 확인
+npx hds add checkbox                # 코드→components/hds/, 토큰→styles/hds-tokens.css (의존·토큰 자동 포함)
+```
+전역 CSS에 `@import "./styles/hds-tokens.css";` 한 줄을 넣고 `import { Checkbox } from "@/components/hds/Checkbox"` 로 사용합니다.
+자세한 옵션·다른 소비 경로(barrel import·shadcn CLI 호환)는 [design-system/components/README.md](design-system/components/README.md).
 
 ## 역할별 진입점
 
@@ -69,3 +81,4 @@ cp codex/prompts/*.md ~/.codex/prompts/     # /hds-tokens, /hds-component, /hds-
 - [docs/architecture.md](docs/architecture.md) — 왜 이렇게 설계했는가
 - [docs/maintenance.md](docs/maintenance.md) — 토큰/컴포넌트 추가·버전·릴리스
 - [design-system/README.md](design-system/README.md) — 소스 오브 트루스 규칙
+- [design-system/components/README.md](design-system/components/README.md) — 컴포넌트 13종 카탈로그 · Figma 매핑 · 가져다 쓰는 법
