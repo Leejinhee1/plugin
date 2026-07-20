@@ -25,6 +25,13 @@
 ## 가이드 문서 갱신
 `design-system/guidelines/` 를 표·명시적 규칙으로 유지(AI-리더블). 예외를 늘리지 말고 규칙/토큰으로 승격.
 
+## MCP 커넥터 추가/관리
+1. `/hds:mcp-connectors` 로 `mcp/registry.json` 에 등록(`name·status·since·transport·scope·usedBy·connect`). Figma 항목이 정본 예시.
+2. **scope 결정**: `bundled`(config 에 비밀 없는 로컬 stdio·공개 http·"로컬 http+앱 세션 인증"만 — `plugin.json` 의 `mcpServers` 에 선언) · `user`(각자 연결) · `project`(팀 `.mcp.json`). **비밀은 절대 커밋·번들 금지.** bundled 는 `registry.json` 과 `plugin.json` 을 같은 PR에서 갱신.
+3. `url` 커넥터는 `type`(http/sse/ws)을 반드시 명시. 소비 스킬(`usedBy`)에 전제/폴백을 링크.
+4. `CHANGELOG.md` + version bump.
+> 레지스트리는 *써야 할* 커넥터, `/mcp`·`claude mcp list` 는 *연결된* 커넥터. 둘을 대조.
+
 ## 버전 정책 (릴리스)
 - 이 저장소는 **명시적 semver**를 사용합니다(공식 가이드라 통제된 배포).
 - `MAJOR`: 토큰 삭제/이름변경, 컴포넌트 API 파괴적 변경.
@@ -46,6 +53,7 @@
 ## 체크리스트 (PR 리뷰용)
 - [ ] 값이 SoT(tokens/)에서만 바뀌었는가? 하드코딩 없는가?
 - [ ] 컴포넌트 3종 세트 + registry 등록?
+- [ ] (MCP 커넥터 변경 시) `mcp/registry.json` 등록 + scope 적절 + **번들에 비밀 없음** + `url`엔 `type` + `plugin.json` mcpServers 동기화?
 - [ ] 접근성(대비·키보드·포커스·aria) 확인?
 - [ ] CHANGELOG + version bump?
 - [ ] `claude plugin validate --strict` 통과?

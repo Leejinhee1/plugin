@@ -10,7 +10,7 @@
 | 내 상황 | 권장 환경 | 준비 |
 | :-- | :-- | :-- |
 | 기획자 — 코드/터미널 경험 없음 | **Claude Code 데스크톱 앱 또는 웹**(claude.ai/code) | 아래 "공통 설치" 1회 |
-| 디자이너 — 문서·토큰 관리, Figma 병행 | **Claude Code** (+ 선택: Figma MCP 연결) | 공통 설치 + Figma 연동 시 `/plugin` 에서 Figma 연결 |
+| 디자이너 — 문서·토큰 관리, Figma 병행 | **Claude Code** (+ 선택: Figma) | 공통 설치 + Figma 쓰면 Figma 앱에서 Dev Mode MCP만 켜기(서버는 플러그인이 제공) |
 | 퍼블리셔 — 내 프로젝트 저장소에서 작업 | **Claude Code CLI** (프로젝트 폴더에서 실행) 또는 **Codex CLI** | 공통 설치, Codex는 §5 참고 |
 | HDS 자체를 수정하는 관리자 | Claude Code CLI + 이 저장소 클론 | `claude --plugin-dir` 개발 모드 (docs/maintenance.md) |
 
@@ -72,7 +72,7 @@ Claude Code 안에서:
 
 ## 3. 디자인 파트
 
-**설치**: `hds` (공통 설치 1회) · **환경**: Claude Code (+ Figma 쓰면 Figma MCP 연결)
+**설치**: `hds` (공통 설치 1회) · **환경**: Claude Code (+ Figma 쓰면 Figma 앱 Dev Mode MCP만 켜기 — 서버는 플러그인이 제공)
 
 ### 시나리오 D1. 뭐가 있는지 확인하고, 올바른 사용법을 안내한다
 > "주니어가 버튼을 두 개 다 primary로 썼다. 근거를 들어 피드백하고 싶다."
@@ -109,8 +109,9 @@ Claude Code 안에서:
 ### 시나리오 D5. Figma와 동기화한다 (선택)
 > "디자이너들은 Figma에서 작업한다. 토큰을 Figma Variables로 쓰고 싶다."
 
-1. Claude Code에 Figma MCP를 연결한 뒤 `/hds:figma-bridge 토큰을 Figma Variables로 발행해줘`
-2. 반대로 Figma에서 값이 바뀌었으면 "Figma와 코드 토큰 diff 보여줘" — 의도된 변경이면 코드 토큰에 반영(D3), 아니면 Figma를 코드에 맞춥니다.
+1. **Figma MCP 서버는 플러그인이 이미 제공**합니다 — Figma 데스크톱 앱에서 Dev Mode MCP 서버만 켜면 됩니다(서버 추가·토큰 불필요). 연결이 됐는지 모르겠으면 `/hds:mcp-connectors` — 제공 커넥터 목록·연결 현황·미연결 시 켜는 법이 나옵니다.
+2. `/hds:figma-bridge 토큰을 Figma Variables로 발행해줘`
+3. 반대로 Figma에서 값이 바뀌었으면 "Figma와 코드 토큰 diff 보여줘" — 의도된 변경이면 코드 토큰에 반영(D3), 아니면 Figma를 코드에 맞춥니다.
 
 **원칙**: 충돌 시 **코드가 진실**입니다. Figma는 협업 채널.
 
@@ -196,6 +197,7 @@ cp codex/prompts/*.md ~/.codex/prompts/
 | :-- | :-- |
 | 스킬 이름을 못 외우겠어요 | `/hds:ask-hds` 에 상황을 설명하면 맞는 스킬과 순서를 알려줍니다. 자연어 요청도 됩니다 — "접근성 점검해줘"라고 하면 a11y-audit이 실행됩니다. |
 | 업데이트했는데 반영이 안 돼요 | `/plugin update` 후 새 세션을 시작하거나 `/reload-plugins`. 퍼블은 P4의 재생성까지 해야 프로젝트에 반영됩니다. |
+| Figma(MCP)가 연결됐는지 모르겠어요 | `/hds:mcp-connectors` — 플러그인이 **제공하는** MCP 서버 목록과 현재 연결 상태, 미연결 시 연결 방법을 보여줍니다. Figma 서버(공식 Dev Mode)는 플러그인이 이미 등록하므로 Figma 앱에서 Dev Mode MCP만 켜면 되고, HDS 메인 플로우는 이 서버 없이도 전부 동작합니다. |
 | 우리 제품은 React가 아니에요 | `component-build` 가 spec 기준으로 해당 프레임워크 구현을 생성합니다. 먼저 팀 스택을 알려주세요. |
 | 급해서 색을 하드코딩했어요 | 다음 PR에서 반드시 토큰으로 교체하세요. `a11y-audit`/`design-reviewer` 가 하드코딩을 잡아냅니다. |
 | 그룹사/계열사 테마는? | core 토큰만 교체한 브랜드 오버라이드로 대응합니다 — docs/maintenance.md "확장" 참조. |

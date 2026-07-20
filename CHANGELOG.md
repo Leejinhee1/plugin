@@ -2,6 +2,16 @@
 
 이 프로젝트는 [semver](https://semver.org)를 따릅니다. 각 릴리스에서 `.claude-plugin/plugin.json` 과 `marketplace.json` version을 함께 bump 합니다.
 
+## [3.5.0] — 2026-07-20
+### 추가 — MCP 커넥터 레지스트리 + 플러그인 번들 제공 + `/hds:mcp-connectors` 현황 스킬
+외부 MCP 커넥터를 "무엇을 쓰는지(레지스트리) · 플러그인이 무엇을 제공하는지(번들) · 지금 무엇이 연결됐는지(현황)"로 한데 묶어 관리. 두 세션에서 병행 진행되던 커넥터 작업(레지스트리 방식 · 번들 방식)을 하이브리드로 통합.
+- **`mcp/` 레지스트리 신설(SoT 패턴 확장)**: `mcp/registry.json`(커넥터 인덱스 — `name·status·since·transport·scope·usedBy·connect`) + `mcp/mcp.example.json`(복사용 예시) + `mcp/README.md`. 컴포넌트 `registry.json` 과 같은 패턴 — 어떤 커넥터를 왜/어떻게 쓰는지의 진실을 한 곳에.
+- **플러그인이 Figma MCP를 직접 번들 제공**: `plugin.json` 에 `mcpServers.figma`(공식 Figma **Dev Mode** MCP, `type:"http"` · `url:"http://127.0.0.1:3845/mcp"`) 선언. 설치하면 서버가 자동 등록 — 사용자가 `claude mcp add` 로 따로 추가할 필요 없음. **번들에 비밀 없음**: 로컬 URL만 등록하고 인증은 Figma 데스크톱 앱 세션이 담당(config 에 토큰 없음) → "자격증명 커넥터 비번들" 보안 원칙과 양립.
+  - `figma-bridge` 가 참조하는 도구(`use_figma`·Code Connect)는 공식 Dev Mode 기준이므로 커뮤니티 서버(`figma-developer-mcp`)가 아니라 Dev Mode 를 번들. 개인 REST 토큰 변형은 registry 의 `connect.altUserConfig` 에 user 스코프로 문서화(번들 금지).
+- **`/hds:mcp-connectors` 스킬 신설**(`skills/general/`): 레지스트리 **조회** + 세션 **연결 현황**(도구 `mcp__plugin_hds_figma__*` 탐지 → `claude mcp list`/`get` 헬스 → 판정, ✅/⚠️/✗) + 커넥터 **등록·관리**(scope 결정·보안 게이트). 미연결(대개 Figma 앱 Dev Mode 꺼짐)이면 켜는 법 안내 — 자격증명 문제 아님을 구분.
+- **scope 로 소유권 분리**: `bundled`(플러그인 자동 연결, config 에 비밀 없는 것만) · `user`(각자 인증) · `project`(팀 `.mcp.json`). `url` 커넥터는 `type` 필수(누락 시 Claude Code가 서버 스킵).
+- 상호 참조: `figma-bridge` 전제, `ask-hds` 라우터(단독 스킬), `general/README`, README(구조 `mcp/`·`mcpServers`), architecture(결정 6), maintenance(커넥터 추가 절차·PR 체크리스트), getting-started·user-guide, codex config.
+
 ## [3.4.0] — 2026-07-20
 ### 추가 — 자체 설치 CLI `npx hds add` (shadcn 브랜드 탈피)
 설치 명령에 외부 도구 이름(shadcn)이 노출되는 문제 해소 — HDS 자체 CLI 를 1차 경로로 승격.
