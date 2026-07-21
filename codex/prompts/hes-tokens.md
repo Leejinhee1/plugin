@@ -1,4 +1,4 @@
-HDS 디자인 토큰 작업. 소스: `design-system/tokens/`.
+HES 디자인 토큰 작업. 소스: `design-system/tokens/`.
 
 먼저 `tokens/README.md`(2레이어 규칙)와 `core.tokens.json`/`semantic.tokens.json` 을 읽어라. 그다음 사용자의 요청($ARGUMENTS)을 처리하되:
 

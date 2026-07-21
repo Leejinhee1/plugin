@@ -1,6 +1,6 @@
-# HDS — Codex 어댑터
+# HES — Codex 어댑터
 
-Codex CLI에서 HDS 디자인 시스템을 Claude Code와 **동일한 규칙·동일한 소스**로 사용하기 위한 얇은 어댑터입니다.
+Codex CLI에서 HES 디자인 시스템을 Claude Code와 **동일한 규칙·동일한 소스**로 사용하기 위한 얇은 어댑터입니다.
 
 ## 구성
 - `AGENTS.md` — Codex가 읽는 하네스 규칙(소스 경로 + 불변 규칙). 저장소를 열면 자동 로드됩니다.

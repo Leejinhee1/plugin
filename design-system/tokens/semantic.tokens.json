@@ -1,6 +1,6 @@
 {
   "$schema": "https://tr.designtokens.org/format/",
-  "$description": "HDS Semantic tokens — 의미 기반 별칭. UI/컴포넌트는 반드시 이 레이어만 참조. Figma HES theme 컬렉션의 매핑을 따르되 토큰 이름은 HDS 관례(category.role.variant)를 유지. core 값을 {color.teal.110} 형태로 alias.",
+  "$description": "HES Semantic tokens — 의미 기반 별칭. UI/컴포넌트는 반드시 이 레이어만 참조. Figma HES theme 컬렉션의 매핑을 따르되 토큰 이름은 자체 관례(category.role.variant)를 유지. core 값을 {color.teal.110} 형태로 alias.",
   "color": {
     "$type": "color",
     "bg": {
@@ -22,8 +22,8 @@
     },
     "brand": {
       "default": { "$value": "{color.hana.green}", "$description": "HES brand/primary(하나그린). 버튼 solid primary 배경 등 핵심 액션." },
-      "hover":   { "$value": "{color.teal.115}", "$description": "HDS 자체 토큰 — HES 에 hover/active 정의 없음." },
-      "active":  { "$value": "{color.teal.120}", "$description": "HDS 자체 토큰." },
+      "hover":   { "$value": "{color.teal.115}", "$description": "자체 토큰 — HES 에 hover/active 정의 없음." },
+      "active":  { "$value": "{color.teal.120}", "$description": "자체 토큰." },
       "subtle":  { "$value": "{color.teal.70}", "$description": "HES bg/teal/70" },
       "secondary": { "$value": "#6479ea", "$description": "HES brand/secondary — core 램프에 없는 theme 레벨 원시값(HES 원본 그대로 유지). solid/soft/line secondary 버튼 계열의 기준색. purple 계열인 secondary/default(text.point.30)와 다른 값이니 혼동 주의." },
       "lightgray": { "$value": "#77879f", "$description": "HES brand/lightgray — theme 레벨 원시값." },
@@ -78,7 +78,7 @@
     },
     "focus": { "ring": { "$value": "{color.teal.100}", "$description": "HES primary/lighter(text/point/10)" } },
     "text": {
-      "$description": "HES text/01~08 위계 원본 이식. fg.* 는 이 중 접근성 통과분만 큐레이션한 HDS 별칭(01=fg.base, 04=fg.muted). 05 이하(grayScale 60~35)는 흰 배경 대비 AA 미달 — 본문 금지, 비활성/장식 한정. HES 의 *fixed* 변형(다크에서 안 뒤집히는 값)은 DTCG 에선 '$dark 오버라이드 없음'과 동일하므로 별도 토큰을 만들지 않는다.",
+      "$description": "HES text/01~08 위계 원본 이식. fg.* 는 이 중 접근성 통과분만 큐레이션한 자체 별칭(01=fg.base, 04=fg.muted). 05 이하(grayScale 60~35)는 흰 배경 대비 AA 미달 — 본문 금지, 비활성/장식 한정. HES 의 *fixed* 변형(다크에서 안 뒤집히는 값)은 DTCG 에선 '$dark 오버라이드 없음'과 동일하므로 별도 토큰을 만들지 않는다.",
       "black": { "$value": "{color.grayScale.black}", "$description": "HES text/black — theme 컬렉션에서 유일하게 다크 반전(black↔white)되는 토큰." },
       "01": { "$value": "{color.grayScale.100}" },
       "02": { "$value": "{color.grayScale.90}" },
@@ -113,7 +113,7 @@
     }
   },
   "$dark": {
-    "$description": "다크 테마 오버라이드. 빌드 시 [data-theme=dark] 로 매핑. HES Dark 모드는 현재 Light와 거의 동일하게 정의되어 있어(텍스트 black↔white 반전만 존재) HDS 자체 반전 규칙을 grayScale 램프로 구성.",
+    "$description": "다크 테마 오버라이드. 빌드 시 [data-theme=dark] 로 매핑. HES Dark 모드는 현재 Light와 거의 동일하게 정의되어 있어(텍스트 black↔white 반전만 존재) 자체 반전 규칙을 grayScale 램프로 구성.",
     "color": {
       "bg":  { "base": "{color.grayScale.100}", "subtle": "{color.grayScale.90}", "muted": "{color.grayScale.80}", "inverse": "{color.grayScale.white}", "overlay": "rgba(0, 0, 0, 0.6)" },
       "fg":  { "base": "{color.grayScale.10}", "muted": "{color.grayScale.40}", "onBrand": "{color.grayScale.white}", "onInverse": "{color.grayScale.100}" },

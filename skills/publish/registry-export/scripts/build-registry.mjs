@@ -2,9 +2,9 @@
 /**
  * build-registry.mjs
  *
- * HDS 컴포넌트를 shadcn CLI 호환 레지스트리(JSON)로 내보낸다.
+ * HES 컴포넌트를 shadcn CLI 호환 레지스트리(JSON)로 내보낸다.
  * 산출물을 정적 호스팅하면 어느 프로젝트에서든
- * `npx shadcn@latest add @hds/button` 으로 컴포넌트를 즉시 설치할 수 있다.
+ * `npx shadcn@latest add @hes/button` 으로 컴포넌트를 즉시 설치할 수 있다.
  *
  * Node.js >= 18, 외부 의존성 없음. 출력은 결정적(정렬됨).
  *
@@ -17,7 +17,7 @@
  *
  * 산출물:
  *   registry.json      — shadcn 레지스트리 인덱스 (item 메타데이터, content 없음)
- *   r/tokens.json      — HDS 토큰 CSS(registry:file) — 모든 컴포넌트의 registryDependency
+ *   r/tokens.json      — HES 토큰 CSS(registry:file) — 모든 컴포넌트의 registryDependency
  *   r/<name>.json      — 컴포넌트별 registry-item (파일 content 포함)
  *
  * 소스(components/*)는 읽기 전용. 토큰 CSS 는 token-export 의 build-tokens.mjs 를
@@ -38,7 +38,7 @@ import { spawnSync } from "node:child_process";
 import { tmpdir } from "node:os";
 
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
-const REGISTRY_NAME = "hds";
+const REGISTRY_NAME = "hes";
 const ITEM_SCHEMA = "https://ui.shadcn.com/schema/registry-item.json";
 const INDEX_SCHEMA = "https://ui.shadcn.com/schema/registry.json";
 
@@ -66,7 +66,7 @@ function parseArgs(argv) {
 }
 
 function printHelp() {
-  console.log(`build-registry.mjs — HDS 컴포넌트 -> shadcn 호환 레지스트리(JSON)
+  console.log(`build-registry.mjs — HES 컴포넌트 -> shadcn 호환 레지스트리(JSON)
 
 사용법:
   node build-registry.mjs [--components <dir>] [--out <dir>] [--homepage <url>]
@@ -107,7 +107,7 @@ function buildTokensCss() {
     console.error(`[build-registry] token-export 스크립트를 찾을 수 없습니다: ${buildTokens}`);
     process.exit(1);
   }
-  const tmp = mkdtempSync(join(tmpdir(), "hds-registry-"));
+  const tmp = mkdtempSync(join(tmpdir(), "hes-registry-"));
   try {
     const result = spawnSync(process.execPath, [buildTokens, "--out", tmp], {
       encoding: "utf8",
@@ -131,18 +131,18 @@ function tokensItem(tokensCss) {
     $schema: ITEM_SCHEMA,
     name: "tokens",
     type: "registry:item",
-    title: "HDS Design Tokens",
+    title: "HES Design Tokens",
     description:
-      "HDS 시맨틱 토큰 CSS 변수(--hds-*). 모든 HDS 컴포넌트의 전제 조건 — 전역 CSS 에서 import 하세요.",
+      "HES 시맨틱 토큰 CSS 변수(--hes-*). 모든 HES 컴포넌트의 전제 조건 — 전역 CSS 에서 import 하세요.",
     files: [
       {
-        path: "registry/hds/tokens/hds-tokens.css",
+        path: "registry/hes/tokens/hes-tokens.css",
         type: "registry:file",
-        target: "~/styles/hds-tokens.css",
+        target: "~/styles/hes-tokens.css",
         content: tokensCss,
       },
     ],
-    docs: "설치 후 전역 스타일(예: app/globals.css 또는 앱 엔트리)에 `@import \"../styles/hds-tokens.css\";` 를 추가하세요. 다크 테마는 <html data-theme=\"dark\">, 플랫폼 오버라이드는 data-platform 속성으로 전환됩니다.",
+    docs: "설치 후 전역 스타일(예: app/globals.css 또는 앱 엔트리)에 `@import \"../styles/hes-tokens.css\";` 를 추가하세요. 다크 테마는 <html data-theme=\"dark\">, 플랫폼 오버라이드는 data-platform 속성으로 전환됩니다.",
   };
 }
 
@@ -161,10 +161,10 @@ function componentItem(comp, componentsDir) {
   const dependencies = [];
   if (/from\s+"react-dom"/.test(content)) dependencies.push("react-dom");
 
-  // 같은 레지스트리의 다른 컴포넌트 의존(예: modal → button)은 @hds 네임스페이스로 연결
+  // 같은 레지스트리의 다른 컴포넌트 의존(예: modal → button)은 @hes 네임스페이스로 연결
   const registryDependencies = [
-    "@hds/tokens",
-    ...(comp.dependencies ?? []).map((d) => `@hds/${d}`),
+    "@hes/tokens",
+    ...(comp.dependencies ?? []).map((d) => `@hes/${d}`),
   ];
 
   const fileName = basename(sourcePath);
@@ -178,7 +178,7 @@ function componentItem(comp, componentsDir) {
     registryDependencies,
     files: [
       {
-        path: `registry/hds/${comp.name}/${fileName}`,
+        path: `registry/hes/${comp.name}/${fileName}`,
         type: "registry:component",
         content,
       },
@@ -255,8 +255,8 @@ function main() {
   console.log(
     `[build-registry] OK — 아이템 ${items.length}개(tokens + 컴포넌트 ${components.length}) -> ${outDir}\n` +
       `  사용: 대상 프로젝트 components.json 에\n` +
-      `    "registries": { "@hds": "<호스팅URL>/r/{name}.json" }\n` +
-      `  등록 후 npx shadcn@latest add @hds/<컴포넌트>`
+      `    "registries": { "@hes": "<호스팅URL>/r/{name}.json" }\n` +
+      `  등록 후 npx shadcn@latest add @hes/<컴포넌트>`
   );
 }
 

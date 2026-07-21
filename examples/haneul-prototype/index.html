@@ -1,11 +1,11 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>하늘 — 오늘 브리핑 (HDS 프로토타입)</title>
+<title>하늘 — 오늘 브리핑 (HES 프로토타입)</title>
 
 <!--
-  하늘(Haneul) 프로토타입 — HDS 플래그십 예시
+  하늘(Haneul) 프로토타입 — HES 플래그십 예시
   설계서: examples/specs/today-briefing.md 와 1:1 대응.
-  토큰: tokens.css 는 build-tokens.mjs 산출물(수정 금지). 모든 색/간격/라디우스/모션은 var(--hds-*) 만 사용.
+  토큰: tokens.css 는 build-tokens.mjs 산출물(수정 금지). 모든 색/간격/라디우스/모션은 var(--hes-*) 만 사용.
   외부 CDN·네트워크 요청 없음. 브라우저에서 index.html 을 바로 열면 동작합니다.
 -->
 <link rel="stylesheet" href="tokens.css" />
@@ -17,12 +17,12 @@
   *, *::before, *::after { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
   body {
-    font-family: var(--hds-typo-body-family);
-    font-size: var(--hds-typo-body-size);
-    line-height: var(--hds-typo-body-line-height);
-    color: var(--hds-fg-base);
+    font-family: var(--hes-typo-body-family);
+    font-size: var(--hes-typo-body-size);
+    line-height: var(--hes-typo-body-line-height);
+    color: var(--hes-fg-base);
     /* 데스크톱: 폰 프레임 주변 여백 */
-    background: var(--hds-bg-subtle);
+    background: var(--hes-bg-subtle);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
@@ -38,15 +38,15 @@
     min-height: 100vh;
     min-height: 100dvh;
     margin: 0 auto;
-    background: var(--hds-bg-subtle);
-    box-shadow: 0 0 0 1px var(--hds-border-base);
+    background: var(--hes-bg-subtle);
+    box-shadow: 0 0 0 1px var(--hes-border-base);
   }
   @media (min-width: 480px) {
-    body { padding: var(--hds-space-stack-md) 0; }
+    body { padding: var(--hes-space-stack-md) 0; }
     .app {
       min-height: auto;
-      height: calc(100vh - 2 * var(--hds-space-stack-md));
-      border-radius: var(--hds-radius-lg);
+      height: calc(100vh - 2 * var(--hes-space-stack-md));
+      border-radius: var(--hes-radius-lg);
       overflow: hidden;
     }
   }
@@ -55,47 +55,47 @@
   .appbar {
     display: flex;
     align-items: center;
-    gap: var(--hds-space-stack-sm);
-    padding: var(--hds-space-inset-md);
-    background: var(--hds-bg-base);
-    border-bottom: 1px solid var(--hds-border-base);
+    gap: var(--hes-space-stack-sm);
+    padding: var(--hes-space-inset-md);
+    background: var(--hes-bg-base);
+    border-bottom: 1px solid var(--hes-border-base);
     position: sticky;
     top: 0;
     z-index: 5;
   }
-  .appbar__brand { display: flex; align-items: center; gap: var(--hds-space-inset-sm); min-width: 0; }
+  .appbar__brand { display: flex; align-items: center; gap: var(--hes-space-inset-sm); min-width: 0; }
   .appbar__logo { height: 28px; width: auto; display: block; }
   .appbar__date {
-    font-size: var(--hds-typo-label-size);
-    line-height: var(--hds-typo-label-line-height);
-    color: var(--hds-fg-muted);
+    font-size: var(--hes-typo-label-size);
+    line-height: var(--hes-typo-label-line-height);
+    color: var(--hes-fg-muted);
     white-space: nowrap;
   }
   .appbar__spacer { flex: 1; }
-  .appbar__actions { display: flex; align-items: center; gap: var(--hds-space-stack-sm); }
+  .appbar__actions { display: flex; align-items: center; gap: var(--hes-space-stack-sm); }
 
   /* 스크롤 영역 */
   .screen {
     flex: 1;
     overflow-y: auto;
-    padding: var(--hds-space-inset-md);
+    padding: var(--hes-space-inset-md);
     display: flex;
     flex-direction: column;
-    gap: var(--hds-space-stack-md);
+    gap: var(--hes-space-stack-md);
   }
   .screen[hidden] { display: none; }
 
   .section__head {
     display: flex;
     align-items: center;
-    gap: var(--hds-space-stack-sm);
-    margin-bottom: var(--hds-space-stack-sm);
+    gap: var(--hes-space-stack-sm);
+    margin-bottom: var(--hes-space-stack-sm);
   }
   .section__title {
-    font-size: var(--hds-typo-label-size);
-    font-weight: var(--hds-typo-label-weight);
-    line-height: var(--hds-typo-label-line-height);
-    color: var(--hds-fg-muted);
+    font-size: var(--hes-typo-label-size);
+    font-weight: var(--hes-typo-label-weight);
+    line-height: var(--hes-typo-label-line-height);
+    color: var(--hes-fg-muted);
     margin: 0;
     letter-spacing: 0.01em;
   }
@@ -103,10 +103,10 @@
   /* 하단 내비게이션 */
   .navbar {
     display: flex;
-    background: var(--hds-bg-base);
-    border-top: 1px solid var(--hds-border-base);
-    padding: var(--hds-space-inset-sm) var(--hds-space-inset-sm);
-    gap: var(--hds-space-inset-sm);
+    background: var(--hes-bg-base);
+    border-top: 1px solid var(--hes-border-base);
+    padding: var(--hes-space-inset-sm) var(--hes-space-inset-sm);
+    gap: var(--hes-space-inset-sm);
   }
   .navbar__item {
     flex: 1;
@@ -114,19 +114,19 @@
     flex-direction: column;
     align-items: center;
     gap: 2px;
-    padding: var(--hds-space-inset-sm) 0;
+    padding: var(--hes-space-inset-sm) 0;
     border: 0;
     background: transparent;
-    color: var(--hds-fg-muted);
-    font-size: var(--hds-typo-label-size);
-    font-weight: var(--hds-typo-label-weight);
-    border-radius: var(--hds-radius-md);
+    color: var(--hes-fg-muted);
+    font-size: var(--hes-typo-label-size);
+    font-weight: var(--hes-typo-label-weight);
+    border-radius: var(--hes-radius-md);
     cursor: pointer;
-    transition: color var(--hds-duration-fast) var(--hds-ease-standard),
-                background var(--hds-duration-fast) var(--hds-ease-standard);
+    transition: color var(--hes-duration-fast) var(--hes-ease-standard),
+                background var(--hes-duration-fast) var(--hes-ease-standard);
   }
-  .navbar__item[aria-current="page"] { color: var(--hds-brand-default); background: var(--hds-brand-subtle); }
-  .navbar__item:focus-visible { outline: 2px solid var(--hds-focus-ring); outline-offset: 2px; }
+  .navbar__item[aria-current="page"] { color: var(--hes-brand-default); background: var(--hes-brand-subtle); }
+  .navbar__item:focus-visible { outline: 2px solid var(--hes-focus-ring); outline-offset: 2px; }
   .navbar__item svg { width: 22px; height: 22px; }
 
   .icon { display: inline-block; vertical-align: middle; }
@@ -135,283 +135,283 @@
      Button — components/button/spec.md
      variant: primary | secondary | ghost | danger · size: sm | md | lg
      ======================================================================== */
-  .hds-btn {
+  .hes-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: var(--hds-space-inset-sm);
+    gap: var(--hes-space-inset-sm);
     height: 40px;                         /* size=md */
-    padding: 0 var(--hds-space-inset-md); /* space.inset-md */
+    padding: 0 var(--hes-space-inset-md); /* space.inset-md */
     border: 1px solid transparent;
-    border-radius: var(--hds-radius-md);  /* dimension.radius.md */
-    font-size: var(--hds-typo-label-size);
-    font-weight: var(--hds-typo-label-weight);
+    border-radius: var(--hes-radius-md);  /* dimension.radius.md */
+    font-size: var(--hes-typo-label-size);
+    font-weight: var(--hes-typo-label-weight);
     line-height: 1;
     cursor: pointer;
-    transition: background var(--hds-duration-fast) var(--hds-ease-standard),
-                border-color var(--hds-duration-fast) var(--hds-ease-standard),
-                color var(--hds-duration-fast) var(--hds-ease-standard);
+    transition: background var(--hes-duration-fast) var(--hes-ease-standard),
+                border-color var(--hes-duration-fast) var(--hes-ease-standard),
+                color var(--hes-duration-fast) var(--hes-ease-standard);
   }
-  .hds-btn:focus-visible { outline: 2px solid var(--hds-focus-ring); outline-offset: 2px; } /* color.focus.ring */
-  .hds-btn[disabled], .hds-btn[aria-busy="true"] { opacity: 0.6; cursor: not-allowed; }
-  .hds-btn--sm { height: 32px; padding: 0 var(--hds-space-inset-sm); }
-  .hds-btn--lg { height: 48px; padding: 0 var(--hds-space-inset-lg); }
+  .hes-btn:focus-visible { outline: 2px solid var(--hes-focus-ring); outline-offset: 2px; } /* color.focus.ring */
+  .hes-btn[disabled], .hes-btn[aria-busy="true"] { opacity: 0.6; cursor: not-allowed; }
+  .hes-btn--sm { height: 32px; padding: 0 var(--hes-space-inset-sm); }
+  .hes-btn--lg { height: 48px; padding: 0 var(--hes-space-inset-lg); }
   /* primary: bg brand.default → hover brand.hover → active brand.active, fg on-brand */
-  .hds-btn--primary { background: var(--hds-brand-default); color: var(--hds-fg-on-brand); }
-  .hds-btn--primary:hover { background: var(--hds-brand-hover); }
-  .hds-btn--primary:active { background: var(--hds-brand-active); }
+  .hes-btn--primary { background: var(--hes-brand-default); color: var(--hes-fg-on-brand); }
+  .hes-btn--primary:hover { background: var(--hes-brand-hover); }
+  .hes-btn--primary:active { background: var(--hes-brand-active); }
   /* secondary: 중립 배경 + 테두리 */
-  .hds-btn--secondary { background: var(--hds-bg-base); color: var(--hds-fg-base); border-color: var(--hds-border-base); }
-  .hds-btn--secondary:hover { border-color: var(--hds-border-strong); background: var(--hds-bg-subtle); }
+  .hes-btn--secondary { background: var(--hes-bg-base); color: var(--hes-fg-base); border-color: var(--hes-border-base); }
+  .hes-btn--secondary:hover { border-color: var(--hes-border-strong); background: var(--hes-bg-subtle); }
   /* ghost: 낮은 강조(툴바) */
-  .hds-btn--ghost { background: transparent; color: var(--hds-fg-base); }
-  .hds-btn--ghost:hover { background: var(--hds-bg-muted); }
+  .hes-btn--ghost { background: transparent; color: var(--hes-fg-base); }
+  .hes-btn--ghost:hover { background: var(--hes-bg-muted); }
   /* danger: 파괴적 액션 */
-  .hds-btn--danger { background: var(--hds-feedback-danger); color: var(--hds-fg-on-brand); }
-  .hds-btn--icon { width: 40px; padding: 0; }
-  .hds-btn--icon.hds-btn--sm { width: 32px; }
-  .hds-btn__spinner {
+  .hes-btn--danger { background: var(--hes-feedback-danger); color: var(--hes-fg-on-brand); }
+  .hes-btn--icon { width: 40px; padding: 0; }
+  .hes-btn--icon.hes-btn--sm { width: 32px; }
+  .hes-btn__spinner {
     width: 14px; height: 14px;
-    border: 2px solid var(--hds-fg-on-brand);
+    border: 2px solid var(--hes-fg-on-brand);
     border-top-color: transparent;
-    border-radius: var(--hds-radius-full);
-    animation: hds-spin var(--hds-duration-slow) linear infinite;
+    border-radius: var(--hes-radius-full);
+    animation: hes-spin var(--hes-duration-slow) linear infinite;
   }
-  @keyframes hds-spin { to { transform: rotate(360deg); } }
+  @keyframes hes-spin { to { transform: rotate(360deg); } }
 
   /* ========================================================================
      Card — components/card/spec.md
      variant: default | elevated · padding: sm | md | lg
      ======================================================================== */
-  .hds-card {
-    background: var(--hds-bg-base);               /* color.bg.base */
-    border: 1px solid var(--hds-border-base);     /* color.border.base */
-    border-radius: var(--hds-radius-lg);          /* dimension.radius.lg */
-    padding: var(--hds-space-inset-md);           /* padding=md (기본) */
+  .hes-card {
+    background: var(--hes-bg-base);               /* color.bg.base */
+    border: 1px solid var(--hes-border-base);     /* color.border.base */
+    border-radius: var(--hes-radius-lg);          /* dimension.radius.lg */
+    padding: var(--hes-space-inset-md);           /* padding=md (기본) */
   }
-  .hds-card--pad-sm { padding: var(--hds-space-inset-sm); }
-  .hds-card--pad-lg { padding: var(--hds-space-inset-lg); }
+  .hes-card--pad-sm { padding: var(--hes-space-inset-sm); }
+  .hes-card--pad-lg { padding: var(--hes-space-inset-lg); }
   /* elevated: 동일 테두리 + border-base 유래 저강도 그림자(핵심 색상 하드코딩 없이 토큰 참조) */
-  .hds-card--elevated { box-shadow: 0 6px 20px -8px var(--hds-border-strong); }
-  .hds-card__header { display: flex; align-items: center; gap: var(--hds-space-stack-sm); }
-  .hds-card__title {
-    font-family: var(--hds-typo-heading-family);
-    font-weight: var(--hds-typo-heading-weight);
-    line-height: var(--hds-typo-heading-line-height);
-    color: var(--hds-fg-base);
+  .hes-card--elevated { box-shadow: 0 6px 20px -8px var(--hes-border-strong); }
+  .hes-card__header { display: flex; align-items: center; gap: var(--hes-space-stack-sm); }
+  .hes-card__title {
+    font-family: var(--hes-typo-heading-family);
+    font-weight: var(--hes-typo-heading-weight);
+    line-height: var(--hes-typo-heading-line-height);
+    color: var(--hes-fg-base);
     margin: 0;
   }
-  .hds-card__body { color: var(--hds-fg-base); }
-  .hds-card__footer { display: flex; justify-content: flex-end; gap: var(--hds-space-stack-sm); }
-  .hds-card__muted { color: var(--hds-fg-muted); }  /* 부가 텍스트 */
+  .hes-card__body { color: var(--hes-fg-base); }
+  .hes-card__footer { display: flex; justify-content: flex-end; gap: var(--hes-space-stack-sm); }
+  .hes-card__muted { color: var(--hes-fg-muted); }  /* 부가 텍스트 */
 
   /* ========================================================================
      Badge — components/badge/spec.md
      variant: neutral | brand | success | warning | danger · size: sm | md
      비인터랙티브 <span>, 라디우스 full(알약형)
      ======================================================================== */
-  .hds-badge {
+  .hes-badge {
     display: inline-flex;
     align-items: center;
     gap: 4px;
     height: 24px;                          /* size=md */
-    padding: 0 var(--hds-space-inset-sm);
-    border-radius: var(--hds-radius-full); /* dimension.radius.full */
-    font-size: var(--hds-typo-label-size);
-    font-weight: var(--hds-typo-label-weight);
+    padding: 0 var(--hes-space-inset-sm);
+    border-radius: var(--hes-radius-full); /* dimension.radius.full */
+    font-size: var(--hes-typo-label-size);
+    font-weight: var(--hes-typo-label-weight);
     line-height: 1;
     white-space: nowrap;
   }
-  .hds-badge--sm { height: 20px; font-size: 12px; padding: 0 var(--hds-space-inset-sm); } /* 12px=size.xs(미export 토큰) — 구조용 px */
-  .hds-badge--neutral { background: var(--hds-bg-muted); color: var(--hds-fg-muted); }
-  .hds-badge--brand   { background: var(--hds-brand-subtle); color: var(--hds-brand-default); }
-  .hds-badge--success { background: var(--hds-feedback-success); color: var(--hds-fg-on-brand); }
-  .hds-badge--warning { background: var(--hds-feedback-warning); color: var(--hds-fg-on-brand); }
-  .hds-badge--danger  { background: var(--hds-feedback-danger); color: var(--hds-fg-on-brand); }
+  .hes-badge--sm { height: 20px; font-size: 12px; padding: 0 var(--hes-space-inset-sm); } /* 12px=size.xs(미export 토큰) — 구조용 px */
+  .hes-badge--neutral { background: var(--hes-bg-muted); color: var(--hes-fg-muted); }
+  .hes-badge--brand   { background: var(--hes-brand-subtle); color: var(--hes-brand-default); }
+  .hes-badge--success { background: var(--hes-feedback-success); color: var(--hes-fg-on-brand); }
+  .hes-badge--warning { background: var(--hes-feedback-warning); color: var(--hes-fg-on-brand); }
+  .hes-badge--danger  { background: var(--hes-feedback-danger); color: var(--hes-fg-on-brand); }
 
   /* ========================================================================
      Input — components/input/spec.md
      label + field + helper/error, size: sm | md | lg, invalid 상태
      ======================================================================== */
-  .hds-input { display: flex; flex-direction: column; gap: var(--hds-space-stack-sm); }
-  .hds-input__label {
-    font-size: var(--hds-typo-label-size);
-    font-weight: var(--hds-typo-label-weight);
-    color: var(--hds-fg-base);
+  .hes-input { display: flex; flex-direction: column; gap: var(--hes-space-stack-sm); }
+  .hes-input__label {
+    font-size: var(--hes-typo-label-size);
+    font-weight: var(--hes-typo-label-weight);
+    color: var(--hes-fg-base);
   }
-  .hds-input__field {
+  .hes-input__field {
     height: 40px;                                 /* size=md */
-    padding: 0 var(--hds-space-inset-md);
-    background: var(--hds-bg-base);               /* color.bg.base */
-    color: var(--hds-fg-base);                    /* 입력값 */
-    border: 1px solid var(--hds-border-base);     /* 기본 테두리 */
-    border-radius: var(--hds-radius-md);
-    font-size: var(--hds-typo-body-size);
-    transition: border-color var(--hds-duration-fast) var(--hds-ease-standard),
-                box-shadow var(--hds-duration-fast) var(--hds-ease-standard);
+    padding: 0 var(--hes-space-inset-md);
+    background: var(--hes-bg-base);               /* color.bg.base */
+    color: var(--hes-fg-base);                    /* 입력값 */
+    border: 1px solid var(--hes-border-base);     /* 기본 테두리 */
+    border-radius: var(--hes-radius-md);
+    font-size: var(--hes-typo-body-size);
+    transition: border-color var(--hes-duration-fast) var(--hes-ease-standard),
+                box-shadow var(--hes-duration-fast) var(--hes-ease-standard);
   }
-  .hds-input__field::placeholder { color: var(--hds-fg-muted); } /* placeholder */
-  .hds-input__field:hover { border-color: var(--hds-border-strong); } /* hover 강조 */
-  .hds-input__field:focus-visible { outline: 2px solid var(--hds-focus-ring); outline-offset: 1px; }
-  .hds-input__helper { font-size: 12px; color: var(--hds-fg-muted); }
-  .hds-input__error { font-size: 12px; color: var(--hds-feedback-danger); }
+  .hes-input__field::placeholder { color: var(--hes-fg-muted); } /* placeholder */
+  .hes-input__field:hover { border-color: var(--hes-border-strong); } /* hover 강조 */
+  .hes-input__field:focus-visible { outline: 2px solid var(--hes-focus-ring); outline-offset: 1px; }
+  .hes-input__helper { font-size: 12px; color: var(--hes-fg-muted); }
+  .hes-input__error { font-size: 12px; color: var(--hes-feedback-danger); }
   /* invalid: 테두리 danger + 포커스 링 danger (색+텍스트 이중 신호) */
-  .hds-input[data-invalid="true"] .hds-input__field { border-color: var(--hds-feedback-danger); }
-  .hds-input[data-invalid="true"] .hds-input__field:focus-visible { outline-color: var(--hds-feedback-danger); }
+  .hes-input[data-invalid="true"] .hes-input__field { border-color: var(--hes-feedback-danger); }
+  .hes-input[data-invalid="true"] .hes-input__field:focus-visible { outline-color: var(--hes-feedback-danger); }
 
   /* ========================================================================
      Modal — components/modal/spec.md
      size=sm(384px) · 오버레이 color.bg.overlay · ESC/오버레이/버튼 닫기 · 포커스 트랩
      ======================================================================== */
-  .hds-modal {
+  .hes-modal {
     position: fixed;
     inset: 0;
     z-index: 50;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: var(--hds-space-inset-md);          /* 뷰포트 가장자리 여유 */
-    background: var(--hds-bg-overlay);            /* color.bg.overlay */
+    padding: var(--hes-space-inset-md);          /* 뷰포트 가장자리 여유 */
+    background: var(--hes-bg-overlay);            /* color.bg.overlay */
     opacity: 0;
-    transition: opacity var(--hds-duration-base) var(--hds-ease-emphasized);
+    transition: opacity var(--hes-duration-base) var(--hes-ease-emphasized);
   }
-  .hds-modal[data-open="true"] { opacity: 1; }
-  .hds-modal[hidden] { display: none; }
-  .hds-modal__panel {
+  .hes-modal[data-open="true"] { opacity: 1; }
+  .hes-modal[hidden] { display: none; }
+  .hes-modal__panel {
     width: 100%;
     max-width: 384px;                            /* size=sm */
-    background: var(--hds-bg-base);
-    border: 1px solid var(--hds-border-base);
-    border-radius: var(--hds-radius-lg);
-    padding: var(--hds-space-inset-lg);
+    background: var(--hes-bg-base);
+    border: 1px solid var(--hes-border-base);
+    border-radius: var(--hes-radius-lg);
+    padding: var(--hes-space-inset-lg);
     display: flex;
     flex-direction: column;
-    gap: var(--hds-space-stack-md);
+    gap: var(--hes-space-stack-md);
     transform: translateY(8px) scale(0.98);
-    transition: transform var(--hds-duration-base) var(--hds-ease-emphasized);
+    transition: transform var(--hes-duration-base) var(--hes-ease-emphasized);
   }
-  .hds-modal[data-open="true"] .hds-modal__panel { transform: none; }
-  .hds-modal__header { display: flex; align-items: center; gap: var(--hds-space-stack-sm); }
-  .hds-modal__title {
+  .hes-modal[data-open="true"] .hes-modal__panel { transform: none; }
+  .hes-modal__header { display: flex; align-items: center; gap: var(--hes-space-stack-sm); }
+  .hes-modal__title {
     font-size: 20px; /* size.lg(미export 토큰) — 구조용 px */
-    font-weight: var(--hds-typo-heading-weight);
-    color: var(--hds-fg-base);
+    font-weight: var(--hes-typo-heading-weight);
+    color: var(--hes-fg-base);
     margin: 0;
     flex: 1;
   }
-  .hds-modal__body { display: flex; flex-direction: column; gap: var(--hds-space-stack-md); }
-  .hds-modal__footer { display: flex; justify-content: flex-end; gap: var(--hds-space-stack-sm); }
+  .hes-modal__body { display: flex; flex-direction: column; gap: var(--hes-space-stack-md); }
+  .hes-modal__footer { display: flex; justify-content: flex-end; gap: var(--hes-space-stack-sm); }
 
   /* Modal 내부 스위치(로컬 요소 — spec §7: Switch 승격 후보) */
-  .setting-row { display: flex; align-items: center; gap: var(--hds-space-stack-md); }
+  .setting-row { display: flex; align-items: center; gap: var(--hes-space-stack-md); }
   .setting-row__text { flex: 1; min-width: 0; }
-  .setting-row__label { color: var(--hds-fg-base); font-weight: var(--hds-typo-label-weight); }
-  .setting-row__desc { font-size: 12px; color: var(--hds-fg-muted); }
+  .setting-row__label { color: var(--hes-fg-base); font-weight: var(--hes-typo-label-weight); }
+  .setting-row__desc { font-size: 12px; color: var(--hes-fg-muted); }
   .switch {
     position: relative;
     width: 44px; height: 26px;
     flex: none;
     border: 0;
-    border-radius: var(--hds-radius-full);
-    background: var(--hds-border-strong);       /* off */
+    border-radius: var(--hes-radius-full);
+    background: var(--hes-border-strong);       /* off */
     cursor: pointer;
-    transition: background var(--hds-duration-fast) var(--hds-ease-standard);
+    transition: background var(--hes-duration-fast) var(--hes-ease-standard);
   }
-  .switch[aria-checked="true"] { background: var(--hds-brand-default); } /* on */
-  .switch:focus-visible { outline: 2px solid var(--hds-focus-ring); outline-offset: 2px; }
+  .switch[aria-checked="true"] { background: var(--hes-brand-default); } /* on */
+  .switch:focus-visible { outline: 2px solid var(--hes-focus-ring); outline-offset: 2px; }
   .switch__knob {
     position: absolute;
     top: 3px; left: 3px;
     width: 20px; height: 20px;
-    border-radius: var(--hds-radius-full);
-    background: var(--hds-bg-base);
-    transition: transform var(--hds-duration-fast) var(--hds-ease-standard);
+    border-radius: var(--hes-radius-full);
+    background: var(--hes-bg-base);
+    transition: transform var(--hes-duration-fast) var(--hes-ease-standard);
   }
   .switch[aria-checked="true"] .switch__knob { transform: translateX(18px); }
 
   /* ========================================================================
      화면 조각 — 날씨/추천/일정 (컴포넌트 위 레이아웃)
      ======================================================================== */
-  .weather { display: flex; flex-direction: column; gap: var(--hds-space-stack-sm); }
-  .weather__top { display: flex; align-items: center; gap: var(--hds-space-stack-sm); }
+  .weather { display: flex; flex-direction: column; gap: var(--hes-space-stack-sm); }
+  .weather__top { display: flex; align-items: center; gap: var(--hes-space-stack-sm); }
   .weather__temp {
-    font-family: var(--hds-typo-heading-family);
-    font-size: var(--hds-typo-heading-size);
-    font-weight: var(--hds-typo-heading-weight);
-    line-height: var(--hds-typo-heading-line-height);
-    color: var(--hds-fg-base);
+    font-family: var(--hes-typo-heading-family);
+    font-size: var(--hes-typo-heading-size);
+    font-weight: var(--hes-typo-heading-weight);
+    line-height: var(--hes-typo-heading-line-height);
+    color: var(--hes-fg-base);
     margin: 0;
   }
-  .weather__icon { width: 40px; height: 40px; color: var(--hds-brand-default); flex: none; margin-left: auto; }
-  .weather__meta { color: var(--hds-fg-muted); font-size: var(--hds-typo-label-size); }
+  .weather__icon { width: 40px; height: 40px; color: var(--hes-brand-default); flex: none; margin-left: auto; }
+  .weather__meta { color: var(--hes-fg-muted); font-size: var(--hes-typo-label-size); }
 
-  .rec { display: flex; align-items: flex-start; gap: var(--hds-space-stack-sm); }
-  .rec__text { color: var(--hds-fg-base); flex: 1; }
+  .rec { display: flex; align-items: flex-start; gap: var(--hes-space-stack-sm); }
+  .rec__text { color: var(--hes-fg-base); flex: 1; }
 
-  .agenda { display: flex; flex-direction: column; gap: var(--hds-space-stack-sm); }
-  .agenda__item { display: flex; align-items: center; gap: var(--hds-space-stack-sm); }
+  .agenda { display: flex; flex-direction: column; gap: var(--hes-space-stack-sm); }
+  .agenda__item { display: flex; align-items: center; gap: var(--hes-space-stack-sm); }
   .agenda__body { flex: 1; min-width: 0; }
-  .agenda__title { color: var(--hds-fg-base); }
-  .agenda__title--done { color: var(--hds-fg-muted); text-decoration: line-through; }
-  .agenda__desc { font-size: 12px; color: var(--hds-fg-muted); }
+  .agenda__title { color: var(--hes-fg-base); }
+  .agenda__title--done { color: var(--hes-fg-muted); text-decoration: line-through; }
+  .agenda__desc { font-size: 12px; color: var(--hes-fg-muted); }
 
   /* empty 상태 */
-  .empty { text-align: center; display: flex; flex-direction: column; align-items: center; gap: var(--hds-space-stack-md); }
-  .empty__text { color: var(--hds-fg-muted); }
-  .empty__icon { width: 36px; height: 36px; color: var(--hds-border-strong); }
+  .empty { text-align: center; display: flex; flex-direction: column; align-items: center; gap: var(--hes-space-stack-md); }
+  .empty__text { color: var(--hes-fg-muted); }
+  .empty__icon { width: 36px; height: 36px; color: var(--hes-border-strong); }
 
   /* error 상태 */
-  .error-block { display: flex; flex-direction: column; gap: var(--hds-space-stack-md); align-items: flex-start; }
-  .error-block__row { display: flex; align-items: center; gap: var(--hds-space-stack-sm); }
-  .error-block__icon { width: 20px; height: 20px; color: var(--hds-feedback-danger); flex: none; }
-  .error-block__text { color: var(--hds-fg-base); }
+  .error-block { display: flex; flex-direction: column; gap: var(--hes-space-stack-md); align-items: flex-start; }
+  .error-block__row { display: flex; align-items: center; gap: var(--hes-space-stack-sm); }
+  .error-block__icon { width: 20px; height: 20px; color: var(--hes-feedback-danger); flex: none; }
+  .error-block__text { color: var(--hes-fg-base); }
 
   /* loading 스켈레톤 — bg.muted↔bg.subtle shimmer */
   .skeleton {
-    border-radius: var(--hds-radius-md);
-    background: linear-gradient(90deg, var(--hds-bg-muted) 25%, var(--hds-bg-subtle) 37%, var(--hds-bg-muted) 63%);
+    border-radius: var(--hes-radius-md);
+    background: linear-gradient(90deg, var(--hes-bg-muted) 25%, var(--hes-bg-subtle) 37%, var(--hes-bg-muted) 63%);
     background-size: 400% 100%;
-    animation: hds-shimmer var(--hds-duration-slow) var(--hds-ease-standard) infinite;
+    animation: hes-shimmer var(--hes-duration-slow) var(--hes-ease-standard) infinite;
   }
-  @keyframes hds-shimmer { from { background-position: 100% 0; } to { background-position: 0 0; } }
-  .skeleton--line { height: 14px; margin-bottom: var(--hds-space-stack-sm); }
-  .skeleton--title { height: 28px; width: 60%; margin-bottom: var(--hds-space-stack-sm); }
+  @keyframes hes-shimmer { from { background-position: 100% 0; } to { background-position: 0 0; } }
+  .skeleton--line { height: 14px; margin-bottom: var(--hes-space-stack-sm); }
+  .skeleton--title { height: 28px; width: 60%; margin-bottom: var(--hes-space-stack-sm); }
   .skeleton--block { height: 56px; }
   .skeleton--w70 { width: 70%; }
   .skeleton--w40 { width: 40%; }
 
   /* 상태 데모 컨트롤(작은 세그먼트) */
   .demo-bar {
-    display: flex; align-items: center; gap: var(--hds-space-stack-sm);
-    padding: var(--hds-space-inset-sm) var(--hds-space-inset-md);
-    background: var(--hds-bg-base);
-    border-bottom: 1px solid var(--hds-border-base);
+    display: flex; align-items: center; gap: var(--hes-space-stack-sm);
+    padding: var(--hes-space-inset-sm) var(--hes-space-inset-md);
+    background: var(--hes-bg-base);
+    border-bottom: 1px solid var(--hes-border-base);
   }
-  .demo-bar__label { font-size: 12px; color: var(--hds-fg-muted); flex: none; }
-  .segmented { display: inline-flex; background: var(--hds-bg-muted); border-radius: var(--hds-radius-md); padding: 2px; gap: 2px; }
+  .demo-bar__label { font-size: 12px; color: var(--hes-fg-muted); flex: none; }
+  .segmented { display: inline-flex; background: var(--hes-bg-muted); border-radius: var(--hes-radius-md); padding: 2px; gap: 2px; }
   .segmented__btn {
     border: 0; background: transparent; cursor: pointer;
-    padding: 4px var(--hds-space-inset-sm);
-    border-radius: var(--hds-radius-sm);
-    font-size: 12px; color: var(--hds-fg-muted);
-    transition: background var(--hds-duration-fast) var(--hds-ease-standard),
-                color var(--hds-duration-fast) var(--hds-ease-standard);
+    padding: 4px var(--hes-space-inset-sm);
+    border-radius: var(--hes-radius-sm);
+    font-size: 12px; color: var(--hes-fg-muted);
+    transition: background var(--hes-duration-fast) var(--hes-ease-standard),
+                color var(--hes-duration-fast) var(--hes-ease-standard);
   }
-  .segmented__btn[aria-pressed="true"] { background: var(--hds-bg-base); color: var(--hds-fg-base); box-shadow: 0 1px 2px var(--hds-border-base); }
-  .segmented__btn:focus-visible { outline: 2px solid var(--hds-focus-ring); outline-offset: 1px; }
+  .segmented__btn[aria-pressed="true"] { background: var(--hes-bg-base); color: var(--hes-fg-base); box-shadow: 0 1px 2px var(--hes-border-base); }
+  .segmented__btn:focus-visible { outline: 2px solid var(--hes-focus-ring); outline-offset: 1px; }
 
   /* 주간 플랜 */
-  .week { display: flex; flex-direction: column; gap: var(--hds-space-stack-sm); }
-  .week__row { display: flex; align-items: center; gap: var(--hds-space-stack-md); }
+  .week { display: flex; flex-direction: column; gap: var(--hes-space-stack-sm); }
+  .week__row { display: flex; align-items: center; gap: var(--hes-space-stack-md); }
   .week__day { flex: none; width: 64px; }
-  .week__dow { color: var(--hds-fg-base); font-weight: var(--hds-typo-label-weight); }
-  .week__date { font-size: 12px; color: var(--hds-fg-muted); }
-  .week__title { flex: 1; color: var(--hds-fg-base); }
-  .add-form { display: flex; flex-direction: column; gap: var(--hds-space-stack-md); }
-  .add-form__row { display: flex; align-items: flex-end; gap: var(--hds-space-stack-sm); }
-  .add-form__row .hds-input { flex: 1; }
+  .week__dow { color: var(--hes-fg-base); font-weight: var(--hes-typo-label-weight); }
+  .week__date { font-size: 12px; color: var(--hes-fg-muted); }
+  .week__title { flex: 1; color: var(--hes-fg-base); }
+  .add-form { display: flex; flex-direction: column; gap: var(--hes-space-stack-md); }
+  .add-form__row { display: flex; align-items: flex-end; gap: var(--hes-space-stack-sm); }
+  .add-form__row .hes-input { flex: 1; }
 
-  .u-mt-sm { margin-top: var(--hds-space-stack-sm); }
+  .u-mt-sm { margin-top: var(--hes-space-stack-sm); }
   .visually-hidden {
     position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
     overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
@@ -420,7 +420,7 @@
   /* prefers-reduced-motion 존중 — 모션 가이드 필수 */
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { transition: none !important; animation: none !important; }
-    .skeleton { background: var(--hds-bg-muted); }
+    .skeleton { background: var(--hes-bg-muted); }
   }
 </style>
 
@@ -434,13 +434,13 @@
     <span class="appbar__date" id="today-date">7월 10일 (금)</span>
     <span class="appbar__spacer"></span>
     <div class="appbar__actions">
-      <button class="hds-btn hds-btn--ghost hds-btn--sm hds-btn--icon" id="theme-toggle" aria-label="테마 전환" title="테마 전환">
+      <button class="hes-btn hes-btn--ghost hes-btn--sm hes-btn--icon" id="theme-toggle" aria-label="테마 전환" title="테마 전환">
         <svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
           <circle cx="12" cy="12" r="4.5"></circle>
           <path d="M12 2.5v2M12 19.5v2M21.5 12h-2M4.5 12h-2M18.4 5.6l-1.4 1.4M7 17l-1.4 1.4M18.4 18.4L17 17M7 7 5.6 5.6"></path>
         </svg>
       </button>
-      <button class="hds-btn hds-btn--ghost hds-btn--sm hds-btn--icon" id="open-notif" aria-label="알림 설정" title="알림 설정" aria-haspopup="dialog">
+      <button class="hes-btn hes-btn--ghost hes-btn--sm hes-btn--icon" id="open-notif" aria-label="알림 설정" title="알림 설정" aria-haspopup="dialog">
         <svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6"></path>
           <path d="M10.5 20a1.7 1.7 0 0 0 3 0"></path>
@@ -466,11 +466,11 @@
 
     <!-- 날씨 요약 Card(elevated) -->
     <section aria-label="오늘 날씨">
-      <div class="hds-card hds-card--elevated hds-card--pad-lg" id="weather-card">
+      <div class="hes-card hes-card--elevated hes-card--pad-lg" id="weather-card">
         <div class="weather">
           <div class="weather__top">
             <p class="weather__temp">맑음, 24°</p>
-            <span class="hds-badge hds-badge--brand">맑음</span>
+            <span class="hes-badge hes-badge--brand">맑음</span>
             <svg class="weather__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
               <circle cx="12" cy="12" r="4.5"></circle>
               <path d="M12 2.5v2M12 19.5v2M21.5 12h-2M4.5 12h-2M18.4 5.6l-1.4 1.4M7 17l-1.4 1.4M18.4 18.4L17 17M7 7 5.6 5.6"></path>
@@ -487,21 +487,21 @@
         <h2 class="section__title" id="rec-title">시간대별 추천</h2>
       </div>
       <div class="agenda" id="rec-list">
-        <div class="hds-card">
+        <div class="hes-card">
           <div class="rec">
-            <span class="hds-badge hds-badge--neutral hds-badge--sm">아침</span>
+            <span class="hes-badge hes-badge--neutral hes-badge--sm">아침</span>
             <span class="rec__text">출근길은 맑아요. 가볍게 나서기 좋아요.</span>
           </div>
         </div>
-        <div class="hds-card">
+        <div class="hes-card">
           <div class="rec">
-            <span class="hds-badge hds-badge--warning hds-badge--sm">낮</span>
+            <span class="hes-badge hes-badge--warning hes-badge--sm">낮</span>
             <span class="rec__text">오후 3시경 비 소식이 있어요. 우산을 챙겨보세요.</span>
           </div>
         </div>
-        <div class="hds-card">
+        <div class="hes-card">
           <div class="rec">
-            <span class="hds-badge hds-badge--neutral hds-badge--sm">저녁</span>
+            <span class="hes-badge hes-badge--neutral hes-badge--sm">저녁</span>
             <span class="rec__text">저녁엔 선선해요. 겉옷을 준비해 보세요.</span>
           </div>
         </div>
@@ -512,7 +512,7 @@
     <section aria-labelledby="agenda-title">
       <div class="section__head">
         <h2 class="section__title" id="agenda-title">오늘 일정</h2>
-        <span class="hds-badge hds-badge--neutral hds-badge--sm" id="agenda-count">3건</span>
+        <span class="hes-badge hes-badge--neutral hes-badge--sm" id="agenda-count">3건</span>
       </div>
       <div id="agenda-region" aria-live="polite">
         <!-- JS 가 상태(normal/loading/empty/error)에 따라 렌더 -->
@@ -528,17 +528,17 @@
       <div class="section__head">
         <h2 class="section__title" id="week-add-title">일정 추가</h2>
       </div>
-      <div class="hds-card">
+      <div class="hes-card">
         <form class="add-form" id="add-form" novalidate>
           <div class="add-form__row">
-            <div class="hds-input" id="add-input-wrap" data-invalid="false">
-              <label class="hds-input__label" for="add-title">일정 제목</label>
-              <input class="hds-input__field" id="add-title" name="title" type="text"
+            <div class="hes-input" id="add-input-wrap" data-invalid="false">
+              <label class="hes-input__label" for="add-title">일정 제목</label>
+              <input class="hes-input__field" id="add-title" name="title" type="text"
                      placeholder="예: 오후 3시 팀 회의" autocomplete="off"
                      aria-describedby="add-help" />
-              <span class="hds-input__helper" id="add-help">추가할 날짜는 아래 목록에서 선택할 수 있어요.</span>
+              <span class="hes-input__helper" id="add-help">추가할 날짜는 아래 목록에서 선택할 수 있어요.</span>
             </div>
-            <button class="hds-btn hds-btn--primary" type="submit">추가</button>
+            <button class="hes-btn hes-btn--primary" type="submit">추가</button>
           </div>
         </form>
       </div>
@@ -575,17 +575,17 @@
 </div>
 
 <!-- ===================== 알림 설정 Modal (size=sm) ===================== -->
-<div class="hds-modal" id="notif-modal" role="dialog" aria-modal="true" aria-labelledby="notif-title" hidden>
-  <div class="hds-modal__panel" role="document">
-    <div class="hds-modal__header">
-      <h2 class="hds-modal__title" id="notif-title">알림 설정</h2>
-      <button class="hds-btn hds-btn--ghost hds-btn--sm hds-btn--icon" id="notif-close" aria-label="닫기" title="닫기">
+<div class="hes-modal" id="notif-modal" role="dialog" aria-modal="true" aria-labelledby="notif-title" hidden>
+  <div class="hes-modal__panel" role="document">
+    <div class="hes-modal__header">
+      <h2 class="hes-modal__title" id="notif-title">알림 설정</h2>
+      <button class="hes-btn hes-btn--ghost hes-btn--sm hes-btn--icon" id="notif-close" aria-label="닫기" title="닫기">
         <svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
           <path d="M6 6l12 12M18 6L6 18"></path>
         </svg>
       </button>
     </div>
-    <div class="hds-modal__body">
+    <div class="hes-modal__body">
       <div class="setting-row">
         <div class="setting-row__text">
           <div class="setting-row__label">아침 브리핑 알림</div>
@@ -608,9 +608,9 @@
         <button class="switch" role="switch" aria-checked="false" aria-label="일정 리마인더"><span class="switch__knob"></span></button>
       </div>
     </div>
-    <div class="hds-modal__footer">
-      <button class="hds-btn hds-btn--secondary" id="notif-cancel" type="button">취소</button>
-      <button class="hds-btn hds-btn--primary" id="notif-save" type="button">저장</button>
+    <div class="hes-modal__footer">
+      <button class="hes-btn hes-btn--secondary" id="notif-cancel" type="button">취소</button>
+      <button class="hes-btn hes-btn--primary" id="notif-save" type="button">저장</button>
     </div>
   </div>
 </div>
@@ -655,8 +655,8 @@
   var currentState = "normal";
 
   function badgeForStatus(status) {
-    if (status === "완료") return '<span class="hds-badge hds-badge--success hds-badge--sm">완료</span>';
-    return '<span class="hds-badge hds-badge--brand hds-badge--sm">예정</span>';
+    if (status === "완료") return '<span class="hes-badge hes-badge--success hes-badge--sm">완료</span>';
+    return '<span class="hes-badge hes-badge--brand hes-badge--sm">예정</span>';
   }
 
   function renderAgenda(state) {
@@ -666,7 +666,7 @@
     if (state === "loading") {
       for (var i = 0; i < 3; i++) {
         agendaRegion.appendChild(el(
-          '<div class="hds-card" style="margin-bottom:var(--hds-space-stack-sm)">' +
+          '<div class="hes-card" style="margin-bottom:var(--hes-space-stack-sm)">' +
           '<div class="skeleton skeleton--line skeleton--w40"></div>' +
           '<div class="skeleton skeleton--line skeleton--w70" style="margin-bottom:0"></div></div>'
         ));
@@ -676,12 +676,12 @@
 
     if (state === "empty") {
       agendaRegion.appendChild(el(
-        '<div class="hds-card">' +
+        '<div class="hes-card">' +
           '<div class="empty">' +
             '<svg class="empty__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
               '<rect x="3.5" y="5" width="17" height="15" rx="2.5"></rect><path d="M3.5 9.5h17M8 3.5v3M16 3.5v3M12 13v4M10 15h4"></path></svg>' +
             '<p class="empty__text">아직 등록된 일정이 없어요.<br>첫 일정을 추가해 볼까요?</p>' +
-            '<button class="hds-btn hds-btn--primary" type="button" id="empty-add">일정 추가</button>' +
+            '<button class="hes-btn hes-btn--primary" type="button" id="empty-add">일정 추가</button>' +
           '</div>' +
         '</div>'
       ));
@@ -694,14 +694,14 @@
 
     if (state === "error") {
       agendaRegion.appendChild(el(
-        '<div class="hds-card">' +
+        '<div class="hes-card">' +
           '<div class="error-block">' +
             '<div class="error-block__row">' +
               '<svg class="error-block__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
                 '<circle cx="12" cy="12" r="9"></circle><path d="M12 7.5v5M12 16h.01"></path></svg>' +
               '<span class="error-block__text">일정을 불러오지 못했어요. 잠시 후 다시 시도해 주세요.</span>' +
             '</div>' +
-            '<button class="hds-btn hds-btn--secondary hds-btn--sm" type="button" id="retry-btn">' +
+            '<button class="hes-btn hes-btn--secondary hes-btn--sm" type="button" id="retry-btn">' +
               '<svg class="icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
                 '<path d="M20 11a8 8 0 1 0-.5 4"></path><path d="M20 5v6h-6"></path></svg> 다시 시도</button>' +
           '</div>' +
@@ -718,9 +718,9 @@
     var list = el('<div class="agenda"></div>');
     agendaData.forEach(function (item) {
       list.appendChild(el(
-        '<div class="hds-card">' +
+        '<div class="hes-card">' +
           '<div class="agenda__item">' +
-            '<span class="hds-badge hds-badge--neutral hds-badge--sm">' + esc(item.time) + '</span>' +
+            '<span class="hes-badge hes-badge--neutral hes-badge--sm">' + esc(item.time) + '</span>' +
             '<div class="agenda__body">' +
               '<div class="agenda__title' + (item.status === "완료" ? " agenda__title--done" : "") + '">' + esc(item.title) + '</div>' +
               '<div class="agenda__desc">' + esc(item.desc) + '</div>' +
@@ -742,8 +742,8 @@
       weatherCard.innerHTML =
         '<div class="skeleton skeleton--title"></div><div class="skeleton skeleton--line skeleton--w40" style="margin-bottom:0"></div>';
       recList.innerHTML =
-        '<div class="hds-card"><div class="skeleton skeleton--line" style="margin-bottom:0"></div></div>' +
-        '<div class="hds-card"><div class="skeleton skeleton--line" style="margin-bottom:0"></div></div>';
+        '<div class="hes-card"><div class="skeleton skeleton--line" style="margin-bottom:0"></div></div>' +
+        '<div class="hes-card"><div class="skeleton skeleton--line" style="margin-bottom:0"></div></div>';
     } else {
       weatherCard.innerHTML = weatherNormalHTML;
       recList.innerHTML = recNormalHTML;
@@ -772,11 +772,11 @@
     weekList.innerHTML = "";
     weekData.forEach(function (d) {
       weekList.appendChild(el(
-        '<div class="hds-card">' +
+        '<div class="hes-card">' +
           '<div class="week__row">' +
             '<div class="week__day"><div class="week__dow">' + esc(d.dow) + '</div><div class="week__date">' + esc(d.date) + '</div></div>' +
-            '<span class="week__title' + (d.title_muted ? ' hds-card__muted' : '') + '">' + esc(d.title) + '</span>' +
-            '<span class="hds-badge hds-badge--' + d.variant + ' hds-badge--sm">' + esc(d.dday) + '</span>' +
+            '<span class="week__title' + (d.title_muted ? ' hes-card__muted' : '') + '">' + esc(d.title) + '</span>' +
+            '<span class="hes-badge hes-badge--' + d.variant + ' hes-badge--sm">' + esc(d.dday) + '</span>' +
           '</div>' +
         '</div>'
       ));
@@ -794,7 +794,7 @@
     addField.setAttribute("aria-invalid", "true");
     var err = document.getElementById("add-error");
     if (!err) {
-      err = el('<span class="hds-input__error" id="add-error"></span>');
+      err = el('<span class="hes-input__error" id="add-error"></span>');
       addHelp.after(err);
     }
     addHelp.hidden = true;
@@ -845,7 +845,7 @@
   // ----- 다크 모드 토글 -----
   var themeToggle = document.getElementById("theme-toggle");
   try {
-    var saved = localStorage.getItem("hds-theme");
+    var saved = localStorage.getItem("hes-theme");
     if (saved === "dark") document.documentElement.setAttribute("data-theme", "dark");
   } catch (e) {}
   themeToggle.addEventListener("click", function () {
@@ -853,7 +853,7 @@
     if (isDark) document.documentElement.removeAttribute("data-theme");
     else document.documentElement.setAttribute("data-theme", "dark");
     themeToggle.setAttribute("aria-pressed", String(!isDark));
-    try { localStorage.setItem("hds-theme", isDark ? "light" : "dark"); } catch (e) {}
+    try { localStorage.setItem("hes-theme", isDark ? "light" : "dark"); } catch (e) {}
   });
 
   // ----- 스위치(알림 설정) -----
@@ -865,7 +865,7 @@
 
   // ----- Modal (ESC / 오버레이 / 버튼 · 포커스 트랩 · 포커스 복귀) -----
   var modal = document.getElementById("notif-modal");
-  var panel = modal.querySelector(".hds-modal__panel");
+  var panel = modal.querySelector(".hes-modal__panel");
   var openBtn = document.getElementById("open-notif");
   var lastFocused = null;
 
@@ -898,7 +898,7 @@
   saveBtn.addEventListener("click", function () {
     // 저장 진행(loading) 시연 후 닫기
     saveBtn.setAttribute("aria-busy", "true");
-    saveBtn.innerHTML = '<span class="hds-btn__spinner" aria-hidden="true"></span>';
+    saveBtn.innerHTML = '<span class="hes-btn__spinner" aria-hidden="true"></span>';
     window.setTimeout(function () {
       saveBtn.removeAttribute("aria-busy");
       saveBtn.textContent = "저장";

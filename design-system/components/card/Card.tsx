@@ -1,11 +1,11 @@
 import * as React from "react";
 
 /**
- * HDS Card — 레퍼런스 구현.
+ * HES Card — 레퍼런스 구현.
  *
- * 스타일은 semantic 토큰에서 생성된 CSS 변수(--hds-*)만 참조합니다.
+ * 스타일은 semantic 토큰에서 생성된 CSS 변수(--hes-*)만 참조합니다.
  * 색/간격을 절대 하드코딩하지 않습니다. 토큰 변경은 tokens/ 에서 하고
- * `/hds:token-export` 로 tokens.css 를 재생성하세요.
+ * `/hes:token-export` 로 tokens.css 를 재생성하세요.
  *
  * cn() 은 프로젝트의 className 병합 유틸(clsx+tailwind-merge)로 대체하세요.
  *
@@ -21,9 +21,9 @@ function cn(...parts: Array<string | false | undefined>) {
 }
 
 const paddingClass: Record<Padding, string> = {
-  sm: "p-[var(--hds-space-inset-sm)]",
-  md: "p-[var(--hds-space-inset-md)]",
-  lg: "p-[var(--hds-space-inset-lg)]",
+  sm: "p-[var(--hes-space-inset-sm)]",
+  md: "p-[var(--hes-space-inset-md)]",
+  lg: "p-[var(--hes-space-inset-lg)]",
 };
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -40,10 +40,10 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
       <div
         ref={ref}
         className={cn(
-          "flex flex-col gap-[var(--hds-space-stack-md)] rounded-[var(--hds-radius-lg)] " +
-            "bg-[var(--hds-bg-base)] border border-[var(--hds-border-base)]",
+          "flex flex-col gap-[var(--hes-space-stack-md)] rounded-[var(--hes-radius-lg)] " +
+            "bg-[var(--hes-bg-base)] border border-[var(--hes-border-base)]",
           variant === "elevated" &&
-            "shadow-[0_4px_16px_-4px_var(--hds-border-base)]",
+            "shadow-[0_4px_16px_-4px_var(--hes-border-base)]",
           paddingClass[padding],
           className
         )}
@@ -63,7 +63,7 @@ export const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
       <div
         ref={ref}
         className={cn(
-          "flex items-start justify-between gap-[var(--hds-space-stack-sm)]",
+          "flex items-start justify-between gap-[var(--hes-space-stack-sm)]",
           className
         )}
         {...props}
@@ -86,7 +86,7 @@ export const CardTitle = React.forwardRef<HTMLHeadingElement, CardTitleProps>(
       <Tag
         ref={ref}
         className={cn(
-          "text-base font-semibold leading-snug text-[var(--hds-fg-base)]",
+          "text-base font-semibold leading-snug text-[var(--hes-fg-base)]",
           className
         )}
         {...props}
@@ -105,7 +105,7 @@ export const CardBody = React.forwardRef<HTMLDivElement, CardBodyProps>(
       <div
         ref={ref}
         className={cn(
-          "text-sm leading-relaxed text-[var(--hds-fg-base)]",
+          "text-sm leading-relaxed text-[var(--hes-fg-base)]",
           className
         )}
         {...props}
@@ -125,7 +125,7 @@ export const CardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(
       <div
         ref={ref}
         className={cn(
-          "flex items-center justify-end gap-[var(--hds-space-stack-sm)]",
+          "flex items-center justify-end gap-[var(--hes-space-stack-sm)]",
           className
         )}
         {...props}

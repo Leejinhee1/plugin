@@ -1,11 +1,11 @@
 import * as React from "react";
 
 /**
- * HDS Button — 레퍼런스 구현.
+ * HES Button — 레퍼런스 구현.
  *
- * 스타일은 semantic 토큰에서 생성된 CSS 변수(--hds-*)만 참조합니다.
+ * 스타일은 semantic 토큰에서 생성된 CSS 변수(--hes-*)만 참조합니다.
  * 색/간격을 절대 하드코딩하지 않습니다. 토큰 변경은 tokens/ 에서 하고
- * `/hds:token-export` 로 tokens.css 를 재생성하세요.
+ * `/hes:token-export` 로 tokens.css 를 재생성하세요.
  *
  * cn() 은 프로젝트의 className 병합 유틸(clsx+tailwind-merge)로 대체하세요.
  */
@@ -23,20 +23,20 @@ export interface ButtonProps
 }
 
 const base =
-  "inline-flex items-center justify-center gap-2 font-medium rounded-[var(--hds-radius-md)] " +
-  "transition-colors duration-[var(--hds-duration-fast)] ease-[var(--hds-ease-standard)] " +
-  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--hds-focus-ring)] focus-visible:ring-offset-2 " +
+  "inline-flex items-center justify-center gap-2 font-medium rounded-[var(--hes-radius-md)] " +
+  "transition-colors duration-[var(--hes-duration-fast)] ease-[var(--hes-ease-standard)] " +
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--hes-focus-ring)] focus-visible:ring-offset-2 " +
   "disabled:opacity-50 disabled:pointer-events-none select-none";
 
 const variants: Record<Variant, string> = {
   primary:
-    "bg-[var(--hds-brand-default)] text-[var(--hds-fg-on-brand)] hover:bg-[var(--hds-brand-hover)] active:bg-[var(--hds-brand-active)]",
+    "bg-[var(--hes-brand-default)] text-[var(--hes-fg-on-brand)] hover:bg-[var(--hes-brand-hover)] active:bg-[var(--hes-brand-active)]",
   secondary:
-    "bg-[var(--hds-bg-base)] text-[var(--hds-fg-base)] border border-[var(--hds-border-strong)] hover:bg-[var(--hds-bg-subtle)]",
+    "bg-[var(--hes-bg-base)] text-[var(--hes-fg-base)] border border-[var(--hes-border-strong)] hover:bg-[var(--hes-bg-subtle)]",
   ghost:
-    "bg-transparent text-[var(--hds-fg-base)] hover:bg-[var(--hds-bg-subtle)]",
+    "bg-transparent text-[var(--hes-fg-base)] hover:bg-[var(--hes-bg-subtle)]",
   danger:
-    "bg-[var(--hds-feedback-danger)] text-[var(--hds-fg-on-brand)] hover:opacity-90",
+    "bg-[var(--hes-feedback-danger)] text-[var(--hes-fg-on-brand)] hover:opacity-90",
 };
 
 const sizes: Record<Size, string> = {

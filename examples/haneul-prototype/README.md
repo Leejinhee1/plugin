@@ -1,6 +1,6 @@
 # 하늘 프로토타입 — 오늘 브리핑
 
-날씨 기반 일상 플래너 앱 "하늘"의 동작 프로토타입입니다. HDS(Haneul Design System)의 **기획 → 디자인 → 퍼블** 파이프라인이 실제로 이어진다는 것을 하나의 화면으로 증명합니다.
+날씨 기반 일상 플래너 앱 "하늘"의 동작 프로토타입입니다. HES(Haneul Design System)의 **기획 → 디자인 → 퍼블** 파이프라인이 실제로 이어진다는 것을 하나의 화면으로 증명합니다.
 
 ## 열어보는 법
 
@@ -32,14 +32,14 @@ xdg-open index.html      # Linux
 설계서(spec)                레지스트리 조립                토큰 파생
 examples/specs/          →  components/*/spec.md 의     →  tokens/*.json
 today-briefing.md           variant·prop 를 미러링          → build-tokens.mjs
-                            (hds-btn--primary,             → tokens.css (--hds-*)
-                             hds-card--elevated,
-                             hds-badge--brand, …)
+                            (hes-btn--primary,             → tokens.css (--hes-*)
+                             hes-card--elevated,
+                             hes-badge--brand, …)
 ```
 
-1. **설계서 → 화면**: `examples/specs/today-briefing.md` 의 §5 화면 명세가 이 `index.html` 과 1:1로 대응합니다. 설계서에서 "날씨 요약 = Card(variant=elevated)"라고 적으면, 프로토타입에는 `hds-card hds-card--elevated` 로 나타납니다.
+1. **설계서 → 화면**: `examples/specs/today-briefing.md` 의 §5 화면 명세가 이 `index.html` 과 1:1로 대응합니다. 설계서에서 "날씨 요약 = Card(variant=elevated)"라고 적으면, 프로토타입에는 `hes-card hes-card--elevated` 로 나타납니다.
 2. **레지스트리 조립**: 모든 UI는 `design-system/components/{button,input,badge,card,modal}/spec.md` 의 variant·prop 체계를 그대로 클래스 이름으로 미러링합니다. 각 컴포넌트 CSS 블록 상단에 대응 `spec.md` 경로가 주석으로 달려 있습니다.
-3. **토큰 파생**: 색·간격·라디우스·모션은 **하드코딩 없이** `var(--hds-*)` 만 사용합니다. 이 변수들은 DTCG 토큰(`core.tokens.json` + `semantic.tokens.json`)에서 `build-tokens.mjs` 로 파생된 `tokens.css` 에 정의되어 있습니다. 다크 테마는 `[data-theme="dark"]` 스코프에서 같은 변수만 교체됩니다.
+3. **토큰 파생**: 색·간격·라디우스·모션은 **하드코딩 없이** `var(--hes-*)` 만 사용합니다. 이 변수들은 DTCG 토큰(`core.tokens.json` + `semantic.tokens.json`)에서 `build-tokens.mjs` 로 파생된 `tokens.css` 에 정의되어 있습니다. 다크 테마는 `[data-theme="dark"]` 스코프에서 같은 변수만 교체됩니다.
 
 ## tokens.css 재생성
 
@@ -58,6 +58,6 @@ node skills/publish/token-export/scripts/build-tokens.mjs \
 | 파일 | 설명 |
 | :-- | :-- |
 | `index.html` | 단일 페이지 프로토타입(HTML/CSS/JS, 빌드 불필요) |
-| `tokens.css` | `build-tokens.mjs` 산출물 — `--hds-*` 변수(라이트/다크) |
+| `tokens.css` | `build-tokens.mjs` 산출물 — `--hes-*` 변수(라이트/다크) |
 | `logo.svg` | 브랜드 로고(`brand/assets/logo.svg` 복사본) |
 </content>

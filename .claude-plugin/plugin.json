@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
-  "name": "hds",
+  "name": "hes",
   "version": "3.5.0",
   "description": "그룹 공식 디자인 시스템 하네스. 기획·디자인·퍼블 스킬 전체와 디자인 시스템 소스(토큰·컴포넌트·가이드·브랜드)를 플러그인 하나로 설치합니다.",
   "author": {
@@ -21,7 +21,7 @@
     "accessibility"
   ],
   "skills": [
-    "./skills/general/ask-hds",
+    "./skills/general/ask-hes",
     "./skills/general/mcp-connectors",
     "./skills/planning/product-spec",
     "./skills/planning/prototype",

@@ -10,7 +10,7 @@ related_components: [card, badge, button, input, modal]
 # 오늘 브리핑 제품 설계서
 
 ## 0. Changelog
-- 1.0.0 (2026-07-10): 승인. 화면 명세를 HDS 컴포넌트·토큰으로 확정하고 프로토타입(`examples/haneul-prototype/`)과 1:1 정합.
+- 1.0.0 (2026-07-10): 승인. 화면 명세를 HES 컴포넌트·토큰으로 확정하고 프로토타입(`examples/haneul-prototype/`)과 1:1 정합.
 - 0.2.0 (2026-07-08): 상태(empty/loading/error)·수용 기준 보강, 알림 설정 Modal 추가.
 - 0.1.0 (2026-07-05): 초안.
 
@@ -55,8 +55,8 @@ related_components: [card, badge, button, input, modal]
 
 > 분기·예외 경로: empty(일정 0건), loading(요청 중), error(요청 실패)를 각각 처리한다. Modal은 ESC·오버레이·명시적 버튼 세 경로 모두에서 닫힌다.
 
-## 5. 화면 명세 (HDS 참조로 기술)
-각 화면을 HDS 컴포넌트·토큰 이름으로 명세한다. 프로토타입 `index.html`의 컴포넌트 클래스(`hds-*`)가 이 명세를 그대로 미러링한다.
+## 5. 화면 명세 (HES 참조로 기술)
+각 화면을 HES 컴포넌트·토큰 이름으로 명세한다. 프로토타입 `index.html`의 컴포넌트 클래스(`hes-*`)가 이 명세를 그대로 미러링한다.
 
 ### 화면: 오늘 브리핑 (메인)
 - 목적: 앱 진입 첫 화면. 오늘의 날씨·추천·일정을 한 화면에서 요약한다.
@@ -119,7 +119,7 @@ related_components: [card, badge, button, input, modal]
 - [ ] 주간 플랜 일정 추가 폼에서 빈 값 제출 시 `errorMessage`가 표시되고 `aria-invalid=true`가 설정된다.
 - [ ] 다크 모드 토글 시 `html[data-theme=dark]`로 전환되고 모든 색이 토큰 오버라이드로 자연스럽게 반영된다.
 - [ ] 키보드만으로 전체 플로우(탐색 전환 → Modal 열기/닫기 → 일정 추가) 완료 가능.
-- [ ] 모든 색·간격·라디우스·모션 값이 `var(--hds-*)` 토큰으로만 지정된다(hex/rgb 하드코딩 없음).
+- [ ] 모든 색·간격·라디우스·모션 값이 `var(--hes-*)` 토큰으로만 지정된다(hex/rgb 하드코딩 없음).
 
 ## 7. 미해결 질문 (Open questions)
 - [ ] on/off 스위치를 registry의 정식 `Switch` 컴포넌트로 승격할지(알림 설정 외에도 반복 사용 예상). 승격 시 토큰 매핑: on=`color.brand.default`, off=`color.border.strong`, 포커스 링=`color.focus.ring`.

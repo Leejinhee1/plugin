@@ -1,11 +1,11 @@
 import * as React from "react";
 
 /**
- * HDS Badge — 레퍼런스 구현.
+ * HES Badge — 레퍼런스 구현.
  *
- * 스타일은 semantic 토큰에서 생성된 CSS 변수(--hds-*)만 참조합니다.
+ * 스타일은 semantic 토큰에서 생성된 CSS 변수(--hes-*)만 참조합니다.
  * 색/간격을 절대 하드코딩하지 않습니다. 토큰 변경은 tokens/ 에서 하고
- * `/hds:token-export` 로 tokens.css 를 재생성하세요.
+ * `/hes:token-export` 로 tokens.css 를 재생성하세요.
  *
  * 비인터랙티브 요소이므로 항상 <span> 으로 렌더링하고 onClick/tabIndex 를 받지 않습니다.
  *
@@ -22,15 +22,15 @@ export interface BadgeProps
 }
 
 const base =
-  "inline-flex items-center justify-center gap-1 font-medium rounded-[var(--hds-radius-full)] " +
+  "inline-flex items-center justify-center gap-1 font-medium rounded-[var(--hes-radius-full)] " +
   "select-none whitespace-nowrap";
 
 const variants: Record<Variant, string> = {
-  neutral: "bg-[var(--hds-bg-muted)] text-[var(--hds-fg-muted)]",
-  brand: "bg-[var(--hds-brand-subtle)] text-[var(--hds-brand-default)]",
-  success: "bg-[var(--hds-feedback-success)] text-[var(--hds-fg-on-brand)]",
-  warning: "bg-[var(--hds-feedback-warning)] text-[var(--hds-fg-on-brand)]",
-  danger: "bg-[var(--hds-feedback-danger)] text-[var(--hds-fg-on-brand)]",
+  neutral: "bg-[var(--hes-bg-muted)] text-[var(--hes-fg-muted)]",
+  brand: "bg-[var(--hes-brand-subtle)] text-[var(--hes-brand-default)]",
+  success: "bg-[var(--hes-feedback-success)] text-[var(--hes-fg-on-brand)]",
+  warning: "bg-[var(--hes-feedback-warning)] text-[var(--hes-fg-on-brand)]",
+  danger: "bg-[var(--hes-feedback-danger)] text-[var(--hes-fg-on-brand)]",
 };
 
 const sizes: Record<Size, string> = {

@@ -1,6 +1,6 @@
 ---
 name: brand-visual
-description: 브랜드 아이덴티티가 녹아든 시각 자산(이미지·모션·영상)을 기획하고 생성/검수합니다. 브랜드 규범에 맞는 비주얼을 만들거나, 모션/영상 톤을 제품과 일치시킬 때 사용. Use when creating or reviewing brand imagery, motion, or video that must match HDS brand and product tokens.
+description: 브랜드 아이덴티티가 녹아든 시각 자산(이미지·모션·영상)을 기획하고 생성/검수합니다. 브랜드 규범에 맞는 비주얼을 만들거나, 모션/영상 톤을 제품과 일치시킬 때 사용. Use when creating or reviewing brand imagery, motion, or video that must match HES brand and product tokens.
 ---
 
 # 브랜드 비주얼 · 모션

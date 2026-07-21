@@ -1,10 +1,10 @@
 import * as React from "react";
 
 /**
- * HDS Radio / RadioGroup — 레퍼런스 구현.
+ * HES Radio / RadioGroup — 레퍼런스 구현.
  *
  * HES(🧱 Template/radio) 매핑: dot=rdo/rdoM · list=rdoList/rdoListCol · listCheck=rdoListChk.
- * 스타일은 semantic 토큰 CSS 변수(--hds-*)만 참조합니다.
+ * 스타일은 semantic 토큰 CSS 변수(--hes-*)만 참조합니다.
  */
 
 type Variant = "dot" | "list" | "listCheck";
@@ -49,14 +49,14 @@ export function RadioGroup({
     <GroupContext.Provider value={{ name, variant, value, onChange }}>
       <fieldset className={cn("border-0 p-0 m-0", className)}>
         {label && (
-          <legend className="mb-2 text-sm text-[var(--hds-fg-muted)]">
+          <legend className="mb-2 text-sm text-[var(--hes-fg-muted)]">
             {label}
           </legend>
         )}
         <div
           className={cn(
             isButtons
-              ? "grid gap-px overflow-hidden rounded-[var(--hds-radius-xs)] bg-[var(--hds-border-base)] border border-[var(--hds-border-base)]"
+              ? "grid gap-px overflow-hidden rounded-[var(--hes-radius-xs)] bg-[var(--hes-border-base)] border border-[var(--hes-border-base)]"
               : "flex flex-col gap-3"
           )}
           style={
@@ -102,7 +102,7 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
       return (
         <label
           className={cn(
-            "inline-flex select-none items-center gap-2 text-base text-[var(--hds-fg-base)]",
+            "inline-flex select-none items-center gap-2 text-base text-[var(--hes-fg-base)]",
             disabled ? "opacity-40 pointer-events-none" : "cursor-pointer",
             className
           )}
@@ -111,14 +111,14 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
           <span
             aria-hidden
             className={cn(
-              "grid h-6 w-6 shrink-0 place-items-center rounded-full border bg-[var(--hds-bg-base)]",
-              "border-[var(--hds-border-strong)] peer-checked:border-[var(--hds-brand-default)]",
-              "transition-colors duration-[var(--hds-duration-fast)] ease-[var(--hds-ease-standard)]",
+              "grid h-6 w-6 shrink-0 place-items-center rounded-full border bg-[var(--hes-bg-base)]",
+              "border-[var(--hes-border-strong)] peer-checked:border-[var(--hes-brand-default)]",
+              "transition-colors duration-[var(--hes-duration-fast)] ease-[var(--hes-ease-standard)]",
               "[&_i]:scale-0 peer-checked:[&_i]:scale-100",
-              "peer-focus-visible:ring-2 peer-focus-visible:ring-[var(--hds-focus-ring)] peer-focus-visible:ring-offset-2"
+              "peer-focus-visible:ring-2 peer-focus-visible:ring-[var(--hes-focus-ring)] peer-focus-visible:ring-offset-2"
             )}
           >
-            <i className="block h-3 w-3 rounded-full bg-[var(--hds-brand-default)] transition-transform" />
+            <i className="block h-3 w-3 rounded-full bg-[var(--hes-brand-default)] transition-transform" />
           </span>
           {children}
         </label>
@@ -130,11 +130,11 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
       <label
         className={cn(
           "relative flex select-none items-center justify-center gap-1 px-2 py-2 text-sm text-center",
-          "bg-[var(--hds-bg-subtle)] text-[var(--hds-fg-muted)]",
-          "transition-colors duration-[var(--hds-duration-fast)] ease-[var(--hds-ease-standard)]",
-          "has-[:checked]:bg-[var(--hds-bg-base)] has-[:checked]:text-[var(--hds-fg-base)] has-[:checked]:font-bold",
-          "has-[:checked]:outline has-[:checked]:outline-1 has-[:checked]:-outline-offset-1 has-[:checked]:outline-[var(--hds-fg-base)]",
-          "has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-inset has-[:focus-visible]:ring-[var(--hds-focus-ring)]",
+          "bg-[var(--hes-bg-subtle)] text-[var(--hes-fg-muted)]",
+          "transition-colors duration-[var(--hes-duration-fast)] ease-[var(--hes-ease-standard)]",
+          "has-[:checked]:bg-[var(--hes-bg-base)] has-[:checked]:text-[var(--hes-fg-base)] has-[:checked]:font-bold",
+          "has-[:checked]:outline has-[:checked]:outline-1 has-[:checked]:-outline-offset-1 has-[:checked]:outline-[var(--hes-fg-base)]",
+          "has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-inset has-[:focus-visible]:ring-[var(--hes-focus-ring)]",
           disabled ? "opacity-40 pointer-events-none" : "cursor-pointer",
           className
         )}
@@ -145,7 +145,7 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
             viewBox="0 0 24 24"
             aria-hidden
             fill="none"
-            className="hidden h-4 w-4 text-[var(--hds-brand-default)] peer-checked:block"
+            className="hidden h-4 w-4 text-[var(--hes-brand-default)] peer-checked:block"
           >
             <path
               d="M6 12.5l4 4 8-9"

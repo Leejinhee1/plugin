@@ -57,7 +57,7 @@ const [open, setOpen] = useState(false);
   size="lg"
   footer={<Button variant="secondary" onClick={() => setDetailOpen(false)}>닫기</Button>}
 >
-  <ul className="flex flex-col gap-[var(--hds-space-stack-sm)]">
+  <ul className="flex flex-col gap-[var(--hes-space-stack-sm)]">
     {weekEarnings.map((day) => (
       <li key={day.date}>{day.date} · {day.summary}</li>
     ))}

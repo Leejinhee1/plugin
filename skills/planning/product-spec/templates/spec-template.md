@@ -4,7 +4,7 @@ status: draft            # draft | review | approved | shipped
 owner: <기획자>
 version: 0.1.0
 updated: <YYYY-MM-DD>
-related_components: []   # 예: [button, ...] — HDS registry의 name
+related_components: []   # 예: [button, ...] — HES registry의 name
 ---
 
 # <기능 이름> 제품 설계서
@@ -30,8 +30,8 @@ related_components: []   # 예: [button, ...] — HDS registry의 name
 2. …
 > 분기·예외 경로 포함.
 
-## 5. 화면 명세 (HDS 참조로 기술)
-각 화면을 **HDS 컴포넌트·토큰 이름**으로 명세한다. (프로토타입/퍼블이 바로 매핑)
+## 5. 화면 명세 (HES 참조로 기술)
+각 화면을 **HES 컴포넌트·토큰 이름**으로 명세한다. (프로토타입/퍼블이 바로 매핑)
 
 ### 화면: <이름>
 - 목적:

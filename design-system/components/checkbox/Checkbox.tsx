@@ -1,11 +1,11 @@
 import * as React from "react";
 
 /**
- * HDS Checkbox — 레퍼런스 구현.
+ * HES Checkbox — 레퍼런스 구현.
  *
  * HES(🧱 Template/checkbox) 매핑: all=checkAll/chkL · basic=check/chkM · sub=checkSub/chkS
  * · round=checkRound · button=chkBtn. 아이콘 24×24, 라벨 간격 8px.
- * 스타일은 semantic 토큰 CSS 변수(--hds-*)만 참조합니다.
+ * 스타일은 semantic 토큰 CSS 변수(--hes-*)만 참조합니다.
  * 네이티브 input 을 sr-only 로 유지해 키보드/스크린리더 동작을 그대로 확보합니다.
  */
 
@@ -39,14 +39,14 @@ function CircleControl({ filled }: { filled: boolean }) {
       aria-hidden
       className={cn(
         "grid h-6 w-6 shrink-0 place-items-center rounded-full border",
-        "border-[var(--hds-border-strong)] bg-[var(--hds-bg-base)]",
-        "transition-colors duration-[var(--hds-duration-fast)] ease-[var(--hds-ease-standard)]",
+        "border-[var(--hes-border-strong)] bg-[var(--hes-bg-base)]",
+        "transition-colors duration-[var(--hes-duration-fast)] ease-[var(--hes-ease-standard)]",
         "[&_svg]:opacity-0 peer-checked:[&_svg]:opacity-100",
-        "peer-checked:border-[var(--hds-brand-default)]",
+        "peer-checked:border-[var(--hes-brand-default)]",
         filled
-          ? "peer-checked:bg-[var(--hds-brand-default)] text-[var(--hds-fg-on-brand)]"
-          : "text-[var(--hds-brand-default)]",
-        "peer-focus-visible:ring-2 peer-focus-visible:ring-[var(--hds-focus-ring)] peer-focus-visible:ring-offset-2"
+          ? "peer-checked:bg-[var(--hes-brand-default)] text-[var(--hes-fg-on-brand)]"
+          : "text-[var(--hes-brand-default)]",
+        "peer-focus-visible:ring-2 peer-focus-visible:ring-[var(--hes-focus-ring)] peer-focus-visible:ring-offset-2"
       )}
     >
       <CheckIcon className="h-4 w-4 transition-opacity" />
@@ -74,15 +74,15 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
         className={cn(
           "inline-flex select-none items-center gap-2",
           labelTypo[variant],
-          "text-[var(--hds-fg-base)]",
+          "text-[var(--hes-fg-base)]",
           disabled ? "opacity-40 pointer-events-none" : "cursor-pointer",
           isChip &&
-            "border transition-colors duration-[var(--hds-duration-fast)] ease-[var(--hds-ease-standard)] " +
-              "border-[var(--hds-border-base)] bg-[var(--hds-bg-base)] " +
-              "has-[:checked]:border-[var(--hds-brand-default)] has-[:checked]:text-[var(--hds-brand-default)] " +
-              "has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-[var(--hds-focus-ring)]",
-          variant === "round" && "rounded-[var(--hds-radius-full)] px-4 py-2",
-          variant === "button" && "rounded-[var(--hds-radius-sm)] px-4 py-2.5",
+            "border transition-colors duration-[var(--hes-duration-fast)] ease-[var(--hes-ease-standard)] " +
+              "border-[var(--hes-border-base)] bg-[var(--hes-bg-base)] " +
+              "has-[:checked]:border-[var(--hes-brand-default)] has-[:checked]:text-[var(--hes-brand-default)] " +
+              "has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-[var(--hes-focus-ring)]",
+          variant === "round" && "rounded-[var(--hes-radius-full)] px-4 py-2",
+          variant === "button" && "rounded-[var(--hes-radius-sm)] px-4 py-2.5",
           className
         )}
       >
@@ -99,7 +99,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
           <CheckIcon
             className={cn(
               "h-5 w-5 shrink-0 transition-colors",
-              "text-[var(--hds-border-strong)] peer-checked:text-[var(--hds-brand-default)]",
+              "text-[var(--hes-border-strong)] peer-checked:text-[var(--hes-brand-default)]",
               variant === "button" && "hidden peer-checked:block"
             )}
           />

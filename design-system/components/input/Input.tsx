@@ -1,11 +1,11 @@
 import * as React from "react";
 
 /**
- * HDS Input — 레퍼런스 구현.
+ * HES Input — 레퍼런스 구현.
  *
- * 스타일은 semantic 토큰에서 생성된 CSS 변수(--hds-*)만 참조합니다.
+ * 스타일은 semantic 토큰에서 생성된 CSS 변수(--hes-*)만 참조합니다.
  * 색/간격을 절대 하드코딩하지 않습니다. 토큰 변경은 tokens/ 에서 하고
- * `/hds:token-export` 로 tokens.css 를 재생성하세요.
+ * `/hes:token-export` 로 tokens.css 를 재생성하세요.
  *
  * cn() 은 프로젝트의 className 병합 유틸(clsx+tailwind-merge)로 대체하세요.
  */
@@ -25,16 +25,16 @@ export interface InputProps
 }
 
 const fieldBase =
-  "w-full bg-[var(--hds-bg-base)] text-[var(--hds-fg-base)] rounded-[var(--hds-radius-md)] " +
-  "border border-[var(--hds-border-base)] placeholder:text-[var(--hds-fg-muted)] " +
-  "transition-colors duration-[var(--hds-duration-fast)] ease-[var(--hds-ease-standard)] " +
-  "hover:border-[var(--hds-border-strong)] " +
-  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--hds-focus-ring)] focus-visible:ring-offset-2 " +
+  "w-full bg-[var(--hes-bg-base)] text-[var(--hes-fg-base)] rounded-[var(--hes-radius-md)] " +
+  "border border-[var(--hes-border-base)] placeholder:text-[var(--hes-fg-muted)] " +
+  "transition-colors duration-[var(--hes-duration-fast)] ease-[var(--hes-ease-standard)] " +
+  "hover:border-[var(--hes-border-strong)] " +
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--hes-focus-ring)] focus-visible:ring-offset-2 " +
   "disabled:opacity-50 disabled:pointer-events-none";
 
 const invalidField =
-  "border-[var(--hds-feedback-danger)] hover:border-[var(--hds-feedback-danger)] " +
-  "focus-visible:ring-[var(--hds-feedback-danger)]";
+  "border-[var(--hes-feedback-danger)] hover:border-[var(--hes-feedback-danger)] " +
+  "focus-visible:ring-[var(--hes-feedback-danger)]";
 
 const sizes: Record<Size, string> = {
   sm: "h-8 px-3 text-sm",
@@ -60,7 +60,7 @@ function cn(...parts: Array<string | false | undefined>) {
 
 function useFallbackId(providedId?: string) {
   const reactId = React.useId();
-  return providedId ?? `hds-input-${reactId}`;
+  return providedId ?? `hes-input-${reactId}`;
 }
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -97,11 +97,11 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       ) || undefined;
 
     return (
-      <div className={cn("flex flex-col gap-[var(--hds-space-stack-sm)]", containerClassName)}>
+      <div className={cn("flex flex-col gap-[var(--hes-space-stack-sm)]", containerClassName)}>
         {label && (
           <label
             htmlFor={inputId}
-            className="text-sm font-medium text-[var(--hds-fg-base)]"
+            className="text-sm font-medium text-[var(--hes-fg-base)]"
           >
             {label}
           </label>
@@ -111,7 +111,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             <span
               aria-hidden
               className={cn(
-                "pointer-events-none absolute flex items-center text-[var(--hds-fg-muted)]",
+                "pointer-events-none absolute flex items-center text-[var(--hes-fg-muted)]",
                 iconPosition[size]
               )}
             >
@@ -134,11 +134,11 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           />
         </div>
         {showError ? (
-          <p id={errorId} className="text-xs text-[var(--hds-feedback-danger)]">
+          <p id={errorId} className="text-xs text-[var(--hes-feedback-danger)]">
             {errorMessage}
           </p>
         ) : showHelper ? (
-          <p id={helperId} className="text-xs text-[var(--hds-fg-muted)]">
+          <p id={helperId} className="text-xs text-[var(--hes-fg-muted)]">
             {helperText}
           </p>
         ) : null}

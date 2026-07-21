@@ -1,11 +1,11 @@
 {
-  "$description": "HDS MCP 커넥터 레지스트리 — HDS 스킬이 사용하는 MCP 서버(커넥터)의 단일 소스. '무엇을 쓰는지·누가 쓰는지·어떻게 연결하는지'를 조회하고, 새 커넥터를 등록/관리한다. design-system/components/registry.json 과 같은 shadcn식 인덱스 패턴.",
+  "$description": "HES MCP 커넥터 레지스트리 — HES 스킬이 사용하는 MCP 서버(커넥터)의 단일 소스. '무엇을 쓰는지·누가 쓰는지·어떻게 연결하는지'를 조회하고, 새 커넥터를 등록/관리한다. design-system/components/registry.json 과 같은 shadcn식 인덱스 패턴.",
   "$schema-note": "connectors[].transport 는 Claude Code MCP 규격을 따른다: stdio | http | sse | ws. url 을 쓰는 커넥터는 transport(=config.type)를 반드시 명시해야 한다(누락 시 Claude Code가 서버를 건너뜀). scope=bundled 인 커넥터의 실제 서버 선언은 .claude-plugin/plugin.json 의 mcpServers 에 있으며, 이 레지스트리는 그 사본·문서다.",
   "registryVersion": "1.1.0",
   "policy": {
     "scope": "커넥터는 scope 로 '누가 연결/인증하는가'를 구분한다. bundled=플러그인이 plugin.json/.mcp.json 의 mcpServers 로 등록(설치 시 자동 연결 시도, 단 자격증명이 config 에 들어가지 않는 것만). user=사용자가 각자 연결/인증. project=팀이 프로젝트 .mcp.json 에 커밋(첫 사용 시 승인).",
     "noBundledSecrets": "번들 config(command/args/env/url/headers)에 토큰·API 키 등 비밀을 넣지 않는다. 로컬 stdio, 공개 http, 또는 '로컬 http + 앱/OS 세션 인증'(예: Figma Dev Mode 127.0.0.1:3845 — URL만 등록하고 인증은 Figma 앱이 담당)처럼 config 에 비밀이 없는 커넥터만 bundled 로 둔다. 개인 API 토큰(예: figma-developer-mcp 의 FIGMA_API_KEY)이 필요한 변형은 bundled 금지 → user/project 로.",
-    "noFabrication": "실제로 HDS 스킬이 참조/사용하는 커넥터만 status=active 로 등록한다. 검토 중인 후보는 status=candidate 로 두고 usedBy 를 비운다.",
+    "noFabrication": "실제로 HES 스킬이 참조/사용하는 커넥터만 status=active 로 등록한다. 검토 중인 후보는 status=candidate 로 두고 usedBy 를 비운다.",
     "sourceOfTruth": "bundled 서버의 실제 실행 config 는 plugin.json 의 mcpServers 가 진실이다. 이 레지스트리의 connect.bundledConfig 는 그 사본이며, 어긋나면 plugin.json 을 기준으로 보고하고 표를 갱신한다."
   },
   "connectors": [
@@ -17,10 +17,10 @@
       "scope": "bundled",
       "required": false,
       "usedBy": ["figma-bridge", "brand-visual"],
-      "purpose": "코드 토큰 ↔ Figma Variables 동기화, Code Connect(디자인↔구현 매핑), 디자인 컨텍스트/에셋 조회. HDS의 소스 오브 트루스는 코드이며 Figma는 브릿지(충돌 시 코드가 진실).",
+      "purpose": "코드 토큰 ↔ Figma Variables 동기화, Code Connect(디자인↔구현 매핑), 디자인 컨텍스트/에셋 조회. HES의 소스 오브 트루스는 코드이며 Figma는 브릿지(충돌 시 코드가 진실).",
       "connect": {
         "how": "플러그인이 이 서버를 plugin.json 의 mcpServers.figma 로 이미 등록합니다(공식 Figma Dev Mode MCP, 로컬 http). 사용자는 서버를 추가할 필요 없이 Figma 데스크톱 앱에서 Dev Mode MCP 서버를 켜기만 하면 됩니다(Figma > Preferences > Enable Dev Mode MCP server). 인증은 Figma 앱 세션이 담당 — config 에 토큰이 없습니다.",
-        "verify": "연결 여부는 `/mcp` 패널 또는 `claude mcp list` 로 확인. 도구는 `mcp__plugin_hds_figma__*` 로 노출된다. 미연결(Figma 앱 미실행/Dev Mode 꺼짐)이면 figma-bridge 가 수동 안내로 폴백한다.",
+        "verify": "연결 여부는 `/mcp` 패널 또는 `claude mcp list` 로 확인. 도구는 `mcp__plugin_hes_figma__*` 로 노출된다. 미연결(Figma 앱 미실행/Dev Mode 꺼짐)이면 figma-bridge 가 수동 안내로 폴백한다.",
         "docs": "https://help.figma.com/hc/en-us/articles/32132100833559 (Dev Mode MCP 서버 — 최신 엔드포인트/transport 는 이 문서 기준으로 확인)",
         "bundledConfig": {
           "$note": "plugin.json 의 mcpServers.figma 사본. url 을 쓰므로 type 을 명시.",

@@ -2,11 +2,11 @@ import * as React from "react";
 import { createPortal } from "react-dom";
 
 /**
- * HDS Select — 레퍼런스 구현.
+ * HES Select — 레퍼런스 구현.
  *
  * HES(🧱 Template/select) 매핑: line=wrapSel · box=wrapSelBox · 옵션 시트=layer/layerSelect.
  * 트리거 터치 → 옵션 바텀시트가 열리는 모바일 기준 구성입니다.
- * 스타일은 semantic 토큰 CSS 변수(--hds-*)만 참조합니다.
+ * 스타일은 semantic 토큰 CSS 변수(--hes-*)만 참조합니다.
  */
 
 export interface SelectOption {
@@ -40,7 +40,7 @@ const Chevron = ({ open }: { open: boolean }) => (
     aria-hidden
     fill="none"
     className={cn(
-      "h-5 w-5 shrink-0 text-[var(--hds-fg-muted)] transition-transform duration-[var(--hds-duration-fast)]",
+      "h-5 w-5 shrink-0 text-[var(--hes-fg-muted)] transition-transform duration-[var(--hes-duration-fast)]",
       open && "rotate-180"
     )}
   >
@@ -92,23 +92,23 @@ export function Select({
         aria-expanded={open}
         onClick={() => setOpen(true)}
         className={cn(
-          "w-full text-left transition-colors duration-[var(--hds-duration-fast)] ease-[var(--hds-ease-standard)]",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--hds-focus-ring)]",
+          "w-full text-left transition-colors duration-[var(--hes-duration-fast)] ease-[var(--hes-ease-standard)]",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--hes-focus-ring)]",
           "disabled:opacity-40 disabled:pointer-events-none",
           variant === "line" && "border-b pb-2",
           variant === "line" &&
             (error
-              ? "border-[var(--hds-feedback-danger)]"
+              ? "border-[var(--hes-feedback-danger)]"
               : open
-                ? "border-[var(--hds-fg-base)]"
-                : "border-[var(--hds-border-strong)]"),
+                ? "border-[var(--hes-fg-base)]"
+                : "border-[var(--hes-border-strong)]"),
           variant === "box" &&
-            "rounded-[var(--hds-radius-md)] bg-[var(--hds-bg-subtle)] p-[var(--hds-space-inset-md)]"
+            "rounded-[var(--hes-radius-md)] bg-[var(--hes-bg-subtle)] p-[var(--hes-space-inset-md)]"
         )}
       >
         <span
           className={cn(
-            "mb-1 block text-xs text-[var(--hds-fg-muted)]",
+            "mb-1 block text-xs text-[var(--hes-fg-muted)]",
             hideLabel && "sr-only"
           )}
         >
@@ -118,7 +118,7 @@ export function Select({
           <span
             className={cn(
               "truncate text-base",
-              selected ? "text-[var(--hds-fg-base)]" : "text-[var(--hds-fg-muted)]"
+              selected ? "text-[var(--hes-fg-base)]" : "text-[var(--hes-fg-muted)]"
             )}
           >
             {selected ? selected.label : placeholder}
@@ -128,12 +128,12 @@ export function Select({
       </button>
 
       {error && errorMessage && (
-        <p role="alert" className="mt-1 text-xs text-[var(--hds-feedback-danger)]">
+        <p role="alert" className="mt-1 text-xs text-[var(--hes-feedback-danger)]">
           {errorMessage}
         </p>
       )}
       {!error && helperText && (
-        <p className="mt-1 text-xs text-[var(--hds-fg-muted)]">{helperText}</p>
+        <p className="mt-1 text-xs text-[var(--hes-fg-muted)]">{helperText}</p>
       )}
 
       {open &&
@@ -149,26 +149,26 @@ export function Select({
             aria-hidden
             onClick={close}
             className={cn(
-              "absolute inset-0 bg-[var(--hds-bg-overlay)]",
-              "transition-opacity duration-[var(--hds-duration-base)] ease-[var(--hds-ease-emphasized)] motion-reduce:transition-none",
+              "absolute inset-0 bg-[var(--hes-bg-overlay)]",
+              "transition-opacity duration-[var(--hes-duration-base)] ease-[var(--hes-ease-emphasized)] motion-reduce:transition-none",
               visible ? "opacity-100" : "opacity-0"
             )}
           />
           <div
             className={cn(
-              "relative w-full max-w-md rounded-t-[var(--hds-radius-xl)] bg-[var(--hds-bg-base)]",
-              "p-[var(--hds-space-inset-lg)] pb-[var(--hds-space-inset-md)]",
-              "transition-transform duration-[var(--hds-duration-base)] ease-[var(--hds-ease-emphasized)] motion-reduce:transition-none",
+              "relative w-full max-w-md rounded-t-[var(--hes-radius-xl)] bg-[var(--hes-bg-base)]",
+              "p-[var(--hes-space-inset-lg)] pb-[var(--hes-space-inset-md)]",
+              "transition-transform duration-[var(--hes-duration-base)] ease-[var(--hes-ease-emphasized)] motion-reduce:transition-none",
               visible ? "translate-y-0" : "translate-y-full"
             )}
           >
             <div className="mb-3 flex items-center justify-between">
-              <h2 className="text-lg font-bold text-[var(--hds-fg-base)]">{label}</h2>
+              <h2 className="text-lg font-bold text-[var(--hes-fg-base)]">{label}</h2>
               <button
                 type="button"
                 aria-label="닫기"
                 onClick={close}
-                className="grid h-11 w-11 place-items-center text-[var(--hds-fg-base)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--hds-focus-ring)]"
+                className="grid h-11 w-11 place-items-center text-[var(--hes-fg-base)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--hes-focus-ring)]"
               >
                 <svg viewBox="0 0 24 24" aria-hidden fill="none" className="h-5 w-5">
                   <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
@@ -191,20 +191,20 @@ export function Select({
                       }}
                       className={cn(
                         "flex w-full items-center justify-between gap-2 py-3 text-left text-base",
-                        "text-[var(--hds-fg-base)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--hds-focus-ring)]",
+                        "text-[var(--hes-fg-base)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--hes-focus-ring)]",
                         isSelected && "font-bold"
                       )}
                     >
                       <span>
                         {o.label}
                         {o.description && (
-                          <span className="mt-0.5 block text-xs font-normal text-[var(--hds-fg-muted)]">
+                          <span className="mt-0.5 block text-xs font-normal text-[var(--hes-fg-muted)]">
                             {o.description}
                           </span>
                         )}
                       </span>
                       {isSelected && (
-                        <svg viewBox="0 0 24 24" aria-hidden fill="none" className="h-5 w-5 text-[var(--hds-brand-default)]">
+                        <svg viewBox="0 0 24 24" aria-hidden fill="none" className="h-5 w-5 text-[var(--hes-brand-default)]">
                           <path d="M6 12.5l4 4 8-9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                       )}

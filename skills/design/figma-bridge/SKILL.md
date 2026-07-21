@@ -1,14 +1,14 @@
 ---
 name: figma-bridge
-description: HDS 코드 기반 디자인 시스템과 Figma를 동기화합니다. 토큰을 Figma Variables로 내보내거나, Figma 디자인을 코드 토큰/컴포넌트와 대조·연결(Code Connect)할 때 사용. Use when syncing HDS tokens/components with Figma in either direction.
+description: HES 코드 기반 디자인 시스템과 Figma를 동기화합니다. 토큰을 Figma Variables로 내보내거나, Figma 디자인을 코드 토큰/컴포넌트와 대조·연결(Code Connect)할 때 사용. Use when syncing HES tokens/components with Figma in either direction.
 ---
 
 # Figma 브릿지 (선택적)
 
-HDS의 **소스 오브 트루스는 코드**(`design-system/`)입니다. Figma는 소비/협업 채널로, 이 스킬로 양방향 동기화합니다.
+HES의 **소스 오브 트루스는 코드**(`design-system/`)입니다. Figma는 소비/협업 채널로, 이 스킬로 양방향 동기화합니다.
 
 ## 전제
-Figma MCP 서버(공식 Dev Mode)는 **플러그인이 직접 제공**합니다(`plugin.json` 의 `mcpServers.figma`, 로컬 `http://127.0.0.1:3845/mcp`). 따로 설치할 필요 없이 Figma 데스크톱 앱에서 **Dev Mode MCP 서버를 켜면** 연결됩니다(별도 토큰 불필요 — 인증은 앱 세션). 연결 여부가 불확실하면 먼저 `/hds:mcp-connectors` 로 현황(등록/연결/원인)을 확인하고, 미연결이면 그 스킬의 안내를 따르세요. Figma의 `use_figma` 계열 호출 전에는 반드시 `figma-use` 스킬 규칙을 따릅니다.
+Figma MCP 서버(공식 Dev Mode)는 **플러그인이 직접 제공**합니다(`plugin.json` 의 `mcpServers.figma`, 로컬 `http://127.0.0.1:3845/mcp`). 따로 설치할 필요 없이 Figma 데스크톱 앱에서 **Dev Mode MCP 서버를 켜면** 연결됩니다(별도 토큰 불필요 — 인증은 앱 세션). 연결 여부가 불확실하면 먼저 `/hes:mcp-connectors` 로 현황(등록/연결/원인)을 확인하고, 미연결이면 그 스킬의 안내를 따르세요. Figma의 `use_figma` 계열 호출 전에는 반드시 `figma-use` 스킬 규칙을 따릅니다.
 
 ## 방향별 작업
 ### 코드 → Figma (토큰/라이브러리 발행)
