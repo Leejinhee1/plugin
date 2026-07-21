@@ -54,6 +54,7 @@ HDS 저장소에서 합니다. 모든 변경은 `CHANGELOG.md` + version bump �
 - **`/hds:brand-visual`** — 키비주얼·모션·영상 등 브랜드 자산의 기획/검수. 제품 UI와 같은 토큰 언어(색·듀레이션·이징)를 쓰게 합니다.
 - **`/hds:figma-bridge`** — 코드 토큰 ↔ Figma Variables 동기화(Figma MCP 연결 필요). 충돌 시 **코드가 진실**.
 - **`/hds:a11y-audit`** — 메인 플로우 밖에서도 아무 때나. "이 색 조합 대비 괜찮아?" 하나만 검사할 때도 이 스킬.
+- **`/hds:mcp-connectors`** — 플러그인이 제공(번들)하는 커넥터·MCP 서버의 공식 목록·현재 연결 현황·커넥터 등록/관리. "무슨 MCP 써?", "Figma 연결됐어?" 류 질문이나 `figma-bridge` 실행 전 사전 점검. Figma 서버는 플러그인이 등록하므로 Figma 앱 Dev Mode 만 켜면 연결됨.
 
 ## 업데이트를 받았을 때 (퍼블)
 

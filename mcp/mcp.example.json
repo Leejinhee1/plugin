@@ -1,0 +1,9 @@
+{
+  "$comment": "복사용 예시 .mcp.json. HDS 플러그인은 figma 를 이미 번들 제공(plugin.json 의 mcpServers)하므로 플러그인 사용자는 이 파일이 필요 없습니다. 이 예시는 (1) 플러그인 없이 프로젝트 .mcp.json 으로 직접 쓰거나(팀 공유 — 첫 사용 시 승인), (2) Codex 등 다른 하네스에 같은 서버를 등록할 때 참고용입니다. 자격증명은 여기 넣지 말 것 — Figma Dev Mode 는 로컬 URL만 등록하고 인증은 Figma 앱이 담당. 실제 url/type 은 mcp/registry.json 의 connect.docs(공식 문서)를 기준으로 확인.",
+  "mcpServers": {
+    "figma": {
+      "type": "http",
+      "url": "http://127.0.0.1:3845/mcp"
+    }
+  }
+}

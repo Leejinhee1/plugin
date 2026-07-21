@@ -3,7 +3,7 @@
 ## 1. 사전 준비
 - Claude Code 최신 버전(`/plugin` 명령이 보여야 함).
 - (퍼블) Node.js + React/Tailwind 프로젝트.
-- (선택) Figma MCP 연결 — Figma 동기화를 쓸 경우.
+- (선택) Figma — Figma 동기화를 쓸 경우. **Figma MCP 서버(공식 Dev Mode)는 플러그인이 직접 제공**하므로 따로 설치할 필요 없이 Figma 데스크톱 앱에서 Dev Mode MCP 서버만 켜면 됩니다. 설치 후 `/hds:mcp-connectors` 로 제공 커넥터 목록과 연결 여부를 확인할 수 있습니다.
 
 ## 2. 설치
 

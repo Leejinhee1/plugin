@@ -8,14 +8,15 @@
 ```
 plugin/  (= 저장소 루트가 곧 플러그인이자 마켓플레이스)
 ├── .claude-plugin/
-│   ├── plugin.json        # 단일 플러그인 "hds" — skills 배열에 배포 스킬을 명시
+│   ├── plugin.json        # 단일 플러그인 "hds" — skills 배열 + mcpServers(번들 MCP 서버) 명시
 │   └── marketplace.json   # source: "./" 단일 플러그인 마켓플레이스
 ├── skills/                # 역할별 스킬 버킷 (설치는 한 번에 전부)
-│   ├── general/           공통 — ask-hds (어떤 스킬을 쓸지 알려주는 라우터)
+│   ├── general/           공통 — ask-hds (스킬 라우터) · mcp-connectors (커넥터·MCP 현황/관리)
 │   ├── planning/          기획 — product-spec · prototype
 │   ├── design/            디자인 — design-tokens · design-guide · component-catalog · brand-visual · figma-bridge
 │   └── publish/           퍼블 — token-export · component-build · a11y-audit
 ├── agents/                design-reviewer 검수 에이전트
+├── mcp/                   MCP 커넥터 레지스트리(SoT) — registry.json · mcp.example.json
 ├── design-system/         ★ 단일 소스 오브 트루스 — tokens · guidelines · components · usage · brand
 ├── cli/                   hds.mjs — `npx hds add` 컴포넌트 설치 CLI
 ├── package.json           bin: hds (컴포넌트를 쓰는 프로젝트가 devDependency 로 설치)
@@ -64,6 +65,7 @@ npx hds add checkbox                # 코드→components/hds/, 토큰→styles/
 ## 역할별 진입점
 
 **어떤 스킬을 써야 할지 모르겠으면 `/hds:ask-hds`** — 상황을 설명하면 맞는 스킬과 순서를 알려주는 라우터입니다.
+플러그인이 **제공(번들)** 하는 커넥터·MCP 서버의 공식 목록과 현재 연결 상태는 **`/hds:mcp-connectors`** 로 확인합니다. Figma MCP(공식 Dev Mode)는 플러그인이 직접 등록하므로 Figma 앱에서 Dev Mode MCP 서버만 켜면 됩니다.
 
 | 역할 | Claude 스킬 | Codex 프롬프트 |
 | :-- | :-- | :-- |
