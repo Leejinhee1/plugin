@@ -8,8 +8,8 @@
     - "머니"  : color.grayScale.white = #ffffff
     - 폰트    : fontFamily.sans = Spoqa Han Sans Neo, Pretendard, system-ui, sans-serif
 -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 176 48" width="176" height="48" role="img" aria-labelledby="hds-logo-dark-title">
-  <title id="hds-logo-dark-title">하나머니 (Hana Money) 워드마크 — 다크 배경용</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 176 48" width="176" height="48" role="img" aria-labelledby="hes-logo-dark-title">
+  <title id="hes-logo-dark-title">하나머니 (Hana Money) 워드마크 — 다크 배경용</title>
   <text x="8" y="34" font-family="Spoqa Han Sans Neo, Pretendard, system-ui, sans-serif" font-weight="700" font-size="28" letter-spacing="-1.4">
     <tspan fill="#009178">하나</tspan><tspan fill="#ffffff">머니</tspan>
   </text>

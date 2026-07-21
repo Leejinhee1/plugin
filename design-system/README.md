@@ -1,4 +1,4 @@
-# HDS Design System — 단일 소스 오브 트루스 (Source of Truth)
+# HES Design System — 단일 소스 오브 트루스 (Source of Truth)
 
 이 디렉터리가 **디자인 시스템의 원본**입니다. 기획·디자인·퍼블·코덱스·클로드 모두 여기를 참조합니다.
 다른 어떤 산출물(퍼블의 `tokens.css`, Figma Variables, 프로토타입)도 이 폴더에서 **파생**될 뿐, 여기를 대체하지 않습니다.

@@ -1,9 +1,9 @@
 /**
- * HDS 컴포넌트 barrel — 패키지형 소비 진입점.
+ * HES 컴포넌트 barrel — 패키지형 소비 진입점.
  *
- * 이 디렉터리를 패키지(예: @hds/react)로 발행하거나 모노레포에서 alias 로 연결하면
- * `import { Button, Checkbox } from "@hds/react"` 처럼 바로 사용할 수 있습니다.
- * 전제: 전역 CSS 에 토큰(tokens.css, `/hds:token-export` 산출물)이 로드되어 있어야 합니다.
+ * 이 디렉터리를 패키지(예: @hes/react)로 발행하거나 모노레포에서 alias 로 연결하면
+ * `import { Button, Checkbox } from "@hes/react"` 처럼 바로 사용할 수 있습니다.
+ * 전제: 전역 CSS 에 토큰(tokens.css, `/hes:token-export` 산출물)이 로드되어 있어야 합니다.
  *
  * 새 컴포넌트를 추가하면 여기와 registry.json 에 함께 등록하세요.
  */

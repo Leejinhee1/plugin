@@ -1,26 +1,26 @@
 ---
 name: token-export
-description: HDS 디자인 토큰(DTCG)을 개발에 바로 쓸 산출물 — CSS 변수(tokens.css), Tailwind preset, TS 타입 — 로 내보냅니다. 토큰을 코드에서 소비할 형태로 변환할 때 사용. Use when generating tokens.css, tailwind preset, or TS token types from HDS tokens.
+description: HES 디자인 토큰(DTCG)을 개발에 바로 쓸 산출물 — CSS 변수(tokens.css), Tailwind preset, TS 타입 — 로 내보냅니다. 토큰을 코드에서 소비할 형태로 변환할 때 사용. Use when generating tokens.css, tailwind preset, or TS token types from HES tokens.
 ---
 
 # 토큰 내보내기 (DTCG → 코드 산출물)
 
-HDS 토큰 원본(`${CLAUDE_PLUGIN_ROOT}/design-system/tokens/`)을 개발이 소비하는 형태로 변환합니다.
+HES 토큰 원본(`${CLAUDE_PLUGIN_ROOT}/design-system/tokens/`)을 개발이 소비하는 형태로 변환합니다.
 **원본을 고치지 않습니다.** 여기서 나오는 파일은 항상 파생 산출물(재생성 가능).
 
 ## 산출물
 | 파일 | 용도 |
 | :-- | :-- |
-| `tokens.css` | `:root` 에 `--hds-*` CSS 변수, `[data-theme=dark]` + `[data-platform=ios\|pc\|min]` 오버라이드 |
+| `tokens.css` | `:root` 에 `--hes-*` CSS 변수, `[data-theme=dark]` + `[data-platform=ios\|pc\|min]` 오버라이드 |
 | `tailwind.preset.js` | Tailwind theme 확장(색·간격·radius·폰트가 CSS 변수 참조) |
 | `tokens.ts` | 토큰 이름 자동완성/타입 안정성용 상수 |
 
 ## 변환 규칙
 1. `core.tokens.json` 의 원시값을 해석하고, `semantic.tokens.json` / `component.tokens.json` / `platform.tokens.json` 의 alias(`{color.hana.green}`)를 실제 값으로 resolve. component/platform 파일은 없으면 건너뜀(하위호환).
-2. semantic 토큰 이름을 CSS 변수로 매핑: `color.brand.default` → `--hds-brand-default`, `space.inset-md` → `--hds-space-inset-md`, `dimension.radius.md` → `--hds-radius-md`, `color.focus.ring` → `--hds-focus-ring`. component 토큰은 경로 그대로: `comp.button.solid.primary.bg` → `--hds-comp-button-solid-primary-bg`. platform 토큰은 `--hds-platform-*` 접두사.
+2. semantic 토큰 이름을 CSS 변수로 매핑: `color.brand.default` → `--hes-brand-default`, `space.inset-md` → `--hes-space-inset-md`, `dimension.radius.md` → `--hes-radius-md`, `color.focus.ring` → `--hes-focus-ring`. component 토큰은 경로 그대로: `comp.button.solid.primary.bg` → `--hes-comp-button-solid-primary-bg`. platform 토큰은 `--hes-platform-*` 접두사.
    > 컴포넌트 코드(예: Button.tsx)가 참조하는 변수명과 **정확히 일치**해야 함. 불일치 시 컴포넌트가 스타일을 잃는다.
 3. `$dark` 블록은 `[data-theme=dark] { ... }` 로, platform 모드 맵은 기본 모드(AOS)를 `:root` 에, 차이값만 `[data-platform="ios|pc|min"] { ... }` 로 출력.
-4. Tailwind preset은 값 대신 `var(--hds-*)` 를 참조하게 해 런타임 테마 전환을 지원. comp/platform 토큰은 preset 에 넣지 않는다(컴포넌트 CSS 에서 var() 직접 참조가 원칙, breakpoint 는 미디어쿼리에 var() 불가).
+4. Tailwind preset은 값 대신 `var(--hes-*)` 를 참조하게 해 런타임 테마 전환을 지원. comp/platform 토큰은 preset 에 넣지 않는다(컴포넌트 CSS 에서 var() 직접 참조가 원칙, breakpoint 는 미디어쿼리에 var() 불가).
 
 ## 구현 방식
 

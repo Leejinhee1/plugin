@@ -1,6 +1,6 @@
 {
   "$schema": "https://tr.designtokens.org/format/",
-  "$description": "HDS Platform tokens — Figma HES platform 컬렉션 이식(2026-07-20, 브랜치 0F4A8OTZzApAJIjFjeQULz). DTCG 에는 모드 표준이 없어 각 토큰의 $value 를 {AOS, iOS, PC, Min} 모드 맵으로 표현한다(HDS 자체 확장). 기본 모드는 AOS — 빌드 시 :root 에 AOS 값, [data-platform=\"ios\"|\"pc\"|\"min\"] 에 차이값만 오버라이드로 출력. Min 은 최소 지원 폭(280px 갤럭시 폴드 커버 등) 대응 모드. breakpoint 는 CSS 미디어쿼리에서 var() 를 못 쓰므로 참조 데이터로만 노출된다.",
+  "$description": "HES Platform tokens — Figma HES platform 컬렉션 이식(2026-07-20, 브랜치 0F4A8OTZzApAJIjFjeQULz). DTCG 에는 모드 표준이 없어 각 토큰의 $value 를 {AOS, iOS, PC, Min} 모드 맵으로 표현한다(자체 확장). 기본 모드는 AOS — 빌드 시 :root 에 AOS 값, [data-platform=\"ios\"|\"pc\"|\"min\"] 에 차이값만 오버라이드로 출력. Min 은 최소 지원 폭(280px 갤럭시 폴드 커버 등) 대응 모드. breakpoint 는 CSS 미디어쿼리에서 var() 를 못 쓰므로 참조 데이터로만 노출된다.",
   "$modes": ["AOS", "iOS", "PC", "Min"],
   "$defaultMode": "AOS",
   "breakpoint": {

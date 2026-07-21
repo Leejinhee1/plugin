@@ -14,36 +14,36 @@ components/
 
 ## 가져다 쓰는 법 (소비 경로 3종)
 
-모든 경로의 공통 전제: 전역 CSS 에 토큰이 로드되어 있을 것 (`/hds:token-export` 산출물 `tokens.css`).
+모든 경로의 공통 전제: 전역 CSS 에 토큰이 로드되어 있을 것 (`/hes:token-export` 산출물 `tokens.css`).
 
-### A. HDS CLI 로 설치 — 권장
-저장소 루트의 자체 CLI(`cli/hds.mjs`, 외부 의존성 없음)로 설치한다. 호스팅 없이도 동작한다.
+### A. HES CLI 로 설치 — 권장
+저장소 루트의 자체 CLI(`cli/hes.mjs`, 외부 의존성 없음)로 설치한다. 호스팅 없이도 동작한다.
 ```bash
 npm i -D github:Leejinhee1/plugin   # 또는 사내 npm 발행본
-npx hds list                        # 설치 가능한 컴포넌트 확인
-npx hds add button checkbox         # 토큰·의존 컴포넌트(예: modal→button) 자동 포함
+npx hes list                        # 설치 가능한 컴포넌트 확인
+npx hes add button checkbox         # 토큰·의존 컴포넌트(예: modal→button) 자동 포함
 ```
-- 코드는 `components/hds/` 로, 토큰 CSS 는 `styles/hds-tokens.css` 로 복사된다(`--dir`/`--tokens-dir` 로 변경).
+- 코드는 `components/hes/` 로, 토큰 CSS 는 `styles/hes-tokens.css` 로 복사된다(`--dir`/`--tokens-dir` 로 변경).
 - 로컬에서 수정한 파일은 덮어쓰지 않는다(`--force` 로 강제).
-- `--registry <URL>` 을 주면 `/hds:registry-export` 산출물을 호스팅한 곳에서 받아온다.
-- **shadcn CLI 호환(선택)**: 같은 레지스트리를 호스팅하면 shadcn 쓰는 팀은 `components.json` 에 `"registries": { "@hds": "<URL>/r/{name}.json" }` 등록 후 `npx shadcn add @hds/button` 으로도 설치할 수 있다. shadcn 은 설치 도구일 뿐, 컴포넌트 소스는 전부 HDS 다.
+- `--registry <URL>` 을 주면 `/hes:registry-export` 산출물을 호스팅한 곳에서 받아온다.
+- **shadcn CLI 호환(선택)**: 같은 레지스트리를 호스팅하면 shadcn 쓰는 팀은 `components.json` 에 `"registries": { "@hes": "<URL>/r/{name}.json" }` 등록 후 `npx shadcn add @hes/button` 으로도 설치할 수 있다. shadcn 은 설치 도구일 뿐, 컴포넌트 소스는 전부 HES 다.
 
 ### B. 패키지처럼 import — 모노레포/사내 npm
 이 디렉터리를 패키지로 발행하거나 tsconfig alias 로 연결하면 barrel 로 바로 쓴다.
 ```tsx
-import { Button, Checkbox, Toast } from "@hds/react"; // → design-system/components/index.ts
+import { Button, Checkbox, Toast } from "@hes/react"; // → design-system/components/index.ts
 ```
 
 ### C. 파일 복사 — 단발 사용
 컴포넌트가 자체 완결(외부 유틸 의존 없음)이라 `<component>/` 폴더의 `.tsx` 한 파일만 복사해도 동작한다. spec.md·usage.md 를 함께 가져가면 규칙까지 따라간다.
 
 ## 새 컴포넌트 추가 절차
-1. `/hds:component-catalog` 실행 → 스캐폴딩 생성
+1. `/hes:component-catalog` 실행 → 스캐폴딩 생성
 2. `spec.md` 에 API/상태/토큰 매핑 정의
 3. 구현 코드 작성 — 값은 semantic 토큰(CSS 변수)만, 외부 의존성 없이 자체 완결로
 4. `usage.md` 에 실제 화면 조합 + 안티패턴 기록
 5. `registry.json` 과 `index.ts`(barrel) 에 등록 (`status: draft → stable`)
-6. `/hds:registry-export` 로 레지스트리 재생성 (배포 중이라면)
+6. `/hes:registry-export` 로 레지스트리 재생성 (배포 중이라면)
 7. `CHANGELOG.md` + version bump
 
 > `status`: `draft`(실험) · `stable`(사용 권장) · `deprecated`(사용 중단, 대체재 명시)
@@ -53,7 +53,7 @@ import { Button, Checkbox, Toast } from "@hds/react"; // → design-system/compo
 원본: `[공식] Hana Experience System` branch `0F4A8OTZzApAJIjFjeQULz`, 페이지 노드 `691:3060`. 각 spec.md 프런트매터의 `figma` 필드가 해당 프레임을 가리킨다.
 
 ### 구현됨
-| Figma 프레임 | 노드 | HDS 모듈 | 비고 |
+| Figma 프레임 | 노드 | HES 모듈 | 비고 |
 | :-- | :-- | :-- | :-- |
 | Buttons | 691:3084 | `button` | |
 | input | 691:3116 | `input` | |

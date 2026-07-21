@@ -53,7 +53,7 @@ default · hover(선택적, 클릭 가능한 카드에서만) · focus-visible(�
 - 헤더/바디/푸터 간격: `space.stack-sm` · `space.stack-md`
 - 제목 타이포: `typography.heading`(`CardTitle`), 본문 텍스트는 `typography.body`
 - 부가 텍스트: `color.fg.muted`
-- `elevated` 그림자: 별도 토큰 없이 `color.border.base` 를 활용한 저강도 box-shadow(핵심 색상 하드코딩 없이 `--hds-border-base` 참조)
+- `elevated` 그림자: 별도 토큰 없이 `color.border.base` 를 활용한 저강도 box-shadow(핵심 색상 하드코딩 없이 `--hes-border-base` 참조)
 
 ## 접근성
 - `Card` 는 기본적으로 `<div>`(정적 컨테이너). 시맨틱이 필요하면 `as="section"` 등으로 교체 가능.

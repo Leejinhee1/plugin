@@ -1,5 +1,5 @@
 {
-  "$description": "HDS 컴포넌트 레지스트리 — shadcn 스타일 인덱스. 퍼블/기획이 이 파일로 '무엇이 있는지'와 '어디서 가져오는지'를 조회. 새 컴포넌트는 여기에 등록.",
+  "$description": "HES 컴포넌트 레지스트리 — shadcn 스타일 인덱스. 퍼블/기획이 이 파일로 '무엇이 있는지'와 '어디서 가져오는지'를 조회. 새 컴포넌트는 여기에 등록.",
   "registryVersion": "1.3.0",
   "figmaSource": "[공식] Hana Experience System — 🧱 Template 페이지 (branch 0F4A8OTZzApAJIjFjeQULz, node 691:3060). 각 컴포넌트 spec.md 프런트매터의 figma 필드가 원본 프레임을 가리킴.",
   "stack": {

@@ -19,7 +19,7 @@ HES 원본 컴포넌트 매핑:
 | `round` | `checkRound` | 라벨+체크를 라운드 칩으로 | 인라인 필터·옵션 선택 |
 | `button` | `chkBtn` | 박스형 버튼 | 폼 안의 강조 선택지 |
 
-> `btn_star`(즐겨찾기 별)와 `Currency/select_currency`(통화 선택 카드)는 HES에선 checkbox 페이지에 있지만 성격이 달라 HDS에선 별도 패턴으로 취급 — Checkbox로 만들지 말 것.
+> `btn_star`(즐겨찾기 별)와 `Currency/select_currency`(통화 선택 카드)는 HES에선 checkbox 페이지에 있지만 성격이 달라 HES에선 별도 패턴으로 취급 — Checkbox로 만들지 말 것.
 
 ## Sizes
 아이콘 24×24 고정(HES `comp/checkbox/sizing/default`). 라벨 간격 8px(HES `comp/checkbox/chkM/gap`).

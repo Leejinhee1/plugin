@@ -5,7 +5,7 @@
 <Card variant="elevated">
   <CardHeader>
     <CardTitle>결제 브리핑</CardTitle>
-    <span className="text-sm text-[var(--hds-fg-muted)]">7월 20일 · 오후 2시 기준</span>
+    <span className="text-sm text-[var(--hes-fg-muted)]">7월 20일 · 오후 2시 기준</span>
   </CardHeader>
   <CardBody>
     <p>오늘 3건, 12,400원을 결제했어요. 124머니가 적립됐어요.</p>
@@ -19,10 +19,10 @@
 <Card padding="sm">
   <CardHeader>
     <CardTitle as="h4">스타벅스</CardTitle>
-    <span className="text-sm text-[var(--hds-fg-muted)]">오후 2:00</span>
+    <span className="text-sm text-[var(--hes-fg-muted)]">오후 2:00</span>
   </CardHeader>
   <CardBody>
-    <p className="text-[var(--hds-fg-muted)]">5,600원 결제 · 56머니 적립</p>
+    <p className="text-[var(--hes-fg-muted)]">5,600원 결제 · 56머니 적립</p>
   </CardBody>
 </Card>
 ```
@@ -35,7 +35,7 @@
     <CardTitle>알림</CardTitle>
   </CardHeader>
   <CardBody>
-    <p className="text-[var(--hds-fg-muted)]">결제·적립이 일어나면 알림을 받아요.</p>
+    <p className="text-[var(--hes-fg-muted)]">결제·적립이 일어나면 알림을 받아요.</p>
   </CardBody>
   <CardFooter>
     <Button variant="ghost">나중에</Button>

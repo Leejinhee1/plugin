@@ -1,9 +1,9 @@
-# HDS 스킬 · 공통 (general)
+# HES 스킬 · 공통 (general)
 
 특정 역할에 속하지 않는, 파트 공통 스킬 묶음입니다.
 
 ## 스킬
 | 스킬 | 용도 |
 | :-- | :-- |
-| `/hds:ask-hds` | 지금 상황에 어떤 스킬·플로우가 맞는지 알려주는 라우터. 일은 직접 하지 않고 안내만. |
-| `/hds:mcp-connectors` | 플러그인이 **제공(번들)** 하는 커넥터·MCP 서버(`mcp/registry.json`·`plugin.json` 의 `mcpServers`)의 공식 목록과 현재 세션 연결 현황 리포트 + 커넥터 등록·관리. 미연결 시 연결 방법 안내. |
+| `/hes:ask-hes` | 지금 상황에 어떤 스킬·플로우가 맞는지 알려주는 라우터. 일은 직접 하지 않고 안내만. |
+| `/hes:mcp-connectors` | 플러그인이 **제공(번들)** 하는 커넥터·MCP 서버(`mcp/registry.json`·`plugin.json` 의 `mcpServers`)의 공식 목록과 현재 세션 연결 현황 리포트 + 커넥터 등록·관리. 미연결 시 연결 방법 안내. |

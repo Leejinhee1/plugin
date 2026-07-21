@@ -1,16 +1,16 @@
 #!/usr/bin/env node
 /**
- * hds — HDS 컴포넌트 설치 CLI.
+ * hes — HES 컴포넌트 설치 CLI.
  *
- * shadcn 같은 외부 도구 없이, HDS 컴포넌트를 소비 프로젝트에 바로 복사한다.
+ * shadcn 같은 외부 도구 없이, HES 컴포넌트를 소비 프로젝트에 바로 복사한다.
  * Node.js >= 18, 외부 의존성 없음.
  *
  * 사용법:
- *   npx hds list                            # 설치 가능한 컴포넌트 목록
- *   npx hds add <name...> [옵션]            # 컴포넌트 설치 (의존 컴포넌트·토큰 자동 포함)
+ *   npx hes list                            # 설치 가능한 컴포넌트 목록
+ *   npx hes add <name...> [옵션]            # 컴포넌트 설치 (의존 컴포넌트·토큰 자동 포함)
  *
  * 옵션:
- *   --dir <path>         컴포넌트를 복사할 위치 (기본: components/hds)
+ *   --dir <path>         컴포넌트를 복사할 위치 (기본: components/hes)
  *   --tokens-dir <path>  토큰 CSS 위치 (기본: styles)
  *   --registry <url>     호스팅된 레지스트리(registry-export 산출물)에서 설치.
  *                        생략 시 이 패키지에 동봉된 소스에서 직접 설치(오프라인 동작).
@@ -35,7 +35,7 @@ import { tmpdir } from "node:os";
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(SCRIPT_DIR, "..");
 const COMPONENTS_DIR = join(REPO_ROOT, "design-system", "components");
-const TOKENS_FILE_NAME = "hds-tokens.css";
+const TOKENS_FILE_NAME = "hes-tokens.css";
 
 // ---------------------------------------------------------------------------
 // 인자 파싱
@@ -45,9 +45,9 @@ function parseArgs(argv) {
   const args = {
     command: undefined,
     names: [],
-    dir: "components/hds",
+    dir: "components/hes",
     tokensDir: "styles",
-    registry: process.env.HDS_REGISTRY,
+    registry: process.env.HES_REGISTRY,
     force: false,
     help: false,
   };
@@ -62,32 +62,32 @@ function parseArgs(argv) {
     else if (arg === "--registry") args.registry = argv[++i];
     else if (arg.startsWith("--registry=")) args.registry = arg.slice("--registry=".length);
     else if (!args.command) args.command = arg;
-    else args.names.push(arg.replace(/^@hds\//, ""));
+    else args.names.push(arg.replace(/^@hes\//, ""));
   }
   return args;
 }
 
 function printHelp() {
-  console.log(`hds — HDS 컴포넌트 설치 CLI
+  console.log(`hes — HES 컴포넌트 설치 CLI
 
 사용법:
-  npx hds list                     설치 가능한 컴포넌트 목록
-  npx hds add <name...> [옵션]     컴포넌트 설치 (의존 컴포넌트·토큰 자동 포함)
+  npx hes list                     설치 가능한 컴포넌트 목록
+  npx hes add <name...> [옵션]     컴포넌트 설치 (의존 컴포넌트·토큰 자동 포함)
 
 옵션:
-  --dir <path>         컴포넌트 위치 (기본: components/hds)
+  --dir <path>         컴포넌트 위치 (기본: components/hes)
   --tokens-dir <path>  토큰 CSS 위치 (기본: styles)
-  --registry <url>     호스팅 레지스트리에서 설치 (기본: 동봉 소스, env HDS_REGISTRY)
+  --registry <url>     호스팅 레지스트리에서 설치 (기본: 동봉 소스, env HES_REGISTRY)
   --force              내용이 다른 기존 파일 덮어쓰기
 
 예시:
-  npx hds add button checkbox
-  npx hds add modal                # 의존하는 button, 토큰까지 함께 설치
+  npx hes add button checkbox
+  npx hes add modal                # 의존하는 button, 토큰까지 함께 설치
 `);
 }
 
 function fail(msg) {
-  console.error(`[hds] ${msg}`);
+  console.error(`[hes] ${msg}`);
   process.exit(1);
 }
 
@@ -108,7 +108,7 @@ function buildLocalTokensCss() {
     REPO_ROOT, "skills", "publish", "token-export", "scripts", "build-tokens.mjs"
   );
   if (!existsSync(buildTokens)) fail(`토큰 빌드 스크립트를 찾을 수 없습니다: ${buildTokens}`);
-  const tmp = mkdtempSync(join(tmpdir(), "hds-cli-"));
+  const tmp = mkdtempSync(join(tmpdir(), "hes-cli-"));
   try {
     const result = spawnSync(process.execPath, [buildTokens, "--out", tmp], { encoding: "utf8" });
     if (result.status !== 0) fail(`토큰 빌드 실패:\n${result.stderr || result.stdout}`);
@@ -128,7 +128,7 @@ function localItem(name, args, registry) {
   }
   const comp = registry.find((c) => c.name === name);
   if (!comp) {
-    fail(`알 수 없는 컴포넌트: "${name}"\n  사용 가능한 목록은 \`npx hds list\` 로 확인하세요.`);
+    fail(`알 수 없는 컴포넌트: "${name}"\n  사용 가능한 목록은 \`npx hes list\` 로 확인하세요.`);
   }
   const sourcePath = resolve(COMPONENTS_DIR, comp.source);
   return {
@@ -154,7 +154,7 @@ async function remoteItem(name, args) {
         : join(args.dir, basename(f.path)),
     content: f.content,
   }));
-  const deps = (item.registryDependencies ?? []).map((d) => d.replace(/^@hds\//, ""));
+  const deps = (item.registryDependencies ?? []).map((d) => d.replace(/^@hes\//, ""));
   return { files, deps };
 }
 
@@ -183,11 +183,11 @@ async function commandList(args) {
       : "";
     console.log(`  ${comp.name.padEnd(10)} ${desc}`);
   }
-  console.log(`\n설치: npx hds add <name...>`);
+  console.log(`\n설치: npx hes add <name...>`);
 }
 
 async function commandAdd(args) {
-  if (args.names.length === 0) fail("설치할 컴포넌트 이름을 지정하세요. 예: npx hds add button");
+  if (args.names.length === 0) fail("설치할 컴포넌트 이름을 지정하세요. 예: npx hes add button");
 
   const registry = args.registry ? null : loadLocalRegistry();
   const getItem = (name) =>
@@ -221,7 +221,7 @@ async function commandAdd(args) {
   }
 
   const names = [...resolved.keys()].filter((n) => n !== "tokens");
-  console.log(`[hds] ${names.join(", ")} 설치 완료`);
+  console.log(`[hes] ${names.join(", ")} 설치 완료`);
   for (const f of written) console.log(`  + ${f}`);
   for (const f of unchanged) console.log(`  = ${f} (변경 없음)`);
   for (const f of skipped) console.log(`  ! ${f} — 로컬 수정본과 다릅니다. 덮어쓰려면 --force`);

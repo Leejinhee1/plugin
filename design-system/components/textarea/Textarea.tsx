@@ -1,11 +1,11 @@
 import * as React from "react";
 
 /**
- * HDS Textarea — 레퍼런스 구현.
+ * HES Textarea — 레퍼런스 구현.
  *
  * HES(🧱 Template/textarea) 매핑: line=textarea/textareaL · box=textareaBox.
  * maxLength 지정 시 우하단에 "n/한도자" 카운터가 자동 노출됩니다.
- * 스타일은 semantic 토큰 CSS 변수(--hds-*)만 참조합니다.
+ * 스타일은 semantic 토큰 CSS 변수(--hes-*)만 참조합니다.
  */
 
 export interface TextareaProps
@@ -75,23 +75,23 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         {label && (
           <label
             htmlFor={id}
-            className="mb-1 block text-xs text-[var(--hds-fg-muted)]"
+            className="mb-1 block text-xs text-[var(--hes-fg-muted)]"
           >
             {label}
           </label>
         )}
         <div
           className={cn(
-            "relative transition-colors duration-[var(--hds-duration-fast)] ease-[var(--hds-ease-standard)]",
+            "relative transition-colors duration-[var(--hes-duration-fast)] ease-[var(--hes-ease-standard)]",
             variant === "line" && "border-b pb-6",
             variant === "line" &&
               (error
-                ? "border-[var(--hds-feedback-danger)]"
+                ? "border-[var(--hes-feedback-danger)]"
                 : focused
-                  ? "border-[var(--hds-fg-base)]"
-                  : "border-[var(--hds-border-strong)]"),
+                  ? "border-[var(--hes-fg-base)]"
+                  : "border-[var(--hes-border-strong)]"),
             variant === "box" &&
-              "rounded-[var(--hds-radius-md)] bg-[var(--hds-bg-subtle)] p-[var(--hds-space-inset-md)] pb-8"
+              "rounded-[var(--hes-radius-md)] bg-[var(--hes-bg-subtle)] p-[var(--hes-space-inset-md)] pb-8"
           )}
         >
           <textarea
@@ -117,8 +117,8 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
               props.onBlur?.(e);
             }}
             className={cn(
-              "w-full resize-none bg-transparent text-base text-[var(--hds-fg-base)]",
-              "placeholder:text-[var(--hds-fg-muted)] focus:outline-none",
+              "w-full resize-none bg-transparent text-base text-[var(--hes-fg-base)]",
+              "placeholder:text-[var(--hes-fg-muted)] focus:outline-none",
               clearable && "pr-8"
             )}
             {...props}
@@ -132,20 +132,20 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
                 e.preventDefault();
                 clear();
               }}
-              className="absolute right-2 top-2 grid h-6 w-6 place-items-center rounded-full text-[var(--hds-fg-muted)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--hds-focus-ring)]"
+              className="absolute right-2 top-2 grid h-6 w-6 place-items-center rounded-full text-[var(--hes-fg-muted)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--hes-focus-ring)]"
             >
               <svg viewBox="0 0 24 24" aria-hidden fill="none" className="h-4 w-4">
                 <circle cx="12" cy="12" r="9" fill="currentColor" opacity="0.35" />
-                <path d="M9 9l6 6M15 9l-6 6" stroke="var(--hds-bg-base)" strokeWidth="1.5" strokeLinecap="round" />
+                <path d="M9 9l6 6M15 9l-6 6" stroke="var(--hes-bg-base)" strokeWidth="1.5" strokeLinecap="round" />
               </svg>
             </button>
           )}
           {maxLength !== undefined && (
             <span
               aria-hidden
-              className="absolute bottom-1 right-2 text-xs text-[var(--hds-fg-muted)]"
+              className="absolute bottom-1 right-2 text-xs text-[var(--hes-fg-muted)]"
             >
-              <span className={cn(count > 0 && "text-[var(--hds-brand-default)]")}>
+              <span className={cn(count > 0 && "text-[var(--hes-brand-default)]")}>
                 {count}
               </span>
               /{maxLength.toLocaleString()}자
@@ -153,7 +153,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           )}
         </div>
         {error && errorMessage && (
-          <p id={guideId} role="alert" className="mt-1 text-xs text-[var(--hds-feedback-danger)]">
+          <p id={guideId} role="alert" className="mt-1 text-xs text-[var(--hes-feedback-danger)]">
             {errorMessage}
           </p>
         )}

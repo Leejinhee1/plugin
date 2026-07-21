@@ -1,16 +1,16 @@
 ---
 name: a11y-audit
-description: 컴포넌트/화면/토큰의 접근성을 HDS 기준(WCAG AA)으로 점검합니다. 색 대비, 키보드 접근, 포커스, aria, 모션 민감성을 검사할 때 사용. Use when auditing accessibility of components, screens, or color tokens against WCAG AA.
+description: 컴포넌트/화면/토큰의 접근성을 HES 기준(WCAG AA)으로 점검합니다. 색 대비, 키보드 접근, 포커스, aria, 모션 민감성을 검사할 때 사용. Use when auditing accessibility of components, screens, or color tokens against WCAG AA.
 ---
 
 # 접근성 점검 (WCAG AA)
 
-퍼블 산출물이 HDS 접근성 기준을 만족하는지 검사합니다. 기준: `${CLAUDE_PLUGIN_ROOT}/design-system/guidelines/color.md` 및 `principles.md` 원칙 3.
+퍼블 산출물이 HES 접근성 기준을 만족하는지 검사합니다. 기준: `${CLAUDE_PLUGIN_ROOT}/design-system/guidelines/color.md` 및 `principles.md` 원칙 3.
 
 ## 검사 항목
 1. **색 대비** — 본문 4.5:1, 큰 텍스트 3:1, UI 경계/아이콘 3:1. semantic 색 조합(fg/bg)을 계산해 통과 여부 판정. 다크 테마(`$dark`)도 별도 검사.
 2. **키보드** — 모든 인터랙티브 요소 Tab 접근·조작 가능, 논리적 포커스 순서, 트랩 없음.
-3. **포커스 가시성** — `:focus-visible` 링(`--hds-focus-ring`) 노출.
+3. **포커스 가시성** — `:focus-visible` 링(`--hes-focus-ring`) 노출.
 4. **의미/ARIA** — 네이티브 요소 우선, 아이콘 전용 버튼 `aria-label`, 로딩 `aria-busy`, 상태 알림 `aria-live`.
 5. **색 비의존** — 색만으로 정보 전달하지 않음(아이콘/텍스트 병행).
 6. **모션** — `prefers-reduced-motion: reduce` 존중.

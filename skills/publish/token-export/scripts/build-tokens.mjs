@@ -14,8 +14,8 @@
  *   --out     현재 작업 디렉터리 기준 ./dist/tokens
  *
  * 산출물:
- *   tokens.css          — :root { --hds-*: ...; } + [data-theme="dark"] + [data-platform="ios|pc|min"] 오버라이드
- *   tailwind.preset.js  — theme.extend 가 var(--hds-*) 를 참조 (semantic + core-direct 만 — comp/platform 토큰은
+ *   tokens.css          — :root { --hes-*: ...; } + [data-theme="dark"] + [data-platform="ios|pc|min"] 오버라이드
+ *   tailwind.preset.js  — theme.extend 가 var(--hes-*) 를 참조 (semantic + core-direct 만 — comp/platform 토큰은
  *                         컴포넌트 CSS 에서 var() 직접 참조가 원칙이고, breakpoint 는 미디어쿼리에 var() 불가)
  *   tokens.ts           — 토큰 이름 -> CSS 변수명 상수 맵 (as const) + 타입
  *
@@ -308,7 +308,7 @@ function build(tokensDir, outDir) {
   for (const [key, resolved] of sortedEntries(resolvedLight)) {
     if (!key.startsWith("color.")) continue;
     const rest = key.slice("color.".length);
-    const cssVar = `--hds-${dottedToKebab(rest)}`;
+    const cssVar = `--hes-${dottedToKebab(rest)}`;
     rootVars.push({ cssVar, value: formatScalarValue(resolved, key), tokenName: rest });
   }
 
@@ -316,7 +316,7 @@ function build(tokensDir, outDir) {
   for (const [key, resolved] of sortedEntries(resolvedLight)) {
     if (!key.startsWith("space.")) continue;
     const rest = key.slice("space.".length); // 이미 kebab (e.g. inset-md)
-    const cssVar = `--hds-space-${dottedToKebab(rest)}`;
+    const cssVar = `--hes-space-${dottedToKebab(rest)}`;
     rootVars.push({ cssVar, value: formatScalarValue(resolved, key), tokenName: `space.${rest}` });
   }
 
@@ -337,7 +337,7 @@ function build(tokensDir, outDir) {
     for (const field of Object.keys(TYPO_FIELD_SUFFIX).sort()) {
       if (!(field in resolved)) continue;
       const suffix = TYPO_FIELD_SUFFIX[field];
-      const cssVar = `--hds-typo-${role}-${suffix}`;
+      const cssVar = `--hes-typo-${role}-${suffix}`;
       let value;
       if (field === "fontFamily") {
         value = formatFontFamilyValue(resolved[field]);
@@ -352,26 +352,26 @@ function build(tokensDir, outDir) {
   for (const [key, resolved] of sortedEntries(resolvedCoreDirect)) {
     if (key.startsWith("dimension.radius.")) {
       const rest = key.slice("dimension.radius.".length);
-      const cssVar = `--hds-radius-${dottedToKebab(rest)}`;
+      const cssVar = `--hes-radius-${dottedToKebab(rest)}`;
       rootVars.push({ cssVar, value: formatScalarValue(resolved, key), tokenName: `radius.${rest}` });
     } else if (key.startsWith("duration.")) {
       const rest = key.slice("duration.".length);
-      const cssVar = `--hds-duration-${dottedToKebab(rest)}`;
+      const cssVar = `--hes-duration-${dottedToKebab(rest)}`;
       rootVars.push({ cssVar, value: formatScalarValue(resolved, key), tokenName: `duration.${rest}` });
     } else if (key.startsWith("cubicBezier.")) {
       const rest = key.slice("cubicBezier.".length);
-      const cssVar = `--hds-ease-${dottedToKebab(rest)}`;
+      const cssVar = `--hes-ease-${dottedToKebab(rest)}`;
       rootVars.push({ cssVar, value: formatCubicBezierValue(resolved), tokenName: `ease.${rest}` });
     } else if (key.startsWith("fontFamily.")) {
       const rest = key.slice("fontFamily.".length);
-      const cssVar = `--hds-font-${dottedToKebab(rest)}`;
+      const cssVar = `--hes-font-${dottedToKebab(rest)}`;
       rootVars.push({ cssVar, value: formatFontFamilyValue(resolved), tokenName: `font.${rest}` });
     }
   }
 
-  // 5) component.tokens.json — 전 토큰을 --hds-<경로 kebab> 으로 export (comp.* / layout.* / sizing.* / font.* / letterSpacing.*)
+  // 5) component.tokens.json — 전 토큰을 --hes-<경로 kebab> 으로 export (comp.* / layout.* / sizing.* / font.* / letterSpacing.*)
   for (const [key, resolved] of sortedEntries(resolvedComponent)) {
-    const cssVar = `--hds-${dottedToKebab(key)}`;
+    const cssVar = `--hes-${dottedToKebab(key)}`;
     rootVars.push({ cssVar, value: formatScalarValue(resolved, key), tokenName: key });
   }
 
@@ -381,7 +381,7 @@ function build(tokensDir, outDir) {
   if (platformJson) {
     const defaults = resolvedPlatformByMode[platformDefaultMode];
     for (const [key, resolved] of sortedEntries(defaults)) {
-      const cssVar = `--hds-platform-${dottedToKebab(key)}`;
+      const cssVar = `--hes-platform-${dottedToKebab(key)}`;
       rootVars.push({ cssVar, value: formatScalarValue(resolved, `platform.${key}`), tokenName: `platform.${key}` });
     }
     for (const mode of platformModes) {
@@ -390,7 +390,7 @@ function build(tokensDir, outDir) {
       for (const [key, resolved] of sortedEntries(resolvedPlatformByMode[mode])) {
         const value = formatScalarValue(resolved, `platform.${key}(${mode})`);
         if (value === formatScalarValue(defaults[key], `platform.${key}`)) continue;
-        vars.push({ cssVar: `--hds-platform-${dottedToKebab(key)}`, value });
+        vars.push({ cssVar: `--hes-platform-${dottedToKebab(key)}`, value });
       }
       platformOverrideBlocks.push({ mode, vars });
     }
@@ -400,7 +400,7 @@ function build(tokensDir, outDir) {
   for (const [key, resolved] of sortedEntries(resolvedDark)) {
     if (!key.startsWith("color.")) continue;
     const rest = key.slice("color.".length);
-    const cssVar = `--hds-${dottedToKebab(rest)}`;
+    const cssVar = `--hes-${dottedToKebab(rest)}`;
     darkVars.push({ cssVar, value: formatScalarValue(resolved, `$dark.${key}`) });
   }
 
@@ -450,7 +450,7 @@ function build(tokensDir, outDir) {
     if (!key.startsWith("color.")) continue;
     const rest = key.slice("color.".length);
     const segs = rest.split(".").map(segmentToKebab);
-    const cssVar = `--hds-${segs.join("-")}`;
+    const cssVar = `--hes-${segs.join("-")}`;
     let node = colors;
     for (let i = 0; i < segs.length - 1; i++) {
       node[segs[i]] = node[segs[i]] || {};
@@ -463,7 +463,7 @@ function build(tokensDir, outDir) {
   for (const [key] of sortedEntries(resolvedLight)) {
     if (!key.startsWith("space.")) continue;
     const rest = key.slice("space.".length);
-    const cssVar = `--hds-space-${dottedToKebab(rest)}`;
+    const cssVar = `--hes-space-${dottedToKebab(rest)}`;
     spacing[rest] = `var(${cssVar})`;
   }
 
@@ -474,16 +474,16 @@ function build(tokensDir, outDir) {
   for (const [key, resolved] of sortedEntries(resolvedCoreDirect)) {
     if (key.startsWith("dimension.radius.")) {
       const rest = key.slice("dimension.radius.".length);
-      borderRadius[rest] = `var(--hds-radius-${dottedToKebab(rest)})`;
+      borderRadius[rest] = `var(--hes-radius-${dottedToKebab(rest)})`;
     } else if (key.startsWith("duration.")) {
       const rest = key.slice("duration.".length);
-      transitionDuration[rest] = `var(--hds-duration-${dottedToKebab(rest)})`;
+      transitionDuration[rest] = `var(--hes-duration-${dottedToKebab(rest)})`;
     } else if (key.startsWith("cubicBezier.")) {
       const rest = key.slice("cubicBezier.".length);
-      transitionTimingFunction[rest] = `var(--hds-ease-${dottedToKebab(rest)})`;
+      transitionTimingFunction[rest] = `var(--hes-ease-${dottedToKebab(rest)})`;
     } else if (key.startsWith("fontFamily.")) {
       const rest = key.slice("fontFamily.".length);
-      fontFamily[rest] = [`var(--hds-font-${dottedToKebab(rest)})`];
+      fontFamily[rest] = [`var(--hes-font-${dottedToKebab(rest)})`];
     }
   }
 
@@ -502,7 +502,7 @@ function build(tokensDir, outDir) {
 
   const tailwindPreset =
     "// generated by build-tokens.mjs — do not edit\n" +
-    "// HDS 토큰을 참조하는 Tailwind preset. 값은 항상 var(--hds-*) 이므로 [data-theme] 전환에 자동 반응한다.\n" +
+    "// HES 토큰을 참조하는 Tailwind preset. 값은 항상 var(--hes-*) 이므로 [data-theme] 전환에 자동 반응한다.\n" +
     "/** @type {import('tailwindcss').Config} */\n" +
     "module.exports = " +
     JSON.stringify(tailwindPresetObj, null, 2) +
@@ -523,20 +523,20 @@ function build(tokensDir, outDir) {
 
   const tsLines = [];
   tsLines.push("// generated by build-tokens.mjs — do not edit");
-  tsLines.push("// 토큰 이름 -> CSS 변수명 상수 맵. 값은 항상 --hds-* 커스텀 프로퍼티 이름이다.");
+  tsLines.push("// 토큰 이름 -> CSS 변수명 상수 맵. 값은 항상 --hes-* 커스텀 프로퍼티 이름이다.");
   tsLines.push("");
-  tsLines.push("export const hdsTokens = {");
+  tsLines.push("export const hesTokens = {");
   for (const [name, cssVar] of dedupedTokenEntries) {
     tsLines.push(`  ${JSON.stringify(name)}: ${JSON.stringify(cssVar)},`);
   }
   tsLines.push("} as const;");
   tsLines.push("");
-  tsLines.push("export type HdsTokenName = keyof typeof hdsTokens;");
-  tsLines.push("export type HdsCssVarName = (typeof hdsTokens)[HdsTokenName];");
+  tsLines.push("export type HesTokenName = keyof typeof hesTokens;");
+  tsLines.push("export type HesCssVarName = (typeof hesTokens)[HesTokenName];");
   tsLines.push("");
-  tsLines.push("/** 토큰 이름으로 `var(--hds-*)` 문자열을 얻는다. */");
-  tsLines.push("export function hdsVar(name: HdsTokenName): string {");
-  tsLines.push("  return `var(${hdsTokens[name]})`;");
+  tsLines.push("/** 토큰 이름으로 `var(--hes-*)` 문자열을 얻는다. */");
+  tsLines.push("export function hesVar(name: HesTokenName): string {");
+  tsLines.push("  return `var(${hesTokens[name]})`;");
   tsLines.push("}");
   tsLines.push("");
   const tokensTs = tsLines.join("\n");

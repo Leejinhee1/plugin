@@ -1,6 +1,6 @@
 {
   "$schema": "https://tr.designtokens.org/format/",
-  "$description": "HDS Core (primitive) tokens — 하나머니 브랜드 원시값. Figma [공식] Hana Experience System(HES)의 base 변수 컬렉션(124개)과 완전 동기화(2026-07-20, 브랜치 0F4A8OTZzApAJIjFjeQULz). 절대 UI에서 직접 참조하지 말 것. semantic/component 레이어를 통해서만 사용.",
+  "$description": "HES Core (primitive) tokens — 하나머니 브랜드 원시값. Figma [공식] Hana Experience System(HES)의 base 변수 컬렉션(124개)과 완전 동기화(2026-07-20, 브랜치 0F4A8OTZzApAJIjFjeQULz). 절대 UI에서 직접 참조하지 말 것. semantic/component 레이어를 통해서만 사용.",
   "color": {
     "$type": "color",
     "teal": {
@@ -88,7 +88,7 @@
       "160": { "$value": "72px" }
     },
     "radius": {
-      "$description": "HES border/radius 램프 전체(키 = HES 스텝 번호). xs~xl 은 HDS 관례 별칭: xs=10(4) · sm=30(8) · md=50(12) · lg=80(20) · xl=90(24). HES theme 의 borderRadius 의미 스케일과의 대응: xxs=10 · xs=30 · s=50 · m=60 · ml=70 · l=80 · xl=90.",
+      "$description": "HES border/radius 램프 전체(키 = HES 스텝 번호). xs~xl 은 자체 관례 별칭: xs=10(4) · sm=30(8) · md=50(12) · lg=80(20) · xl=90(24). HES theme 의 borderRadius 의미 스케일과의 대응: xxs=10 · xs=30 · s=50 · m=60 · ml=70 · l=80 · xl=90.",
       "0":  { "$value": "0px" },
       "10": { "$value": "4px" },
       "20": { "$value": "6px" },
@@ -156,7 +156,7 @@
   "dimensionFont": {
     "$type": "dimension",
     "size": {
-      "$description": "HES font/size 램프 전체(키 = HES 스텝 번호). xs~3xl 은 HDS 관례 별칭: xs=10(12) · sm=30(14) · md=50(16, body 기본) · lg=80(20) · xl=100(24) · 2xl=130(32) · 3xl=150(40). HES theme 의 의미 스케일 대응: body xxs=10 · xs=20 · s=30 · m=40 · default=50 · l=70 · xl=80 · xxl=90 · xxxl=100, headline s=110 · m=120 · l=130 · xl=140 · xxl=150.",
+      "$description": "HES font/size 램프 전체(키 = HES 스텝 번호). xs~3xl 은 자체 관례 별칭: xs=10(12) · sm=30(14) · md=50(16, body 기본) · lg=80(20) · xl=100(24) · 2xl=130(32) · 3xl=150(40). HES theme 의 의미 스케일 대응: body xxs=10 · xs=20 · s=30 · m=40 · default=50 · l=70 · xl=80 · xxl=90 · xxxl=100, headline s=110 · m=120 · l=130 · xl=140 · xxl=150.",
       "10":  { "$value": "12px" },
       "20":  { "$value": "13px" },
       "30":  { "$value": "14px" },
@@ -191,7 +191,7 @@
   },
   "duration": {
     "$type": "duration",
-    "$description": "HES 변수에 모션 정의 없음 — HDS 자체 값 유지.",
+    "$description": "HES 변수에 모션 정의 없음 — 자체 값 유지.",
     "fast": { "$value": "120ms" },
     "base": { "$value": "200ms" },
     "slow": { "$value": "320ms" }

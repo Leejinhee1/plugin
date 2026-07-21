@@ -2,11 +2,11 @@ import * as React from "react";
 import { createPortal } from "react-dom";
 
 /**
- * HDS Modal — 레퍼런스 구현.
+ * HES Modal — 레퍼런스 구현.
  *
- * 스타일은 semantic 토큰에서 생성된 CSS 변수(--hds-*)만 참조합니다.
+ * 스타일은 semantic 토큰에서 생성된 CSS 변수(--hes-*)만 참조합니다.
  * 색/간격을 절대 하드코딩하지 않습니다. 토큰 변경은 tokens/ 에서 하고
- * `/hds:token-export` 로 tokens.css 를 재생성하세요.
+ * `/hes:token-export` 로 tokens.css 를 재생성하세요.
  *
  * cn() 은 프로젝트의 className 병합 유틸(clsx+tailwind-merge)로 대체하세요.
  *
@@ -131,9 +131,9 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
     return createPortal(
       <div
         className={cn(
-          "fixed inset-0 z-50 flex items-center justify-center p-[var(--hds-space-inset-md)]",
-          "bg-[var(--hds-bg-overlay)]",
-          "transition-opacity duration-[var(--hds-duration-base)] ease-[var(--hds-ease-emphasized)] motion-reduce:transition-none",
+          "fixed inset-0 z-50 flex items-center justify-center p-[var(--hes-space-inset-md)]",
+          "bg-[var(--hes-bg-overlay)]",
+          "transition-opacity duration-[var(--hes-duration-base)] ease-[var(--hes-ease-emphasized)] motion-reduce:transition-none",
           visible ? "opacity-100" : "opacity-0"
         )}
         onMouseDown={(e) => {
@@ -147,9 +147,9 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
           aria-labelledby={titleId}
           tabIndex={-1}
           className={cn(
-            "flex w-full flex-col gap-[var(--hds-space-stack-md)] rounded-[var(--hds-radius-lg)]",
-            "bg-[var(--hds-bg-base)] border border-[var(--hds-border-base)] p-[var(--hds-space-inset-lg)]",
-            "transition-[opacity,transform] duration-[var(--hds-duration-base)] ease-[var(--hds-ease-emphasized)] motion-reduce:transition-none",
+            "flex w-full flex-col gap-[var(--hes-space-stack-md)] rounded-[var(--hes-radius-lg)]",
+            "bg-[var(--hes-bg-base)] border border-[var(--hes-border-base)] p-[var(--hes-space-inset-lg)]",
+            "transition-[opacity,transform] duration-[var(--hes-duration-base)] ease-[var(--hes-ease-emphasized)] motion-reduce:transition-none",
             visible ? "translate-y-0 scale-100 opacity-100" : "translate-y-1 scale-95 opacity-0",
             sizes[size],
             className
@@ -157,17 +157,17 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
         >
           <h2
             id={titleId}
-            className="text-lg font-semibold leading-snug text-[var(--hds-fg-base)]"
+            className="text-lg font-semibold leading-snug text-[var(--hes-fg-base)]"
           >
             {title}
           </h2>
           {children && (
-            <div className="text-sm leading-relaxed text-[var(--hds-fg-base)]">
+            <div className="text-sm leading-relaxed text-[var(--hes-fg-base)]">
               {children}
             </div>
           )}
           {footer && (
-            <div className="flex items-center justify-end gap-[var(--hds-space-stack-sm)]">
+            <div className="flex items-center justify-end gap-[var(--hes-space-stack-sm)]">
               {footer}
             </div>
           )}

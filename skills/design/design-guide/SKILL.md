@@ -1,9 +1,9 @@
 ---
 name: design-guide
-description: HDS 디자인 가이드(원칙·색·타이포·모션 규범)를 조회하고 유지보수합니다. 디자인 결정이 가이드에 맞는지 검토하거나, 가이드 문서를 갱신할 때 사용. Use when checking a design decision against HDS guidelines or updating the guideline docs.
+description: HES 디자인 가이드(원칙·색·타이포·모션 규범)를 조회하고 유지보수합니다. 디자인 결정이 가이드에 맞는지 검토하거나, 가이드 문서를 갱신할 때 사용. Use when checking a design decision against HES guidelines or updating the guideline docs.
 ---
 
-# HDS 디자인 가이드
+# HES 디자인 가이드
 
 애플리케이션 디자인의 규범 문서를 관리합니다. 원본: `${CLAUDE_PLUGIN_ROOT}/design-system/guidelines/`.
 

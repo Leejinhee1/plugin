@@ -2,11 +2,11 @@ import * as React from "react";
 import { createPortal } from "react-dom";
 
 /**
- * HDS Toast / Snackbar — 레퍼런스 구현.
+ * HES Toast / Snackbar — 레퍼런스 구현.
  *
  * HES(🧱 Template/toast) 매핑: toast=Toast(자동 닫힘) · snackbar=Snackbar(닫기 버튼).
  * 가장자리 간격은 HES 변수 그대로: bottom 24 · bottom+고정버튼 84 · top 102 · top+고정탭 150.
- * 스타일은 semantic 토큰 CSS 변수(--hds-*)만 참조합니다.
+ * 스타일은 semantic 토큰 CSS 변수(--hes-*)만 참조합니다.
  */
 
 export interface ToastProps {
@@ -77,16 +77,16 @@ export function Toast({
       aria-live="polite"
       style={{ [position]: offset } as React.CSSProperties}
       className={cn(
-        "fixed inset-x-0 z-50 flex justify-center px-[var(--hds-space-inset-md)] pointer-events-none",
+        "fixed inset-x-0 z-50 flex justify-center px-[var(--hes-space-inset-md)] pointer-events-none",
         className
       )}
     >
       <div
         className={cn(
           "pointer-events-auto flex w-full max-w-md items-start gap-2",
-          "rounded-[var(--hds-radius-sm)] bg-[var(--hds-bg-inverse)] text-[var(--hds-fg-on-inverse)]",
-          "p-[var(--hds-space-inset-md)] text-sm leading-relaxed",
-          "transition-[opacity,transform] duration-[var(--hds-duration-base)] ease-[var(--hds-ease-emphasized)] motion-reduce:transition-none",
+          "rounded-[var(--hes-radius-sm)] bg-[var(--hes-bg-inverse)] text-[var(--hes-fg-on-inverse)]",
+          "p-[var(--hes-space-inset-md)] text-sm leading-relaxed",
+          "transition-[opacity,transform] duration-[var(--hes-duration-base)] ease-[var(--hes-ease-emphasized)] motion-reduce:transition-none",
           visible
             ? "translate-y-0 opacity-100"
             : cn("opacity-0", position === "bottom" ? "translate-y-2" : "-translate-y-2")
@@ -99,7 +99,7 @@ export function Toast({
             aria-label="닫기"
             onClick={onClose}
             // HES comp/snackbar/button/width=44 — 시각 아이콘보다 넓은 터치 영역
-            className="-m-3 grid h-11 w-11 shrink-0 place-items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--hds-focus-ring)]"
+            className="-m-3 grid h-11 w-11 shrink-0 place-items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--hes-focus-ring)]"
           >
             <svg viewBox="0 0 24 24" aria-hidden fill="none" className="h-4 w-4">
               <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />

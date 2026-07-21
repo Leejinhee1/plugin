@@ -1,5 +1,5 @@
 <!--
-  HDS 브랜드 로고 — 라이트 배경용
+  HES 브랜드 로고 — 라이트 배경용
   구성: 수평선 위로 떠오르는 원(태양) + 구름 3점 + "하늘" 워드마크
   사용 규칙: ../logo.md
 
@@ -9,8 +9,8 @@
     - 구름      : color.neutral.300 = #c6ccd8
     - 폰트      : fontFamily.sans = Pretendard, Inter, system-ui, sans-serif
 -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 176 64" width="176" height="64" role="img" aria-labelledby="hds-logo-light-title">
-  <title id="hds-logo-light-title">하늘 (Haneul) 로고 — 라이트 배경용</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 176 64" width="176" height="64" role="img" aria-labelledby="hes-logo-light-title">
+  <title id="hes-logo-light-title">하늘 (Haneul) 로고 — 라이트 배경용</title>
 
   <!-- 구름 -->
   <circle cx="36" cy="18" r="3.5" fill="#c6ccd8" />
