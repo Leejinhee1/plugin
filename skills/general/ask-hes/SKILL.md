@@ -51,7 +51,7 @@ HES 저장소에서 합니다. 모든 변경은 `CHANGELOG.md` + version bump �
 
 ## 단독 스킬
 
-- **`/hes:test-script`** — 확정된 UI 기획서(PDF·이미지·이미지 폴더)를 파싱해 QA 테스트 시나리오를 만들고 클립보드/CSV/Google Sheets 로 출력. 입력이 HES 설계서일 필요가 없어(외부 팀 PDF도 가능) 메인 플로우의 단계가 아니라 단독 스킬입니다. 화면 정의가 확정된 뒤라면 언제든.
+- **`/hes:test-script`** — 확정된 UI 기획서(Figma URL·PDF·이미지·이미지 폴더)를 파싱해 QA 테스트 시나리오를 만들고 클립보드/CSV/Google Sheets 로 출력. 입력이 HES 설계서일 필요가 없어(외부 팀 Figma·PDF도 가능) 메인 플로우의 단계가 아니라 단독 스킬입니다. 화면 정의가 확정된 뒤라면 언제든. Figma 입력은 `figma-bridge` 와 달리 **읽기 전용**입니다 — 토큰 동기화가 아니라 스펙 텍스트 추출.
 - **`/hes:brand-visual`** — 키비주얼·모션·영상 등 브랜드 자산의 기획/검수. 제품 UI와 같은 토큰 언어(색·듀레이션·이징)를 쓰게 합니다.
 - **`/hes:figma-bridge`** — 코드 토큰 ↔ Figma Variables 동기화(Figma MCP 연결 필요). 충돌 시 **코드가 진실**.
 - **`/hes:a11y-audit`** — 메인 플로우 밖에서도 아무 때나. "이 색 조합 대비 괜찮아?" 하나만 검사할 때도 이 스킬.
