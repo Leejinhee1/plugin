@@ -6,7 +6,8 @@
     "scope": "커넥터는 scope 로 '누가 연결/인증하는가'를 구분한다. bundled=플러그인이 plugin.json/.mcp.json 의 mcpServers 로 등록(설치 시 자동 연결 시도, 단 자격증명이 config 에 들어가지 않는 것만). user=사용자가 각자 연결/인증. project=팀이 프로젝트 .mcp.json 에 커밋(첫 사용 시 승인).",
     "noBundledSecrets": "번들 config(command/args/env/url/headers)에 토큰·API 키 등 비밀을 넣지 않는다. 로컬 stdio, 공개 http, 또는 '로컬 http + 앱/OS 세션 인증'(예: Figma Dev Mode 127.0.0.1:3845 — URL만 등록하고 인증은 Figma 앱이 담당)처럼 config 에 비밀이 없는 커넥터만 bundled 로 둔다. 개인 API 토큰(예: figma-developer-mcp 의 FIGMA_API_KEY)이 필요한 변형은 bundled 금지 → user/project 로.",
     "noFabrication": "실제로 HES 스킬이 참조/사용하는 커넥터만 status=active 로 등록한다. 검토 중인 후보는 status=candidate 로 두고 usedBy 를 비운다.",
-    "sourceOfTruth": "bundled 서버의 실제 실행 config 는 plugin.json 의 mcpServers 가 진실이다. 이 레지스트리의 connect.bundledConfig 는 그 사본이며, 어긋나면 plugin.json 을 기준으로 보고하고 표를 갱신한다."
+    "sourceOfTruth": "bundled 서버의 실제 실행 config 는 plugin.json 의 mcpServers 가 진실이다. 이 레지스트리의 connect.bundledConfig 는 그 사본이며, 어긋나면 plugin.json 을 기준으로 보고하고 표를 갱신한다.",
+    "disabledConsumers": "usedBy 에 적힌 스킬 중 일부는 아직 미완성이라 plugin.json 의 _disabledSkills 에 보관돼 있고 설치되지 않는다. 커넥터 등록·연결·현황 조회는 그와 무관하게 동작하므로 커넥터 상태는 그대로 유지하되, 사용자에게 보고할 때 준비중인 소비 스킬을 실행 가능한 것처럼 안내하지 않는다. 각 커넥터의 usedByDisabled 를 확인할 것."
   },
   "connectors": [
     {
@@ -17,6 +18,7 @@
       "scope": "bundled",
       "required": false,
       "usedBy": ["figma-bridge", "brand-visual", "test-script"],
+      "usedByDisabled": ["figma-bridge", "brand-visual"],
       "purpose": "코드 토큰 ↔ Figma Variables 동기화, Code Connect(디자인↔구현 매핑), 디자인 컨텍스트/에셋 조회. HES의 소스 오브 트루스는 코드이며 Figma는 브릿지(충돌 시 코드가 진실). test-script 는 읽기 전용으로만 사용 — Figma 기획서에서 스펙 텍스트(get_metadata)를 추출해 QA 시나리오를 만든다.",
       "connect": {
         "how": "플러그인이 이 서버를 plugin.json 의 mcpServers.figma 로 이미 등록합니다(공식 Figma Dev Mode MCP, 로컬 http). 사용자는 서버를 추가할 필요 없이 Figma 데스크톱 앱에서 Dev Mode MCP 서버를 켜기만 하면 됩니다(Figma > Preferences > Enable Dev Mode MCP server). 인증은 Figma 앱 세션이 담당 — config 에 토큰이 없습니다.",

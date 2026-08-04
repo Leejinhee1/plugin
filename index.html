@@ -230,6 +230,21 @@
     color:var(--hes-fg-base); background:var(--hes-bg-muted);
     padding:2px 6px; border-radius:var(--hes-radius-sm); font-size:var(--hes-fs-xs);
   }
+  /* 스킬 상태 배지 — 준비중(미완성·미설치) / 사용 가능 */
+  .status {
+    display:inline-block; font-size:var(--hes-fs-xs); font-weight:var(--hes-fw-medium);
+    padding:1px var(--hes-space-2); border-radius:var(--hes-radius-full);
+    border:1px solid currentColor; white-space:nowrap; margin-left:var(--hes-space-1);
+  }
+  .status-wip { color:var(--hes-fb-warning); }
+  .status-ready { color:var(--hes-fb-success); }
+  .notice {
+    border:1px solid var(--hes-border-base); border-left:3px solid var(--hes-fb-warning);
+    background:var(--hes-bg-muted); border-radius:var(--hes-radius-md);
+    padding:var(--hes-space-4); margin-top:var(--hes-space-5);
+    font-size:var(--hes-fs-sm); color:var(--hes-fg-muted);
+  }
+  .notice strong { color:var(--hes-fg-base); }
 
   /* ── Token showcase ── */
   .swatches { display:grid; grid-template-columns:repeat(10,1fr); gap:var(--hes-space-2); }
@@ -599,7 +614,7 @@
 <!-- ── HERO ── -->
 <section class="hero">
   <div class="wrap reveal">
-    <span class="hero-badge">디자인 시스템 하네스 · v3.6.0 · Hana Experience System</span>
+    <span class="hero-badge">디자인 시스템 하네스 · v3.7.0 · Hana Experience System</span>
     <h1>하나의 소스에서 <span class="accent">문서·토큰·컴포넌트</span>를 함께 씁니다.</h1>
     <p class="sub">HES는 기획·디자인·퍼블리셔가 같은 정본을 공유하고, 코덱스와 클로드에서 동일하게 호출하는 사내 디자인 시스템 하네스입니다. skill · MCP · plugin으로 불러 쓰고, 부서에서 시작해 그룹사 공식 가이드로 확장하도록 설계했습니다.</p>
     <div class="hero-cta">
@@ -663,6 +678,12 @@
       <p class="eyebrow">하나의 플러그인, 하나의 정본</p>
       <h2>한 번 설치하고, 역할별 스킬을 씁니다</h2>
       <p class="lead">플러그인은 <code>hes</code> 하나입니다. 설치 한 번으로 기획·디자인·퍼블 스킬 전체가 들어오고, 모든 스킬이 같은 정본(<code>design-system/</code>)을 봅니다.</p>
+      <div class="notice">
+        <strong>개발 현황</strong> — HES는 개발 중입니다. 현재 설치·실행되는 스킬은
+        <code>ask-hes</code> · <code>mcp-connectors</code> · <code>test-script</code> 3개이고,
+        <span class="status status-wip">준비중</span> 표시된 스킬은 아직 완성되지 않아 호출되지 않습니다.
+        준비중 스킬의 영역은 <code>design-system/</code> 정본을 직접 참조하거나 <code>npx hes</code> CLI·<code>design-reviewer</code> 에이전트로 대체할 수 있습니다.
+      </div>
     </div>
     <div class="grid cols-3">
       <article class="card plugin-card reveal">
@@ -672,9 +693,10 @@
         </div>
         <p style="color:var(--hes-fg-muted); font-size:var(--hes-fs-sm); margin:0;">디자인 — 단일 소스 오브 트루스. 토큰·가이드·컴포넌트 카탈로그·브랜드 비주얼을 관리합니다.</p>
         <ul class="skill-list">
-          <li><code>design-tokens</code> · <code>design-guide</code></li>
-          <li><code>component-catalog</code> · <code>brand-visual</code></li>
-          <li><code>figma-bridge</code> · <em>design-reviewer</em> 에이전트</li>
+          <li><code>design-tokens</code> · <code>design-guide</code> <span class="status status-wip">준비중</span></li>
+          <li><code>component-catalog</code> · <code>brand-visual</code> <span class="status status-wip">준비중</span></li>
+          <li><code>figma-bridge</code> <span class="status status-wip">준비중</span></li>
+          <li><em>design-reviewer</em> 에이전트 <span class="status status-ready">사용 가능</span></li>
         </ul>
       </article>
       <article class="card plugin-card reveal">
@@ -684,9 +706,9 @@
         </div>
         <p style="color:var(--hes-fg-muted); font-size:var(--hes-fs-sm); margin:0;">기획 — 제품 설계서를 AI-리더블 문서로 관리하고, 디자인·퍼블 코드 기반으로 프로토타입과 QA 시나리오를 생성합니다.</p>
         <ul class="skill-list">
-          <li><code>product-spec</code> — 표준 설계서</li>
-          <li><code>prototype</code> — 동작 프로토타입</li>
-          <li><code>test-script</code> — QA 테스트 시나리오</li>
+          <li><code>test-script</code> — QA 테스트 시나리오 <span class="status status-ready">사용 가능</span></li>
+          <li><code>product-spec</code> — 표준 설계서 <span class="status status-wip">준비중</span></li>
+          <li><code>prototype</code> — 동작 프로토타입 <span class="status status-wip">준비중</span></li>
         </ul>
       </article>
       <article class="card plugin-card reveal">
@@ -696,9 +718,10 @@
         </div>
         <p style="color:var(--hes-fg-muted); font-size:var(--hes-fs-sm); margin:0;">퍼블 — 컴포넌트를 개발 적용 코드로 변환하고, 토큰을 export하고, 접근성을 점검합니다.</p>
         <ul class="skill-list">
-          <li><code>component-build</code> — React/Tailwind</li>
-          <li><code>token-export</code> — CSS/JSON</li>
-          <li><code>a11y-audit</code> — 접근성 점검</li>
+          <li><code>component-build</code> — React/Tailwind <span class="status status-wip">준비중</span></li>
+          <li><code>token-export</code> — CSS/JSON <span class="status status-wip">준비중</span></li>
+          <li><code>a11y-audit</code> — 접근성 점검 <span class="status status-wip">준비중</span></li>
+          <li><code>npx hes add</code> — CLI 설치 경로 <span class="status status-ready">사용 가능</span></li>
         </ul>
       </article>
     </div>
@@ -1148,27 +1171,36 @@ npx hes list</pre>
     </div>
     <table class="roles reveal">
       <thead>
-        <tr><th>역할</th><th>클로드 스킬</th><th>코덱스 프롬프트</th></tr>
+        <tr><th>역할</th><th>지금 쓸 수 있는 것</th><th>준비중</th><th>코덱스 프롬프트</th></tr>
       </thead>
       <tbody>
         <tr>
           <td><span class="role-name">기획</span></td>
-          <td><code>/hes:product-spec</code> <code>:prototype</code> <code>:test-script</code></td>
+          <td><code>/hes:test-script</code></td>
+          <td><code>product-spec</code> <code>prototype</code></td>
           <td><code>/hes-spec</code></td>
         </tr>
         <tr>
           <td><span class="role-name">디자인</span></td>
-          <td><code>/hes:design-tokens</code> <code>:design-guide</code> <code>:component-catalog</code> <code>:brand-visual</code> <code>:figma-bridge</code></td>
+          <td><em>design-reviewer</em> 에이전트</td>
+          <td><code>design-tokens</code> <code>design-guide</code> <code>component-catalog</code> <code>brand-visual</code> <code>figma-bridge</code></td>
           <td><code>/hes-tokens</code> <code>/hes-component</code></td>
         </tr>
         <tr>
           <td><span class="role-name">퍼블</span></td>
-          <td><code>/hes:token-export</code> <code>:component-build</code> <code>:a11y-audit</code></td>
+          <td><code>npx hes add</code></td>
+          <td><code>token-export</code> <code>registry-export</code> <code>component-build</code> <code>a11y-audit</code></td>
           <td><code>/hes-component</code></td>
+        </tr>
+        <tr>
+          <td><span class="role-name">공통</span></td>
+          <td><code>/hes:ask-hes</code> <code>/hes:mcp-connectors</code></td>
+          <td>—</td>
+          <td>—</td>
         </tr>
       </tbody>
     </table>
-    <p style="font-size:var(--hes-fs-sm); color:var(--hes-fg-muted); margin-top:var(--hes-space-4);">스킬은 <code style="background:var(--hes-bg-muted); padding:2px 6px; border-radius:var(--hes-radius-sm);">/hes:component-catalog</code>처럼 직접 호출하거나, 자연어로 "HES 컴포넌트 뭐 있어?"라고 물어도 클로드가 알아서 사용합니다.</p>
+    <p style="font-size:var(--hes-fs-sm); color:var(--hes-fg-muted); margin-top:var(--hes-space-4);">스킬은 <code style="background:var(--hes-bg-muted); padding:2px 6px; border-radius:var(--hes-radius-sm);">/hes:test-script</code>처럼 직접 호출합니다. 어떤 걸 써야 할지 모르겠으면 <code style="background:var(--hes-bg-muted); padding:2px 6px; border-radius:var(--hes-radius-sm);">/hes:ask-hes</code> 에 상황을 설명하면 맞는 경로와 — 준비중이라면 그 사실과 대안까지 — 알려줍니다.</p>
   </div>
 </section>
 
@@ -1187,7 +1219,7 @@ npx hes list</pre>
 <pre class="block"><span class="cmt"># 사내 마켓플레이스 등록 (private repo 가능)</span>
 <span class="prompt">/</span>plugin marketplace add Leejinhee1/plugin
 
-<span class="cmt"># 설치는 한 번 — 기획·디자인·퍼블 스킬 전체</span>
+<span class="cmt"># 설치는 한 번 — 완성된 스킬이 늘면 update 로 받습니다</span>
 <span class="prompt">/</span>plugin install hes@hes</pre>
       </div>
       <div class="reveal">
@@ -1221,7 +1253,7 @@ claude --plugin-dir /path/to/hes-repo</pre>
       </div>
     </div>
   </div>
-  <div class="wrap" style="margin-top:var(--hes-space-6); font-size:var(--hes-fs-xs);">© Design System Team · v3.6.0 · UNLICENSED — 이 페이지는 HES 토큰(Hana Experience System 동기화)과 보이스 규범으로 제작되었습니다.</div>
+  <div class="wrap" style="margin-top:var(--hes-space-6); font-size:var(--hes-fs-xs);">© Design System Team · v3.7.0 · UNLICENSED — 이 페이지는 HES 토큰(Hana Experience System 동기화)과 보이스 규범으로 제작되었습니다.</div>
 </footer>
 
 <!-- ── Modal ── -->

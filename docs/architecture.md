@@ -38,8 +38,9 @@
 ## 결정 4 — 단일 플러그인 + 역할별 스킬 버킷 (v2.0)
 - v1은 역할별 플러그인 3개(`hes-design`/`hes-planning`/`hes-publish`)였으나, **설치를 세 번 해야 하고** 플러그인 간 파일 참조가 깨지기 쉬웠습니다.
 - v2는 [mattpocock/skills](https://github.com/mattpocock/skills) 방식으로 재구성: **저장소 루트가 곧 플러그인**(`marketplace.json` 의 `source: "./"`), 스킬은 `skills/planning|design|publish/` 버킷으로 분류하되 `plugin.json` 의 `skills` 배열에 명시적으로 나열.
-- 스킬은 여전히 역할별로 구분되지만(`/hes:product-spec`, `/hes:design-tokens`, `/hes:token-export`), **설치는 한 번**입니다.
+- 스킬은 여전히 역할별로 구분되지만(product-spec은 기획, design-tokens는 디자인, token-export는 퍼블), **설치는 한 번**입니다.
 - **효과**: 설치·업데이트가 명령 하나. 모든 스킬이 같은 플러그인 루트(`${CLAUDE_PLUGIN_ROOT}/design-system/`)를 보므로 크로스 플러그인 경로 문제가 사라짐. 버킷에 나중에 `in-progress/`·`deprecated/` 를 추가해도 `skills` 배열에 없으면 배포되지 않음.
+- **이 성질을 미완성 스킬 관리에 그대로 활용합니다** — 파일은 버킷에 두고 경로만 `skills[]` → `_disabledSkills[]` 로 옮기면 배포에서 빠집니다(폴더 이동·삭제 없음, 되돌리기는 한 줄). 현재 11개 스킬이 이 상태이며, 실행되는 스킬은 ask-hes · mcp-connectors · test-script 3개입니다. 규칙은 [maintenance.md](./maintenance.md) "플러그인/스킬 유지" 참조.
 
 ## 결정 5 — 코드가 소스, Figma는 브릿지
 - AI가 직접 읽고 고치기 가장 쉬운 형태는 텍스트(코드/JSON/MD)입니다 → 코드를 원본으로.
@@ -47,15 +48,18 @@
 - **효과**: AI-리더블 관리와 디자이너 협업을 모두 확보하면서 원본이 흔들리지 않음.
 
 ## 흐름: 기획 → 디자인 → 퍼블 (한 방향으로 흐르되 SoT로 수렴)
-1. 기획: `product-spec` 이 화면을 **HES 컴포넌트/토큰 이름**으로 명세.
-2. 기획: `prototype` 이 레지스트리에서 조립해 동작 프로토타입 생성.
-3. 퍼블: `token-export` + `component-build` 로 프로토타입을 개발 코드로 승격.
+
+> 아래는 **설계된 목표 흐름**입니다. 1~3번의 스킬은 현재 🚧 준비중이라 자동화 없이 수동으로 같은 경로를 밟습니다 — 흐름 자체(무엇이 무엇의 입력인지)는 이미 유효하고, 스킬은 그 위에 얹히는 자동화입니다.
+
+1. 기획: `product-spec` 이 화면을 **HES 컴포넌트/토큰 이름**으로 명세. 🚧
+2. 기획: `prototype` 이 레지스트리에서 조립해 동작 프로토타입 생성. 🚧
+3. 퍼블: `token-export` + `component-build` 로 프로토타입을 개발 코드로 승격. 🚧 *(빌드 스크립트와 `npx hes` CLI로 이미 대체 가능)*
 4. 새 요구는 화면에 임시 반영하지 않고 **디자인 시스템(SoT)에 승격** → 다음부터 모두가 재사용.
 
 이 흐름 옆에 **QA 갈래**가 붙습니다: 화면 정의가 확정되면 `test-script` 가 기획서(PDF·이미지)를 파싱해 테스트 시나리오 시트를 만듭니다. 입력이 HES 설계서가 아니어도(외부 팀의 PDF 기획서) 동작하고, 산출물이 SoT 로 되돌아오지 않는 **단방향 파생물**이라 메인 흐름의 단계가 아니라 갈래로 둡니다.
 
 ## 결정 6 — 외부 MCP 커넥터도 레지스트리로 (SoT 패턴 확장)
-- 일부 스킬은 외부 MCP 서버를 씁니다(예: `figma-bridge` 의 Figma MCP). "어떤 커넥터를 왜/어떻게 쓰는지"의 진실을 `mcp/registry.json` **한 곳**에 둡니다(컴포넌트 `registry.json` 과 같은 패턴). 스킬 문서는 이를 가리키는 얇은 포인터.
+- 일부 스킬은 외부 MCP 서버를 씁니다(예: `figma-bridge` 의 Figma MCP — 이 스킬은 🚧 준비중이지만 커넥터 레지스트리와 등록은 이미 동작). "어떤 커넥터를 왜/어떻게 쓰는지"의 진실을 `mcp/registry.json` **한 곳**에 둡니다(컴포넌트 `registry.json` 과 같은 패턴). 스킬 문서는 이를 가리키는 얇은 포인터.
 - **scope 로 소유권을 분리**: `bundled`(플러그인이 `plugin.json` 의 `mcpServers` 로 자동 등록 — config 에 비밀 없는 것만) · `user`(각자 연결/인증) · `project`(팀 `.mcp.json` 커밋). Figma 는 공식 **Dev Mode** 서버(로컬 `http://127.0.0.1:3845/mcp`, 인증은 앱 세션이라 config 에 토큰 없음)라서 `bundled` — **번들에 비밀 없음** 원칙을 지키면서도 플러그인이 직접 제공. 개인 REST 토큰이 필요한 커뮤니티 서버 변형은 `user` 로.
 - **효과**: 새 커넥터가 늘어도 소비 스킬은 레지스트리만 보고, 자격증명이 레포로 새지 않으며, 무엇이 필요한지(`registry.json`)와 무엇이 연결됐는지(`/mcp`)를 대조할 수 있습니다. 조회·현황·관리는 `/hes:mcp-connectors`.
 
