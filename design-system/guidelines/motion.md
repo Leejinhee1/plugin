@@ -11,4 +11,4 @@
 - 진입은 emphasized, 종료·소멸은 standard + 짧게.
 
 ## 영상/브랜드 모션
-브랜드 인트로·프로모 영상은 `/hes:brand-visual` 참고. 위 이징·듀레이션 토큰을 영상 타임라인에도 동일 적용해 제품과 결이 맞도록 한다.
+브랜드 인트로·프로모 영상은 `design-system/brand/motion-video.md` 참고(brand-visual 스킬은 🚧 준비중). 위 이징·듀레이션 토큰을 영상 타임라인에도 동일 적용해 제품과 결이 맞도록 한다.

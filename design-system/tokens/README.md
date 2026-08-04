@@ -43,8 +43,8 @@ platform.tokens.json   HES platform 컬렉션 — AOS/iOS/PC/Min 모드. $value 
 
 | 대상 | 방법 |
 | :-- | :-- |
-| 퍼블 (CSS 변수 / Tailwind) | `/hes:token-export` 스킬로 `tokens.css` · `tailwind.preset.js` 생성 |
-| 디자인 (Figma) | `/hes:figma-bridge` 로 Variables 동기화 |
+| 퍼블 (CSS 변수 / Tailwind) | token-export 스킬(🚧 준비중)로 `tokens.css` · `tailwind.preset.js` 생성. **지금은** `node skills/publish/token-export/scripts/build-tokens.mjs` 직접 실행 또는 `npx hes add`(토큰 CSS 동봉) |
+| 디자인 (Figma) | figma-bridge(🚧 준비중)로 Variables 동기화. **지금은** 수동 |
 | 기획 (프로토타입) | 프로토타입 생성 시 semantic 토큰을 그대로 사용 |
 
 ## 토큰을 바꿀 때

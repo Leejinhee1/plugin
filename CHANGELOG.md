@@ -2,6 +2,37 @@
 
 이 프로젝트는 [semver](https://semver.org)를 따릅니다. 각 릴리스에서 `.claude-plugin/plugin.json` 과 `marketplace.json` version을 함께 bump 합니다.
 
+## [3.7.0] — 2026-08-04
+### 변경 — 미완성 스킬 11개 비활성화, 배포 스킬을 3개로 축소
+완성되지 않은 스킬이 설치·노출되면서 "호출했는데 아무 일도 안 일어난다"는 상태를 만들고 있었습니다. **파일은 그대로 두고 배포에서만 빼는** 방식으로 정리해, 지금 실제로 동작하는 것만 사용자에게 보이도록 했습니다.
+
+- **`plugin.json` 의 `skills[]` → `_disabledSkills[]`**: product-spec · prototype · design-tokens · design-guide · component-catalog · brand-visual · figma-bridge · token-export · registry-export · component-build · a11y-audit (11개). 스킬 파일·폴더는 이동/삭제하지 않았고, 완성되면 **경로 한 줄을 `skills` 배열로 옮기는 것만으로** 활성화됩니다. `_disabledSkills` 는 스키마에 없는 키라 Claude Code 는 무시하며, JSON 이 주석을 지원하지 않으므로 배열 첫 원소를 `"// 미완성 — ..."` 주석 문자열로 둡니다.
+- **배포되는 스킬은 3개**: `/hes:ask-hes` · `/hes:mcp-connectors` · `/hes:test-script`.
+- **스킬이 아닌 경로는 영향 없음** — `hes:design-reviewer` 에이전트 · `npx hes` CLI · Codex 프롬프트 3종 · `mcp/` 커넥터 등록/현황은 전부 그대로 동작합니다. 퍼블 업무는 CLI 로, 디자인 검수는 에이전트로 사실상 대체됩니다.
+
+### 추가 — 스킬 정합성 체크 스크립트 `npm run check`
+3.6.0 의 `test_script` 사고(스킬 이름이 kebab-case 가 아니어서 **아무 경고 없이 등록되지 않던** 문제)가 기존 검증으로는 잡히지 않는다는 것을 확인하고, 그 구멍을 메우는 스크립트를 추가했습니다.
+- **`scripts/check-skills.mjs` 신설**(의존성 없음, `npm run check`): `plugin.json` 의 `skills[]`·`_disabledSkills[]` 를 순회하며 검사 — 폴더/`SKILL.md` 존재 · **frontmatter `name` 의 kebab-case 준수** · **폴더명 ↔ `name` 일치** · `description` 존재 · 이름 중복 · 양쪽 배열 중복 등록 · 디스크에 있는데 미등록인 스킬(경고) · `plugin.json`↔`marketplace.json` 버전 일치. 에러가 있으면 exit 1.
+- **검증 결과**: 실패 픽스처(언더스코어 이름·이름 불일치·없는 경로·양쪽 중복·버전 불일치·미등록 스킬)로 모든 케이스를 검출하는 것을 확인. 현재 저장소는 경고 없이 통과.
+- **버전 동기화 대상을 4개로 확정**: `plugin.json` · `marketplace.json`(+`plugins[0].version`) · `package.json` · `package-lock.json`. 3.4.0 에 머물러 있던 npm 쪽 두 파일을 3.7.0 으로 맞추고, 불일치를 **경고가 아니라 에러**로 잡도록 했습니다. `maintenance.md` 버전 정책에 `npm version <새버전> --no-git-tag-version` 을 포함한 릴리스 절차를 명시.
+
+### 변경 — `claude plugin validate` 에서 `--strict` 제거
+- **`--strict` 는 검사 항목을 늘리지 않는다**(경고를 에러로 승격할 뿐)는 점, 그리고 이 저장소에서 걸리는 유일한 경고가 **의도적으로 넣은 `_disabledSkills`** 라는 점을 확인. 반면 실제로 사고를 냈던 이름 규칙 위반은 `--strict` 로도 잡히지 않습니다(픽스처로 확인 — `✔ Validation passed`).
+- `docs/maintenance.md` 에 **검증 절차 섹션 신설**: 두 도구의 검사 범위 비교표 + `--strict` 를 쓰지 않는 이유. `getting-started.md` 검증 명령과 PR 체크리스트도 `npm run check` + `claude plugin validate .` 조합으로 교체.
+- 참고: 이 저장소에는 아직 CI 설정(`.github/workflows/`)이 없어 당장 깨지는 파이프라인은 없습니다.
+
+### 수정 — 문서에서 "없는 스킬" 안내 제거
+비활성 스킬을 `/hes:xxx` 슬래시 형태로 안내하던 곳을 전부 정리했습니다. 준비중 항목은 **슬래시 없이 이름만 + 🚧 배지 + 대안 경로**로 표기하는 규칙을 세웠습니다.
+- **`ask-hes` 라우터**: 상단에 "지금 실행 가능한 스킬 3개" 표와 라우팅 규칙 추가 — *준비중 스킬을 슬래시 커맨드로 안내하지 말 것, 없는 스킬이 있는 척하지 말 것, 단계를 알려주되 대안을 함께 제시할 것*. 메인 플로우·정비 레인·단독 스킬 항목별로 대안 경로(`design-system/` 직접 참조 · `npx hes`)를 명시.
+- **`mcp-connectors`**: 소비 스킬 `figma-bridge`·`brand-visual` 이 준비중임을 명시(커넥터 조회·등록 기능 자체는 정상).
+- **README · getting-started · user-guide · architecture · maintenance · index.html · 버킷 README 3종**: 구조 트리·역할표·시나리오·랜딩 카드에 🚧 상태 표기, 각 항목에 "지금 하는 법" 추가. user-guide 는 상단에 개발 현황 표 신설.
+- **`maintenance.md` 에 비활성화 규칙 문서화**: 승격/강등 절차 + **함께 갱신할 문서 목록** + `grep -rn "/hes:<이름>"` 확인 절차.
+- `mcp/registry.json`: `policy.disabledConsumers` + 커넥터별 `usedByDisabled` 추가 — 레지스트리는 유지하되 준비중 소비 스킬을 실행 가능한 것처럼 보고하지 않도록.
+- `skills/publish/README.md` 에 누락돼 있던 `registry-export` 를 표에 추가.
+- 플러그인/마켓플레이스 `description` 을 "스킬 전체 설치" → 개발 중·제공 스킬 3개 기준으로 정정. index.html 버전 표기 동기화.
+
+> **MINOR 로 올린 이유**: 토큰·컴포넌트 API 는 변경이 없으나(=MAJOR 아님), 기존 설치자가 받던 스킬 11개가 업데이트 후 사라지므로 PATCH 로 두기엔 사용자 영향이 큽니다. `/plugin update hes@hes` 시 해당 슬래시 커맨드가 목록에서 없어집니다.
+
 ## [3.6.0] — 2026-08-04
 ### 추가 — QA 테스트 시나리오 자동 생성 스킬 `/hes:test-script`
 확정된 UI 기획서를 QA 시트로 옮기는 수작업(화면×영역×CASE×엣지 조합을 손으로 수백 줄)을 스킬로 대체. 기획 파트의 산출물이 프로토타입·구현에 이어 **테스트 시나리오**까지 이어집니다.

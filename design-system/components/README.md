@@ -14,7 +14,7 @@ components/
 
 ## 가져다 쓰는 법 (소비 경로 3종)
 
-모든 경로의 공통 전제: 전역 CSS 에 토큰이 로드되어 있을 것 (`/hes:token-export` 산출물 `tokens.css`).
+모든 경로의 공통 전제: 전역 CSS 에 토큰이 로드되어 있을 것 (`tokens.css` — A 경로의 CLI 가 함께 설치해 주며, 별도 생성이 필요하면 `node skills/publish/token-export/scripts/build-tokens.mjs`. token-export 스킬은 🚧 준비중).
 
 ### A. HES CLI 로 설치 — 권장
 저장소 루트의 자체 CLI(`cli/hes.mjs`, 외부 의존성 없음)로 설치한다. 호스팅 없이도 동작한다.
@@ -25,7 +25,7 @@ npx hes add button checkbox         # 토큰·의존 컴포넌트(예: modal→b
 ```
 - 코드는 `components/hes/` 로, 토큰 CSS 는 `styles/hes-tokens.css` 로 복사된다(`--dir`/`--tokens-dir` 로 변경).
 - 로컬에서 수정한 파일은 덮어쓰지 않는다(`--force` 로 강제).
-- `--registry <URL>` 을 주면 `/hes:registry-export` 산출물을 호스팅한 곳에서 받아온다.
+- `--registry <URL>` 을 주면 registry-export 산출물(`node skills/publish/registry-export/scripts/build-registry.mjs`)을 호스팅한 곳에서 받아온다. registry-export 스킬 자체는 🚧 준비중이지만 스크립트는 동작한다.
 - **shadcn CLI 호환(선택)**: 같은 레지스트리를 호스팅하면 shadcn 쓰는 팀은 `components.json` 에 `"registries": { "@hes": "<URL>/r/{name}.json" }` 등록 후 `npx shadcn add @hes/button` 으로도 설치할 수 있다. shadcn 은 설치 도구일 뿐, 컴포넌트 소스는 전부 HES 다.
 
 ### B. 패키지처럼 import — 모노레포/사내 npm
@@ -38,12 +38,12 @@ import { Button, Checkbox, Toast } from "@hes/react"; // → design-system/compo
 컴포넌트가 자체 완결(외부 유틸 의존 없음)이라 `<component>/` 폴더의 `.tsx` 한 파일만 복사해도 동작한다. spec.md·usage.md 를 함께 가져가면 규칙까지 따라간다.
 
 ## 새 컴포넌트 추가 절차
-1. `/hes:component-catalog` 실행 → 스캐폴딩 생성
+1. component-catalog 스킬(🚧 준비중)로 스캐폴딩 생성 — **지금은** `components/button/` 정본 구조를 복제해 수동 생성
 2. `spec.md` 에 API/상태/토큰 매핑 정의
 3. 구현 코드 작성 — 값은 semantic 토큰(CSS 변수)만, 외부 의존성 없이 자체 완결로
 4. `usage.md` 에 실제 화면 조합 + 안티패턴 기록
 5. `registry.json` 과 `index.ts`(barrel) 에 등록 (`status: draft → stable`)
-6. `/hes:registry-export` 로 레지스트리 재생성 (배포 중이라면)
+6. `node skills/publish/registry-export/scripts/build-registry.mjs` 로 레지스트리 재생성 (배포 중이라면 — registry-export 스킬은 🚧 준비중)
 7. `CHANGELOG.md` + version bump
 
 > `status`: `draft`(실험) · `stable`(사용 권장) · `deprecated`(사용 중단, 대체재 명시)
