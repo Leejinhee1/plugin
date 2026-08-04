@@ -25,6 +25,7 @@
     "./skills/general/mcp-connectors",
     "./skills/planning/product-spec",
     "./skills/planning/prototype",
+    "./skills/planning/test_script",
     "./skills/design/design-tokens",
     "./skills/design/design-guide",
     "./skills/design/component-catalog",
