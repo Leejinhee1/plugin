@@ -12,7 +12,7 @@ plugin/  (= 저장소 루트가 곧 플러그인이자 마켓플레이스)
 │   └── marketplace.json   # source: "./" 단일 플러그인 마켓플레이스
 ├── skills/                # 역할별 스킬 버킷 (설치는 한 번에 전부)
 │   ├── general/           공통 — ask-hes (스킬 라우터) · mcp-connectors (커넥터·MCP 현황/관리)
-│   ├── planning/          기획 — product-spec · prototype
+│   ├── planning/          기획 — product-spec · prototype · test-script
 │   ├── design/            디자인 — design-tokens · design-guide · component-catalog · brand-visual · figma-bridge
 │   └── publish/           퍼블 — token-export · component-build · a11y-audit
 ├── agents/                design-reviewer 검수 에이전트
@@ -69,7 +69,7 @@ npx hes add checkbox                # 코드→components/hes/, 토큰→styles/
 
 | 역할 | Claude 스킬 | Codex 프롬프트 |
 | :-- | :-- | :-- |
-| 기획 | `/hes:product-spec`, `/hes:prototype` | `/hes-spec` |
+| 기획 | `/hes:product-spec`, `/hes:prototype`, `/hes:test-script` | `/hes-spec` |
 | 디자인 | `/hes:design-tokens`, `/hes:design-guide`, `/hes:component-catalog`, `/hes:brand-visual`, `/hes:figma-bridge` | `/hes-tokens`, `/hes-component` |
 | 퍼블 | `/hes:token-export`, `/hes:component-build`, `/hes:a11y-audit` | `/hes-component` |
 

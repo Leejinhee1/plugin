@@ -1,6 +1,6 @@
 ---
-name: test_script
-description: UI 기획서(PDF·이미지·이미지 폴더)를 분석하여 테스트 시나리오를 자동 생성하고 클립보드/CSV/Google Sheets로 출력하는 스킬. 설계서의 화면별 영역, CASE 분기, 터치 액션을 파싱하여 실무에 바로 사용 가능한 테스트 시나리오를 만든다.
+name: test-script
+description: UI 기획서(PDF·이미지·이미지 폴더)를 분석해 QA 테스트 시나리오를 자동 생성하고 클립보드/CSV/Google Sheets로 출력합니다. 설계서의 화면별 영역·CASE 분기·터치 액션을 파싱해 실무에 바로 쓰는 시나리오를 만들 때 사용. Use when turning a UI spec (PDF/images) into a QA test scenario sheet.
 argument-hint: "[설계서 경로 — PDF 파일 / 이미지 파일 / 이미지가 든 폴더]"
 ---
 
@@ -127,7 +127,7 @@ argument-hint: "[설계서 경로 — PDF 파일 / 이미지 파일 / 이미지�
 
 ### (A) CSV 파일 — 기본 산출물
 - 파일명: `테스트시나리오_{시트이름}_{날짜:YYYYMMDD}.csv`
-- 저장 경로: `/Users/eeejeenee/Downloads/`
+- 저장 경로: `~/Downloads/` (사용자가 다른 경로를 지정하면 그쪽)
 - 인코딩: **UTF-8 BOM** (엑셀·구글시트 호환), 셀 내 줄바꿈은 공백 치환
 - 파이썬 `csv` 모듈로 작성
 
@@ -146,10 +146,12 @@ print('\n'.join('\t'.join(c.replace(chr(10),' ').strip() for c in r) for r in ro
 안내 문구: "시트 A1 셀 클릭 → `Cmd+V` 붙여넣기 → 9개 컬럼 자동 분리".
 
 ### (C) Google Sheets 자동 작성 — 권한 확보 시에만
+> **전제**: 이 경로는 사용자가 자신의 머신에 준비해 둔 `sheets_writer.py`(Google 서비스 계정 인증)를 필요로 합니다. 플러그인에 동봉되어 있지 않으므로, 스크립트 경로를 모르면 **사용자에게 물어보고** 없으면 (B) 클립보드로 진행하세요.
+
 시나리오 데이터를 JSON으로 구성하여 sheets_writer.py를 실행합니다:
 
 ```bash
-echo '<JSON 데이터>' | /Users/eeejeenee/Projects/scripts/.venv/bin/python /Users/eeejeenee/Projects/scripts/sheets_writer.py
+echo '<JSON 데이터>' | <사용자의 python> <사용자의 sheets_writer.py 경로>
 ```
 
 JSON 구조:
