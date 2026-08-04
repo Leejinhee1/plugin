@@ -8,7 +8,7 @@
 | :-- | :-- |
 | `/hes:product-spec` | 제품 설계서(PRD)를 구조화 문서로 작성/업데이트 (템플릿 제공) |
 | `/hes:prototype` | 설계서 → HES 컴포넌트로 조립한 동작 프로토타입 |
-| `/hes:test-script` | UI 기획서(PDF·이미지·이미지 폴더) → QA 테스트 시나리오 (클립보드/CSV/Sheets) |
+| `/hes:test-script` | UI 기획서(Figma·PDF·이미지·이미지 폴더) → QA 테스트 시나리오 (클립보드/CSV/Sheets) |
 
 ## 흐름
 `product-spec`(HES 컴포넌트/토큰 이름으로 화면 명세) → `prototype`(레지스트리에서 조립) → 퍼블 스킬(`skills/publish/`)이 이어받아 구현.

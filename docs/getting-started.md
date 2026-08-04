@@ -32,7 +32,7 @@ cp codex/prompts/*.md ~/.codex/prompts/
 1. `/hes:product-spec 새 결제 화면` → 템플릿 기반 설계서 초안.
 2. 화면을 HES 컴포넌트/토큰 이름으로 채운다.
 3. `/hes:prototype` → 설계서로 동작 프로토타입 생성.
-4. `/hes:test-script ~/Downloads/기획서.pdf` → 기획서(PDF·이미지·이미지 폴더)에서 QA 테스트 시나리오 생성.
+4. `/hes:test-script <Figma URL 또는 기획서 경로>` → 기획서(Figma·PDF·이미지·이미지 폴더)에서 QA 테스트 시나리오 생성.
 
 ### 디자인
 - `/hes:component-catalog` → 있는 컴포넌트 확인 / 새 컴포넌트 추가.

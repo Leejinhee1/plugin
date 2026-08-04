@@ -16,8 +16,8 @@
       "transport": "http",
       "scope": "bundled",
       "required": false,
-      "usedBy": ["figma-bridge", "brand-visual"],
-      "purpose": "코드 토큰 ↔ Figma Variables 동기화, Code Connect(디자인↔구현 매핑), 디자인 컨텍스트/에셋 조회. HES의 소스 오브 트루스는 코드이며 Figma는 브릿지(충돌 시 코드가 진실).",
+      "usedBy": ["figma-bridge", "brand-visual", "test-script"],
+      "purpose": "코드 토큰 ↔ Figma Variables 동기화, Code Connect(디자인↔구현 매핑), 디자인 컨텍스트/에셋 조회. HES의 소스 오브 트루스는 코드이며 Figma는 브릿지(충돌 시 코드가 진실). test-script 는 읽기 전용으로만 사용 — Figma 기획서에서 스펙 텍스트(get_metadata)를 추출해 QA 시나리오를 만든다.",
       "connect": {
         "how": "플러그인이 이 서버를 plugin.json 의 mcpServers.figma 로 이미 등록합니다(공식 Figma Dev Mode MCP, 로컬 http). 사용자는 서버를 추가할 필요 없이 Figma 데스크톱 앱에서 Dev Mode MCP 서버를 켜기만 하면 됩니다(Figma > Preferences > Enable Dev Mode MCP server). 인증은 Figma 앱 세션이 담당 — config 에 토큰이 없습니다.",
         "verify": "연결 여부는 `/mcp` 패널 또는 `claude mcp list` 로 확인. 도구는 `mcp__plugin_hes_figma__*` 로 노출된다. 미연결(Figma 앱 미실행/Dev Mode 꺼짐)이면 figma-bridge 가 수동 안내로 폴백한다.",
@@ -34,7 +34,7 @@
           "env": { "FIGMA_API_KEY": "<개인_토큰_환경변수>" }
         }
       },
-      "fallback": "MCP 미연결 시 figma-bridge/brand-visual 은 수동 안내로 폴백(각 스킬에 명시)."
+      "fallback": "MCP 미연결 시 figma-bridge/brand-visual 은 수동 안내로 폴백(각 스킬에 명시). test-script 는 사용자에게 기획서 PDF 내보내기를 요청해 PDF 경로로 폴백."
     }
   ]
 }
