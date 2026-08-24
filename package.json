@@ -1,6 +1,6 @@
 {
   "name": "hes",
-  "version": "3.9.0",
+  "version": "3.9.1",
   "description": "HES — 그룹 공식 디자인 시스템. `npx hes add <component>` 로 컴포넌트를 프로젝트에 설치합니다.",
   "type": "module",
   "bin": {
