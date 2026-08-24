@@ -14,24 +14,24 @@ argument-hint: "[질문 — 화면ID·화면명·기능/정책 이름]"
 
 ## 1. 대상 저장소 정하기
 
-우선순위대로 찾습니다. 하나도 없으면 **묻고 멈춥니다** — 아무 레포나 추측하지 않습니다.
+**대개 아무것도 안 물어도 됩니다** — 다음 스크립트가 알아서 풉니다. 2단계를 그냥 실행하고, 실패했을 때만 물으세요.
 
-1. `--repo <owner>/<name>` 인자
-2. 환경변수 `HES_SPEC_REPO`
-3. 현재 프로젝트의 `.hes/spec-source.json`
+해석 순서(앞이 이김): `--repo` 인자 → `HES_SPEC_REPO` → 프로젝트 `.hes/spec-source.json` → **홈 `~/.hes/spec-source.json`** → **이 머신의 캐시에 레포가 딱 하나면 그것**.
 
 ```json
 { "repo": "<owner>/<name>", "ref": "main", "specsDir": "docs" }
 ```
 
-`specsDir` 는 sparse-checkout 할 **문서 루트**입니다(기본 `docs`). 설계서 문서와 조회 계약 파일이 함께 들어오도록 너무 좁게 잡지 마세요.
-
-사용자가 처음 레포를 알려주면 `.hes/spec-source.json` 을 만들어 두라고 안내하세요 — 팀이 공유하는 설정이고 비밀이 아닙니다. 레포 이름을 이 저장소(공개)에 적어 넣지는 않습니다.
+- **처음 한 번만 묻습니다.** 레포를 받으면 `--repo <owner>/<name> --save-global` 로 실행하세요 — `~/.hes/spec-source.json` 에 저장돼 **다음부터 어느 프로젝트에서든** 자동으로 잡힙니다. 프로젝트마다 다른 설계서를 보는 경우에만 `--save`(프로젝트 `.hes/`)를 쓰세요.
+- **캐시로 풀렸으면(`"source": "cache"`) 사용자에게 알리세요** — "이 머신에서 쓰던 <레포>로 조회했습니다"라고 밝히고, 맞으면 `--save-global` 을 권합니다. 후보가 둘 이상이면 스크립트가 고르지 않고 멈춥니다(추측 금지).
+- **끝내 못 풀면 짧게 묻습니다** — `owner/name` 한 줄만 요청하세요. 선택지를 늘어놓지 말 것.
+- `specsDir` 는 sparse-checkout 할 **문서 루트**입니다(기본 `docs`). 설계서 문서와 조회 계약 파일이 함께 들어오도록 너무 좁게 잡지 마세요.
+- 레포 이름을 이 저장소(공개)에 적어 넣지는 않습니다.
 
 ## 2. 최신으로 동기화
 
 ```bash
-node "${CLAUDE_PLUGIN_ROOT}/skills/planning/spec-lookup/scripts/sync-spec-repo.mjs" [--repo <owner>/<name>] [--ref <branch>]
+node "${CLAUDE_PLUGIN_ROOT}/skills/planning/spec-lookup/scripts/sync-spec-repo.mjs" [--repo <owner>/<name>] [--ref <branch>] [--save-global]
 ```
 
 `~/.cache/hes/spec-repos/<owner>__<name>` 에 sparse-checkout 캐시를 두고 매번 `origin/<ref>` 로 리셋합니다. 출력은 **캐시 경로 · 커밋 · 커밋 시각** — 그 시각이 "언제 기준 최신인지"의 답입니다.
