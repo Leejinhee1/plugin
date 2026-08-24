@@ -33,7 +33,7 @@ cp codex/prompts/*.md ~/.codex/prompts/
 ### 지금 바로 되는 것
 - `/hes:ask-hes` → 내 상황에 맞는 스킬·플로우 안내(준비중 여부와 대안 포함).
 - `/hes:test-script <Figma URL 또는 기획서 경로>` → 기획서(Figma·PDF·이미지·이미지 폴더)에서 QA 테스트 시나리오 생성.
-- `/hes:spec-lookup <질문>` → 사내 설계서 저장소에서 화면·정책을 찾아 근거와 함께 답변. 대상 저장소는 처음 한 번만 알려주면 됩니다 — `--repo <owner>/<name> --save-global` 로 `~/.hes/spec-source.json` 에 저장되고, 다음부터는 어느 프로젝트에서든 자동으로 잡힙니다(비공개 레포 읽기 권한 필요). `~/.hes` 는 머신 단위라, 새 환경에도 따라오게 하려면 프로젝트에 `.hes/spec-source.json` 을 커밋하세요. 자격증명이 없는 환경에서는 `--local <체크아웃 경로>` 로 이미 있는 사본을 읽습니다(동기화 없음).
+- `/hes:spec-lookup <질문>` → 사내 설계서 저장소에서 화면·정책을 찾아 근거와 함께 답변. 대상 저장소는 처음 한 번만 알려주면 됩니다 — `--repo <owner>/<name> --save-global` 로 `~/.hes/spec-source.json` 에 저장되고, 다음부터는 어느 프로젝트에서든 자동으로 잡힙니다(비공개 레포 읽기 권한 필요). `~/.hes` 는 머신 단위라, 새 환경에도 따라오게 하려면 프로젝트에 `.hes/spec-source.json` 을 커밋하세요. 자격증명 헬퍼가 없는 환경(컨테이너·CI)에서는 `GH_TOKEN`·`GITHUB_TOKEN`·`gh auth token` 을 자동으로 찾아 씁니다. 그마저 없고 체크아웃만 있다면 `--local <경로>` 로 읽습니다(동기화 없음).
 - `/hes:mcp-connectors` → 제공 커넥터 목록·연결 현황 확인.
 - `npx hes list` / `npx hes add button` → 컴포넌트를 내 프로젝트에 설치(토큰 CSS 포함).
 - `@hes:design-reviewer` → 토큰 준수·가이드 부합·접근성 심층 검수.

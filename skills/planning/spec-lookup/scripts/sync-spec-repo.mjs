@@ -16,6 +16,10 @@
  * 옮길 때마다** 다시 물어야 한다. 4 는 머신에 한 번(`--save-global`), 5 는 이미 이 머신에서
  * 쓰던 레포가 하나뿐일 때의 명백한 답이다 — 둘 이상이면 5 를 쓰지 않고 묻는다(추측 금지).
  *
+ * 인증: 깃 자격증명 헬퍼가 없는 환경(컨테이너·CI·데스크톱 세션)이 많다. 그런 곳에서도 돌도록
+ * `GH_TOKEN`·`GITHUB_TOKEN`·`gh auth token` 을 찾아 **그 호출에만** Authorization 헤더로 실어
+ * 보낸다(`git -c http.extraheader`). origin URL 과 .git/config 에는 토큰이 남지 않는다.
+ *
  * `--local <경로>` 는 **클론하지 않는다** — 이미 있는 체크아웃을 그대로 읽는다. 깃 자격증명이
  * 없는 환경(컨테이너·데스크톱 세션)에서 유일하게 동작하는 경로다. 사용자의 체크아웃을 절대
  * 건드리지 않으므로(fetch·pull·reset 없음) **최신 보장이 없다** — HEAD 커밋·시각을 그대로
@@ -132,16 +136,49 @@ const cache = path.join(CACHE_ROOT, repo.replace("/", "__"));
 const git = (args, cwd) =>
   execFileSync("git", args, { cwd, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
 
+/**
+ * 깃 자격증명 헬퍼가 없는 환경을 위한 토큰. 환경변수 → `gh auth token` 순으로 찾는다.
+ * 없으면 undefined 를 주고, 그때는 헬퍼(있다면)에 맡긴다.
+ */
+function githubToken() {
+  if (process.env.GH_TOKEN) return ["GH_TOKEN", process.env.GH_TOKEN];
+  if (process.env.GITHUB_TOKEN) return ["GITHUB_TOKEN", process.env.GITHUB_TOKEN];
+  try {
+    const t = execFileSync("gh", ["auth", "token"], { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim();
+    if (t) return ["gh", t];
+  } catch {
+    /* gh 가 없거나 로그인 안 됨 — 헬퍼에 맡긴다 */
+  }
+  return [undefined, undefined];
+}
+
+const [authSource, token] = githubToken();
+
+/**
+ * 네트워크를 타는 git 호출. 토큰이 있으면 **이 호출에만** 헤더로 싣는다 —
+ * URL 에 박거나 .git/config 에 저장하지 않으므로 토큰이 디스크에 남지 않는다.
+ */
+const gitNet = (args, cwd) =>
+  git(
+    token
+      ? ["-c", `http.extraheader=AUTHORIZATION: basic ${Buffer.from(`x-access-token:${token}`).toString("base64")}`, ...args]
+      : args,
+    cwd,
+  );
+
 try {
   if (!existsSync(path.join(cache, ".git"))) {
     mkdirSync(path.dirname(cache), { recursive: true });
-    git(["clone", "--filter=blob:none", "--no-checkout", "--depth", "1", "--branch", ref,
-         `https://github.com/${repo}.git`, cache]);
+    // blob 필터를 쓰지 않는다 — promisor remote 가 되면 checkout 이 blob 을 **별도 프로세스에서**
+    // 지연 fetch 하고, 그 호출엔 우리 토큰 헤더가 실리지 않아 자격증명 없는 환경에서 죽는다.
+    // depth 1 만으로도 충분히 작다.
+    gitNet(["clone", "--no-checkout", "--depth", "1", "--branch", ref,
+            `https://github.com/${repo}.git`, cache]);
     git(["sparse-checkout", "set", "--no-cone", specsDir], cache);
     git(["checkout", ref], cache);
   } else {
     git(["sparse-checkout", "set", "--no-cone", specsDir], cache);
-    git(["fetch", "--depth", "1", "origin", ref], cache);
+    gitNet(["fetch", "--depth", "1", "origin", ref], cache);
     git(["reset", "--hard", `origin/${ref}`], cache);
     git(["clean", "-fd"], cache);
   }
@@ -151,10 +188,13 @@ try {
   const stderr = (e.stderr ?? "").toString();
   if (/Permission denied|not found|Authentication failed|could not read Username/i.test(stderr)) {
     fail(
-      `${repo} 를 읽을 권한이 없다. 비공개 저장소라면 지금 로그인된 계정에 접근 권한을 받아야 한다 ` +
-        `— \`gh auth status\` 로 계정 확인. 우회하지 말 것.\n` +
-        `  이 환경에 깃 자격증명이 아예 없다면(컨테이너 등), 이미 있는 체크아웃을 \`--local <경로>\` 로 읽을 수 있다 ` +
-        `— 클론·동기화를 하지 않으므로 최신 보장은 없고, 스크립트가 그 체크아웃의 커밋·시각을 알려준다.\n${stderr.trim()}`,
+      token
+        ? `${repo} 를 읽을 권한이 없다. ${authSource} 로 얻은 토큰이 이 저장소를 못 읽는다 — ` +
+          `다른 계정의 토큰이거나 접근 권한이 없는 것이다. 우회하지 말고 권한을 받을 것.\n${stderr.trim()}`
+        : `${repo} 를 읽을 자격증명이 이 환경에 없다. 우회하지 말고 아래 중 하나로 인증할 것:\n` +
+          `  · \`gh auth login\` (또는 이미 로그인돼 있으면 \`gh auth status\` 로 계정 확인)\n` +
+          `  · 환경변수 \`GH_TOKEN=<개인 액세스 토큰>\` — 컨테이너·CI 처럼 대화형 로그인이 안 되는 곳\n` +
+          `  · 이미 체크아웃이 있으면 \`--local <경로>\` (동기화 없음, 그 시점 기준으로만 답함)\n${stderr.trim()}`,
     );
   }
   fail(`git 동기화 실패:\n${stderr.trim() || e.message}`);
@@ -170,7 +210,7 @@ if (flag("save") || flag("save-global")) {
 
 const commit = git(["log", "-1", "--format=%h"], cache);
 const when = git(["log", "-1", "--format=%cI"], cache);
-console.log(JSON.stringify({ repo, ref, specsDir, source, cache, commit, committedAt: when, saved }, null, 2));
+console.log(JSON.stringify({ repo, ref, specsDir, source, auth: authSource ?? "credential-helper", cache, commit, committedAt: when, saved }, null, 2));
 console.log(`\n✓ ${repo}@${ref} 최신 — ${commit} (${when})\n  캐시: ${cache}\n  설계서: ${path.join(cache, specsDir)}`);
 if (source === "cache") {
   console.log(`  ⚠ 대상을 지정받지 못해 이 머신의 캐시에 있던 유일한 레포를 썼다 — 사용자에게 이 사실을 알리고, 맞으면 --save-global 을 권할 것.`);
