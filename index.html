@@ -680,7 +680,7 @@
       <p class="lead">플러그인은 <code>hes</code> 하나입니다. 설치 한 번으로 기획·디자인·퍼블 스킬 전체가 들어오고, 모든 스킬이 같은 정본(<code>design-system/</code>)을 봅니다.</p>
       <div class="notice">
         <strong>개발 현황</strong> — HES는 개발 중입니다. 현재 설치·실행되는 스킬은
-        <code>ask-hes</code> · <code>mcp-connectors</code> · <code>test-script</code> 3개이고,
+        <code>ask-hes</code> · <code>mcp-connectors</code> · <code>test-script</code> · <code>spec-lookup</code> 4개이고,
         <span class="status status-wip">준비중</span> 표시된 스킬은 아직 완성되지 않아 호출되지 않습니다.
         준비중 스킬의 영역은 <code>design-system/</code> 정본을 직접 참조하거나 <code>npx hes</code> CLI·<code>design-reviewer</code> 에이전트로 대체할 수 있습니다.
       </div>
@@ -707,6 +707,7 @@
         <p style="color:var(--hes-fg-muted); font-size:var(--hes-fs-sm); margin:0;">기획 — 제품 설계서를 AI-리더블 문서로 관리하고, 디자인·퍼블 코드 기반으로 프로토타입과 QA 시나리오를 생성합니다.</p>
         <ul class="skill-list">
           <li><code>test-script</code> — QA 테스트 시나리오 <span class="status status-ready">사용 가능</span></li>
+          <li><code>spec-lookup</code> — 사내 설계서 조회 <span class="status status-ready">사용 가능</span></li>
           <li><code>product-spec</code> — 표준 설계서 <span class="status status-wip">준비중</span></li>
           <li><code>prototype</code> — 동작 프로토타입 <span class="status status-wip">준비중</span></li>
         </ul>
@@ -1176,7 +1177,7 @@ npx hes list</pre>
       <tbody>
         <tr>
           <td><span class="role-name">기획</span></td>
-          <td><code>/hes:test-script</code></td>
+          <td><code>/hes:test-script</code> <code>/hes:spec-lookup</code></td>
           <td><code>product-spec</code> <code>prototype</code></td>
           <td><code>/hes-spec</code></td>
         </tr>

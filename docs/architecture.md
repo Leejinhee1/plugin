@@ -40,7 +40,7 @@
 - v2는 [mattpocock/skills](https://github.com/mattpocock/skills) 방식으로 재구성: **저장소 루트가 곧 플러그인**(`marketplace.json` 의 `source: "./"`), 스킬은 `skills/planning|design|publish/` 버킷으로 분류하되 `plugin.json` 의 `skills` 배열에 명시적으로 나열.
 - 스킬은 여전히 역할별로 구분되지만(product-spec은 기획, design-tokens는 디자인, token-export는 퍼블), **설치는 한 번**입니다.
 - **효과**: 설치·업데이트가 명령 하나. 모든 스킬이 같은 플러그인 루트(`${CLAUDE_PLUGIN_ROOT}/design-system/`)를 보므로 크로스 플러그인 경로 문제가 사라짐. 버킷에 나중에 `in-progress/`·`deprecated/` 를 추가해도 `skills` 배열에 없으면 배포되지 않음.
-- **이 성질을 미완성 스킬 관리에 그대로 활용합니다** — 파일은 버킷에 두고 경로만 `skills[]` → `_disabledSkills[]` 로 옮기면 배포에서 빠집니다(폴더 이동·삭제 없음, 되돌리기는 한 줄). 현재 11개 스킬이 이 상태이며, 실행되는 스킬은 ask-hes · mcp-connectors · test-script 3개입니다. 규칙은 [maintenance.md](./maintenance.md) "플러그인/스킬 유지" 참조.
+- **이 성질을 미완성 스킬 관리에 그대로 활용합니다** — 파일은 버킷에 두고 경로만 `skills[]` → `_disabledSkills[]` 로 옮기면 배포에서 빠집니다(폴더 이동·삭제 없음, 되돌리기는 한 줄). 현재 11개 스킬이 이 상태이며, 실행되는 스킬은 ask-hes · mcp-connectors · test-script · spec-lookup 4개입니다. 규칙은 [maintenance.md](./maintenance.md) "플러그인/스킬 유지" 참조.
 
 ## 결정 5 — 코드가 소스, Figma는 브릿지
 - AI가 직접 읽고 고치기 가장 쉬운 형태는 텍스트(코드/JSON/MD)입니다 → 코드를 원본으로.

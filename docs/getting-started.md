@@ -1,6 +1,6 @@
 # 시작하기
 
-> **⚠️ 개발 현황** — HES는 개발 중이며 현재 설치되는 스킬은 `/hes:ask-hes` · `/hes:mcp-connectors` · `/hes:test-script` 3개입니다. 나머지는 🚧 준비중이라 `.claude-plugin/plugin.json` 의 `_disabledSkills` 에 보관돼 있고 호출되지 않습니다. 스킬이 아닌 경로(`hes:design-reviewer` 에이전트 · `npx hes` CLI · Codex 프롬프트)는 지금도 전부 동작합니다. 자세한 대안은 [user-guide.md](./user-guide.md) 참고.
+> **⚠️ 개발 현황** — HES는 개발 중이며 현재 설치되는 스킬은 `/hes:ask-hes` · `/hes:mcp-connectors` · `/hes:test-script` · `/hes:spec-lookup` 4개입니다. 나머지는 🚧 준비중이라 `.claude-plugin/plugin.json` 의 `_disabledSkills` 에 보관돼 있고 호출되지 않습니다. 스킬이 아닌 경로(`hes:design-reviewer` 에이전트 · `npx hes` CLI · Codex 프롬프트)는 지금도 전부 동작합니다. 자세한 대안은 [user-guide.md](./user-guide.md) 참고.
 
 ## 1. 사전 준비
 - Claude Code 최신 버전(`/plugin` 명령이 보여야 함).
@@ -33,6 +33,7 @@ cp codex/prompts/*.md ~/.codex/prompts/
 ### 지금 바로 되는 것
 - `/hes:ask-hes` → 내 상황에 맞는 스킬·플로우 안내(준비중 여부와 대안 포함).
 - `/hes:test-script <Figma URL 또는 기획서 경로>` → 기획서(Figma·PDF·이미지·이미지 폴더)에서 QA 테스트 시나리오 생성.
+- `/hes:spec-lookup <질문>` → 사내 설계서 저장소에서 화면·정책을 찾아 근거와 함께 답변. 대상 저장소는 `.hes/spec-source.json` 또는 `HES_SPEC_REPO` 로 지정합니다(비공개 레포 읽기 권한 필요).
 - `/hes:mcp-connectors` → 제공 커넥터 목록·연결 현황 확인.
 - `npx hes list` / `npx hes add button` → 컴포넌트를 내 프로젝트에 설치(토큰 CSS 포함).
 - `@hes:design-reviewer` → 토큰 준수·가이드 부합·접근성 심층 검수.

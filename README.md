@@ -3,7 +3,7 @@
 기획·디자인·퍼블리셔가 **하나의 소스**에서 문서·토큰·컴포넌트를 공유하고, **코덱스와 클로드**에서 동일하게 호출하는 디자인 시스템 하네스입니다.
 [mattpocock/skills](https://github.com/mattpocock/skills) 방식의 **단일 플러그인** 구조로, 설치 명령 한 번이면 모든 역할의 스킬이 들어옵니다.
 
-> **개발 중** — 현재 설치되는 스킬은 3개(`ask-hes` · `mcp-connectors` · `test-script`)입니다. 나머지는 미완성이라 비활성화(🚧)돼 있습니다. 자세한 현황과 대안은 [역할별 진입점](#역할별-진입점) 참조.
+> **개발 중** — 현재 설치되는 스킬은 4개(`ask-hes` · `mcp-connectors` · `test-script` · `spec-lookup`)입니다. 나머지는 미완성이라 비활성화(🚧)돼 있습니다. 자세한 현황과 대안은 [역할별 진입점](#역할별-진입점) 참조.
 
 ## 이 저장소의 구성
 
@@ -14,7 +14,7 @@ plugin/  (= 저장소 루트가 곧 플러그인이자 마켓플레이스)
 │   └── marketplace.json   # source: "./" 단일 플러그인 마켓플레이스
 ├── skills/                # 역할별 스킬 버킷 (🚧 = 미완성, plugin.json 의 _disabledSkills 로 보관 — 설치되지 않음)
 │   ├── general/           공통 — ask-hes (스킬 라우터) · mcp-connectors (커넥터·MCP 현황/관리)
-│   ├── planning/          기획 — test-script · 🚧 product-spec · 🚧 prototype
+│   ├── planning/          기획 — test-script · spec-lookup · 🚧 product-spec · 🚧 prototype
 │   ├── design/            디자인 — 🚧 design-tokens · 🚧 design-guide · 🚧 component-catalog · 🚧 brand-visual · 🚧 figma-bridge
 │   └── publish/           퍼블 — 🚧 token-export · 🚧 registry-export · 🚧 component-build · 🚧 a11y-audit
 ├── agents/                design-reviewer 검수 에이전트
@@ -70,11 +70,11 @@ npx hes add checkbox                # 코드→components/hes/, 토큰→styles/
 **어떤 스킬을 써야 할지 모르겠으면 `/hes:ask-hes`** — 상황을 설명하면 맞는 스킬과 순서를 알려주는 라우터입니다.
 플러그인이 **제공(번들)** 하는 커넥터·MCP 서버의 공식 목록과 현재 연결 상태는 **`/hes:mcp-connectors`** 로 확인합니다. Figma MCP(공식 Dev Mode)는 플러그인이 직접 등록하므로 Figma 앱에서 Dev Mode MCP 서버만 켜면 됩니다.
 
-> **개발 중** — 현재 설치되는 스킬은 `/hes:ask-hes` · `/hes:mcp-connectors` · `/hes:test-script` 3개뿐입니다. 나머지는 아직 미완성이라 비활성화(🚧)돼 있어 호출되지 않습니다.
+> **개발 중** — 현재 설치되는 스킬은 `/hes:ask-hes` · `/hes:mcp-connectors` · `/hes:test-script` · `/hes:spec-lookup` 4개뿐입니다. 나머지는 아직 미완성이라 비활성화(🚧)돼 있어 호출되지 않습니다.
 
 | 역할 | 지금 쓸 수 있는 스킬 | 준비중 🚧 | Codex 프롬프트 |
 | :-- | :-- | :-- | :-- |
-| 기획 | `/hes:test-script` | product-spec, prototype | `/hes-spec` |
+| 기획 | `/hes:test-script` · `/hes:spec-lookup` | product-spec, prototype | `/hes-spec` |
 | 디자인 | — | design-tokens, design-guide, component-catalog, brand-visual, figma-bridge | `/hes-tokens`, `/hes-component` |
 | 퍼블 | — (컴포넌트 설치는 `npx hes add` CLI 사용) | token-export, registry-export, component-build, a11y-audit | `/hes-component` |
 

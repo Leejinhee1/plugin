@@ -14,13 +14,14 @@ disable-model-invocation: true
 
 ## ⚠️ 지금 실행 가능한 스킬 (라우팅 규칙)
 
-HES는 아직 개발 중이며, **아래 3개만 설치·실행됩니다**:
+HES는 아직 개발 중이며, **아래 4개만 설치·실행됩니다**:
 
 | 실행 가능 | 용도 |
 | :-- | :-- |
 | `/hes:ask-hes` | 이 라우터 |
 | `/hes:mcp-connectors` | 커넥터·MCP 현황/관리 |
 | `/hes:test-script` | UI 기획서 → QA 테스트 시나리오 |
+| `/hes:spec-lookup` | 사내 설계서 저장소에서 화면·정책 조회 |
 
 나머지는 아래 문서에서 **`준비중`** 으로 표시되며 `.claude-plugin/plugin.json` 의 `_disabledSkills` 에 보관돼 있습니다 — 파일은 있지만 로드되지 않습니다.
 
@@ -66,6 +67,8 @@ HES 저장소에서 합니다. 모든 변경은 `CHANGELOG.md` + version bump �
 
 - **`component-catalog` vs `component-build`** — catalog는 **시스템에** 컴포넌트를 넣습니다(HES 저장소). build는 시스템의 컴포넌트를 **내 프로젝트에** 설치합니다(제품 저장소). 넣는 쪽과 받는 쪽.
 - **`design-tokens` vs `token-export`** — design-tokens는 **원본**(`tokens/*.json`)을 고칩니다. token-export는 원본에서 **파생물**(`tokens.css` 등)을 재생성합니다. 원본을 고쳤으면 export를 다시 돌려야 반영되고, 파생물을 손으로 고치는 선택지는 없습니다.
+- **`spec-lookup` vs `product-spec`** — spec-lookup 은 **이미 있는 설계서를 읽습니다**(다른 저장소, 읽기 전용). product-spec 은 **새 설계서를 씁니다**(내 저장소). 읽는 쪽과 쓰는 쪽입니다. "설계가 어떻게 돼 있지?"는 lookup, "설계를 정하자"는 spec.
+- **`spec-lookup` vs `test-script`** — 둘 다 확정된 기획서를 입력으로 받지만, lookup 은 **저장소의 마크다운 설계서를 조회**하고 test-script 는 **Figma·PDF 기획서를 파싱해 QA 시나리오를 만듭니다.** 묻는 것과 뽑는 것.
 - **`prototype` vs `component-build`** — prototype은 의사결정용 목업(버려도 됨), component-build는 프로덕션 코드. 단, 프로토타입이 HES를 지켰다면 퍼블 단계는 재작성이 아니라 정리로 끝납니다.
 
 ## 단독 스킬
@@ -73,6 +76,7 @@ HES 저장소에서 합니다. 모든 변경은 `CHANGELOG.md` + version bump �
 지금 쓸 수 있는 것:
 
 - **`/hes:test-script`** — 확정된 UI 기획서(Figma URL·PDF·이미지·이미지 폴더)를 파싱해 QA 테스트 시나리오를 만들고 클립보드/CSV/Google Sheets 로 출력. 입력이 HES 설계서일 필요가 없어(외부 팀 Figma·PDF도 가능) 메인 플로우의 단계가 아니라 단독 스킬입니다. 화면 정의가 확정된 뒤라면 언제든. Figma 입력은 `figma-bridge` 와 달리 **읽기 전용**입니다 — 토큰 동기화가 아니라 스펙 텍스트 추출.
+- **`/hes:spec-lookup`** — 이미 확정된 **사내 설계서**(비공개 Git 레포)에서 화면·정책을 찾아 근거와 함께 답합니다. "이 화면 어떻게 동작해?", "화면ID CRD_202가 뭐야?" 류 질문. 설계서 본문은 플러그인이 아니라 그 저장소에만 있고, 스킬은 매 호출 최신으로 동기화해 읽는 **얇은 어댑터**입니다. 대상 저장소는 `.hes/spec-source.json`·`HES_SPEC_REPO` 로 지정하며(읽기 권한 필요), 조회 절차·응답 규율은 그 저장소의 `docs/agents/spec-lookup.md` 가 정합니다.
 - **`/hes:mcp-connectors`** — 플러그인이 제공(번들)하는 커넥터·MCP 서버의 공식 목록·현재 연결 현황·커넥터 등록/관리. "무슨 MCP 써?", "Figma 연결됐어?" 류 질문. Figma 서버는 플러그인이 등록하므로 Figma 앱 Dev Mode 만 켜면 연결됨.
 
 준비중:
