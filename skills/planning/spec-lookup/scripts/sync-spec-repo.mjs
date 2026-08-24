@@ -6,15 +6,24 @@
  * 믿지 않는 것이 요점 — 오래된 체크아웃으로 답하는 것이 이 스킬의 치명적 실패다.
  *
  *   node sync-spec-repo.mjs [--repo <owner>/<name>] [--ref <branch>] [--dir <specsDir>]
- *                           [--save | --save-global]
+ *                           [--local <경로>] [--save | --save-global]
  *
  * 대상 해석 순서 (앞이 이김):
- *   1 --repo            2 HES_SPEC_REPO      3 ./.hes/spec-source.json
+ *   1 --repo/--local    2 HES_SPEC_REPO      3 ./.hes/spec-source.json
  *   4 ~/.hes/spec-source.json                5 캐시에 딱 하나 있으면 그것
  *
  * 4·5 가 있는 이유: 레포는 사람마다 한 번 정하면 안 바뀌는데, 3 만 있으면 **프로젝트를
  * 옮길 때마다** 다시 물어야 한다. 4 는 머신에 한 번(`--save-global`), 5 는 이미 이 머신에서
  * 쓰던 레포가 하나뿐일 때의 명백한 답이다 — 둘 이상이면 5 를 쓰지 않고 묻는다(추측 금지).
+ *
+ * 인증: 깃 자격증명 헬퍼가 없는 환경(컨테이너·CI·데스크톱 세션)이 많다. 그런 곳에서도 돌도록
+ * `GH_TOKEN`·`GITHUB_TOKEN`·`gh auth token` 을 찾아 **그 호출에만** Authorization 헤더로 실어
+ * 보낸다(`git -c http.extraheader`). origin URL 과 .git/config 에는 토큰이 남지 않는다.
+ *
+ * `--local <경로>` 는 **클론하지 않는다** — 이미 있는 체크아웃을 그대로 읽는다. 깃 자격증명이
+ * 없는 환경(컨테이너·데스크톱 세션)에서 유일하게 동작하는 경로다. 사용자의 체크아웃을 절대
+ * 건드리지 않으므로(fetch·pull·reset 없음) **최신 보장이 없다** — HEAD 커밋·시각을 그대로
+ * 보고하고 `synced: false` 로 표시해, 답변이 낡았는지 사람이 판단할 수 있게 한다.
  */
 import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync, readdirSync, writeFileSync, mkdirSync, rmSync } from "node:fs";
@@ -58,6 +67,44 @@ function soleCachedRepo() {
 const projectCfg = readCfg(PROJECT_CFG);
 const homeCfg = readCfg(HOME_CFG);
 
+// --- 로컬 체크아웃 경로: 클론 없이 읽기만 한다 (자격증명 없는 환경의 유일한 경로) ---
+const localPath = arg("local") ?? process.env.HES_SPEC_LOCAL ?? projectCfg.localPath ?? homeCfg.localPath;
+if (localPath) {
+  const root = path.resolve(localPath.replace(/^~(?=$|\/)/, homedir()));
+  if (!existsSync(root)) fail(`로컬 경로가 없다: ${root}`);
+  const dir = arg("dir") ?? projectCfg.specsDir ?? homeCfg.specsDir ?? "docs";
+  if (!existsSync(path.join(root, dir))) fail(`${root} 안에 문서 루트 '${dir}' 가 없다. --dir 로 지정할 것.`);
+
+  const g = (a) => {
+    try {
+      return execFileSync("git", a, { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim();
+    } catch {
+      return undefined;
+    }
+  };
+  // 사용자의 체크아웃이다 — fetch·pull·reset 그 무엇도 하지 않는다. 읽고 상태만 보고한다.
+  const out = {
+    repo: g(["config", "--get", "remote.origin.url"]) ?? "(git 저장소 아님)",
+    source: "local",
+    synced: false,
+    root,
+    specsDir: dir,
+    specs: path.join(root, dir),
+    branch: g(["rev-parse", "--abbrev-ref", "HEAD"]),
+    commit: g(["log", "-1", "--format=%h"]),
+    committedAt: g(["log", "-1", "--format=%cI"]),
+    dirty: g(["status", "--porcelain"]) ? true : false,
+  };
+  console.log(JSON.stringify(out, null, 2));
+  console.log(`\n✓ 로컬 체크아웃을 읽는다 — ${out.root}\n  설계서: ${out.specs}`);
+  console.log(
+    `  ⚠ 동기화하지 않았다(사용자의 체크아웃을 건드리지 않는다). ` +
+      `${out.branch ?? "?"} @ ${out.commit ?? "?"} (${out.committedAt ?? "?"})${out.dirty ? " · 커밋 안 된 변경 있음" : ""} 기준이며 ` +
+      `origin 최신이라는 보장은 없다 — 답변에 이 시점을 밝힐 것.`,
+  );
+  process.exit(0);
+}
+
 const resolved = [
   ["arg", arg("repo")],
   ["env", process.env.HES_SPEC_REPO],
@@ -89,16 +136,49 @@ const cache = path.join(CACHE_ROOT, repo.replace("/", "__"));
 const git = (args, cwd) =>
   execFileSync("git", args, { cwd, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
 
+/**
+ * 깃 자격증명 헬퍼가 없는 환경을 위한 토큰. 환경변수 → `gh auth token` 순으로 찾는다.
+ * 없으면 undefined 를 주고, 그때는 헬퍼(있다면)에 맡긴다.
+ */
+function githubToken() {
+  if (process.env.GH_TOKEN) return ["GH_TOKEN", process.env.GH_TOKEN];
+  if (process.env.GITHUB_TOKEN) return ["GITHUB_TOKEN", process.env.GITHUB_TOKEN];
+  try {
+    const t = execFileSync("gh", ["auth", "token"], { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim();
+    if (t) return ["gh", t];
+  } catch {
+    /* gh 가 없거나 로그인 안 됨 — 헬퍼에 맡긴다 */
+  }
+  return [undefined, undefined];
+}
+
+const [authSource, token] = githubToken();
+
+/**
+ * 네트워크를 타는 git 호출. 토큰이 있으면 **이 호출에만** 헤더로 싣는다 —
+ * URL 에 박거나 .git/config 에 저장하지 않으므로 토큰이 디스크에 남지 않는다.
+ */
+const gitNet = (args, cwd) =>
+  git(
+    token
+      ? ["-c", `http.extraheader=AUTHORIZATION: basic ${Buffer.from(`x-access-token:${token}`).toString("base64")}`, ...args]
+      : args,
+    cwd,
+  );
+
 try {
   if (!existsSync(path.join(cache, ".git"))) {
     mkdirSync(path.dirname(cache), { recursive: true });
-    git(["clone", "--filter=blob:none", "--no-checkout", "--depth", "1", "--branch", ref,
-         `https://github.com/${repo}.git`, cache]);
+    // blob 필터를 쓰지 않는다 — promisor remote 가 되면 checkout 이 blob 을 **별도 프로세스에서**
+    // 지연 fetch 하고, 그 호출엔 우리 토큰 헤더가 실리지 않아 자격증명 없는 환경에서 죽는다.
+    // depth 1 만으로도 충분히 작다.
+    gitNet(["clone", "--no-checkout", "--depth", "1", "--branch", ref,
+            `https://github.com/${repo}.git`, cache]);
     git(["sparse-checkout", "set", "--no-cone", specsDir], cache);
     git(["checkout", ref], cache);
   } else {
     git(["sparse-checkout", "set", "--no-cone", specsDir], cache);
-    git(["fetch", "--depth", "1", "origin", ref], cache);
+    gitNet(["fetch", "--depth", "1", "origin", ref], cache);
     git(["reset", "--hard", `origin/${ref}`], cache);
     git(["clean", "-fd"], cache);
   }
@@ -108,8 +188,17 @@ try {
   const stderr = (e.stderr ?? "").toString();
   if (/Permission denied|not found|Authentication failed|could not read Username/i.test(stderr)) {
     fail(
-      `${repo} 를 읽을 권한이 없다. 비공개 저장소라면 지금 로그인된 계정에 접근 권한을 받아야 한다 ` +
-        `— \`gh auth status\` 로 계정 확인. 우회하지 말 것.\n${stderr.trim()}`,
+      token
+        ? `${repo} 를 읽을 권한이 없다. ${authSource} 로 얻은 토큰이 이 저장소를 못 읽는다 — ` +
+          `다른 계정의 토큰이거나, 애초에 접근 권한이 없는 것이다.\n` +
+          `  이건 설정 문제가 아니다. 토큰을 새로 만들어도 권한이 없으면 안 된다 — ` +
+          `그 저장소 관리자에게 접근을 요청하거나, 볼 저장소가 따로 있다면 \`--repo <owner>/<name>\` 로 바꿔 가리킬 것.\n${stderr.trim()}`
+        : `${repo} 를 읽을 자격증명이 이 환경에 없다. 우회하지 말고 아래 중 하나로 인증할 것:\n` +
+          `  · \`gh auth login\` (또는 이미 로그인돼 있으면 \`gh auth status\` 로 계정 확인)\n` +
+          `  · 환경변수 \`GH_TOKEN=<개인 액세스 토큰>\` — 컨테이너·CI 처럼 대화형 로그인이 안 되는 곳\n` +
+          `  · 이미 체크아웃이 있으면 \`--local <경로>\` (동기화 없음, 그 시점 기준으로만 답함)\n` +
+          `  애초에 이 저장소에 접근 권한이 없는 사람이라면 위 어느 것도 답이 아니다 — ` +
+          `볼 수 있는 저장소를 \`--repo <owner>/<name>\` 로 가리킬 것.\n${stderr.trim()}`,
     );
   }
   fail(`git 동기화 실패:\n${stderr.trim() || e.message}`);
@@ -119,13 +208,13 @@ let saved;
 if (flag("save") || flag("save-global")) {
   const target = flag("save-global") ? HOME_CFG : PROJECT_CFG;
   mkdirSync(path.dirname(target), { recursive: true });
-  writeFileSync(target, JSON.stringify({ repo, ref, specsDir }, null, 2) + "\n");
+  writeFileSync(target, JSON.stringify({ repo, ref, specsDir, ...(localPath ? { localPath } : {}) }, null, 2) + "\n");
   saved = target;
 }
 
 const commit = git(["log", "-1", "--format=%h"], cache);
 const when = git(["log", "-1", "--format=%cI"], cache);
-console.log(JSON.stringify({ repo, ref, specsDir, source, cache, commit, committedAt: when, saved }, null, 2));
+console.log(JSON.stringify({ repo, ref, specsDir, source, auth: authSource ?? "credential-helper", cache, commit, committedAt: when, saved }, null, 2));
 console.log(`\n✓ ${repo}@${ref} 최신 — ${commit} (${when})\n  캐시: ${cache}\n  설계서: ${path.join(cache, specsDir)}`);
 if (source === "cache") {
   console.log(`  ⚠ 대상을 지정받지 못해 이 머신의 캐시에 있던 유일한 레포를 썼다 — 사용자에게 이 사실을 알리고, 맞으면 --save-global 을 권할 것.`);
