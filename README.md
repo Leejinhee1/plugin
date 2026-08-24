@@ -74,7 +74,9 @@ npx hes add checkbox                # 코드→components/hes/, 토큰→styles/
 
 | 역할 | 지금 쓸 수 있는 스킬 | 준비중 🚧 | Codex 프롬프트 |
 | :-- | :-- | :-- | :-- |
-| 기획 | `/hes:test-script` · `/hes:spec-lookup` | product-spec, prototype | `/hes-spec` |
+| 기획 | `/hes:test-script` · `/hes:spec-lookup`¹ | product-spec, prototype | `/hes-spec` |
+
+¹ `spec-lookup` 은 **설계서를 마크다운으로 Git 저장소에 두고, 그 저장소를 읽을 수 있는 팀**을 위한 스킬입니다. 플러그인은 어느 저장소도 기본값으로 갖지 않으며, 권한을 우회하지 않습니다.
 | 디자인 | — | design-tokens, design-guide, component-catalog, brand-visual, figma-bridge | `/hes-tokens`, `/hes-component` |
 | 퍼블 | — (컴포넌트 설치는 `npx hes add` CLI 사용) | token-export, registry-export, component-build, a11y-audit | `/hes-component` |
 

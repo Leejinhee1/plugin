@@ -1,6 +1,6 @@
 ---
 name: spec-lookup
-description: 사내 설계서 저장소(비공개 Git 레포)에서 최신 화면 설계·정책을 찾아 근거와 함께 답합니다. "이 화면 어떻게 동작해?", "화면ID CRD_202가 뭐야?", "정산 요청 정책 알려줘" 처럼 확정된 설계서의 내용을 물을 때 사용. Use when answering a question about an internal product spec that lives in a spec repository — syncs the repo, routes to the right screen/scope doc, and answers with citations.
+description: **우리 팀의** 설계서 저장소(Git 레포)에서 최신 화면 설계·정책을 찾아 근거와 함께 답합니다. 저장소는 팀마다 다르고 플러그인은 기본값을 갖지 않습니다 — 읽을 권한이 있는 저장소만 조회됩니다. "이 화면 어떻게 동작해?", "화면ID CRD_202가 뭐야?", "정산 요청 정책 알려줘" 처럼 확정된 설계서의 내용을 물을 때 사용. Use when answering a question about an internal product spec that lives in a spec repository — syncs the repo, routes to the right screen/scope doc, and answers with citations.
 argument-hint: "[질문 — 화면ID·화면명·기능/정책 이름]"
 ---
 
@@ -8,7 +8,13 @@ argument-hint: "[질문 — 화면ID·화면명·기능/정책 이름]"
 
 질문: **$ARGUMENTS**
 
-**설계서는 이 플러그인 안에 없습니다.** 이 스킬은 사내 **설계서 저장소**(비공개 Git 레포)를 그때그때 최신으로 당겨 읽는 **얇은 조회 어댑터**입니다. 설계서 본문은 그 레포에만 있고, HES 저장소나 공개 산출물로 복사하지 않습니다.
+**설계서는 이 플러그인 안에 없습니다.** 이 스킬은 **쓰는 팀 자신의 설계서 저장소**를 그때그때 최신으로 당겨 읽는 **얇은 조회 어댑터**입니다. 빈 그릇이라고 보면 됩니다 — 어느 저장소도 기본값으로 갖지 않습니다.
+
+**전제: 읽을 수 있는 설계서 저장소가 있어야 합니다.**
+
+- 설계서를 **마크다운으로 Git 저장소에 두는 팀**이 대상입니다. Figma·PPT·Confluence 에만 있으면 이 스킬로는 못 읽습니다.
+- 저장소가 비공개면 **그 저장소가 정한 권한**을 따릅니다. 권한이 없는 사람에게 조회를 열어주는 우회로는 없고, 만들지도 않습니다 — 접근 요청은 그 저장소 관리자에게 갑니다.
+- 다른 팀의 설계서를 물어봤다면, 그 팀 저장소를 `--repo <owner>/<name>` 로 가리키게 하세요. 없으면 **이 스킬이 답할 수 있는 질문이 아닙니다.**
 
 이 스킬이 하지 않는 것: 설계서 **작성**(→ `product-spec` 🚧), QA 시나리오 생성(→ `/hes:test-script`), 디자인 시스템 조회(→ `design-system/`).
 
@@ -41,7 +47,11 @@ node "${CLAUDE_PLUGIN_ROOT}/skills/planning/spec-lookup/scripts/sync-spec-repo.m
 
 실패하면 원인을 그대로 전합니다. 접근 권한 문제(`Permission denied` · `Repository not found`)면 우회하지 말고 **레포 접근 요청**을 안내하세요 — `gh auth status` 로 지금 로그인된 계정을 확인시키고, 그 계정에 권한을 받아야 한다고 말합니다.
 
-### 깃 자격증명이 없는 환경
+### 권한이 없는 것과, 환경에 자격증명이 없는 것은 다르다
+
+둘을 섞지 마세요. **권한이 없으면 그건 설정 문제가 아닙니다** — 토큰을 만들어도 안 됩니다. 그 저장소 관리자에게 접근을 요청하거나, 애초에 우리 팀 저장소가 아니었던 것입니다(→ `--repo` 로 바꿔 가리키기). 이럴 때 "토큰을 설정하세요"라고 안내하면 사용자를 헛수고시킵니다.
+
+아래는 **권한은 있는데 그 환경에 자격증명이 없는** 경우입니다.
 
 클라우드 컨테이너·CI·데스크톱 세션에는 깃 자격증명 헬퍼가 없는 경우가 많습니다. 스크립트는 그런 곳을 위해 **토큰을 먼저 찾습니다** — `GH_TOKEN` → `GITHUB_TOKEN` → `gh auth token` 순이고, 찾으면 **그 호출에만** Authorization 헤더로 실어 보냅니다(origin URL·`.git/config` 에 토큰이 남지 않습니다). `gh auth login` 이 돼 있으면 대개 그냥 됩니다.
 
