@@ -1,8 +1,8 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "hes",
-  "version": "3.7.0",
-  "description": "그룹 공식 디자인 시스템 하네스. 디자인 시스템 소스(토큰·컴포넌트·가이드·브랜드)와 스킬을 플러그인 하나로 설치합니다. 개발 중 — 현재 제공 스킬은 ask-hes·mcp-connectors·test-script 3개이며, 나머지는 완성 후 _disabledSkills 에서 승격됩니다.",
+  "version": "3.8.0",
+  "description": "그룹 공식 디자인 시스템 하네스. 디자인 시스템 소스(토큰·컴포넌트·가이드·브랜드)와 스킬을 플러그인 하나로 설치합니다. 개발 중 — 현재 제공 스킬은 ask-hes·mcp-connectors·test-script·spec-lookup 4개이며, 나머지는 완성 후 _disabledSkills 에서 승격됩니다.",
   "author": {
     "name": "Design System Team"
   },
@@ -16,6 +16,7 @@
     "brand",
     "figma",
     "product-spec",
+    "spec-lookup",
     "prototype",
     "test-scenario",
     "react",
@@ -24,7 +25,8 @@
   "skills": [
     "./skills/general/ask-hes",
     "./skills/general/mcp-connectors",
-    "./skills/planning/test-script"
+    "./skills/planning/test-script",
+    "./skills/planning/spec-lookup"
   ],
   "_disabledSkills": [
     "// 미완성 — 완성되면 위 skills 배열로 옮길 것. 파일은 그대로 남아 있고 로드만 되지 않음.",
