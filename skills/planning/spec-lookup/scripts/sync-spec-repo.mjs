@@ -6,15 +6,20 @@
  * 믿지 않는 것이 요점 — 오래된 체크아웃으로 답하는 것이 이 스킬의 치명적 실패다.
  *
  *   node sync-spec-repo.mjs [--repo <owner>/<name>] [--ref <branch>] [--dir <specsDir>]
- *                           [--save | --save-global]
+ *                           [--local <경로>] [--save | --save-global]
  *
  * 대상 해석 순서 (앞이 이김):
- *   1 --repo            2 HES_SPEC_REPO      3 ./.hes/spec-source.json
+ *   1 --repo/--local    2 HES_SPEC_REPO      3 ./.hes/spec-source.json
  *   4 ~/.hes/spec-source.json                5 캐시에 딱 하나 있으면 그것
  *
  * 4·5 가 있는 이유: 레포는 사람마다 한 번 정하면 안 바뀌는데, 3 만 있으면 **프로젝트를
  * 옮길 때마다** 다시 물어야 한다. 4 는 머신에 한 번(`--save-global`), 5 는 이미 이 머신에서
  * 쓰던 레포가 하나뿐일 때의 명백한 답이다 — 둘 이상이면 5 를 쓰지 않고 묻는다(추측 금지).
+ *
+ * `--local <경로>` 는 **클론하지 않는다** — 이미 있는 체크아웃을 그대로 읽는다. 깃 자격증명이
+ * 없는 환경(컨테이너·데스크톱 세션)에서 유일하게 동작하는 경로다. 사용자의 체크아웃을 절대
+ * 건드리지 않으므로(fetch·pull·reset 없음) **최신 보장이 없다** — HEAD 커밋·시각을 그대로
+ * 보고하고 `synced: false` 로 표시해, 답변이 낡았는지 사람이 판단할 수 있게 한다.
  */
 import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync, readdirSync, writeFileSync, mkdirSync, rmSync } from "node:fs";
@@ -57,6 +62,44 @@ function soleCachedRepo() {
 
 const projectCfg = readCfg(PROJECT_CFG);
 const homeCfg = readCfg(HOME_CFG);
+
+// --- 로컬 체크아웃 경로: 클론 없이 읽기만 한다 (자격증명 없는 환경의 유일한 경로) ---
+const localPath = arg("local") ?? process.env.HES_SPEC_LOCAL ?? projectCfg.localPath ?? homeCfg.localPath;
+if (localPath) {
+  const root = path.resolve(localPath.replace(/^~(?=$|\/)/, homedir()));
+  if (!existsSync(root)) fail(`로컬 경로가 없다: ${root}`);
+  const dir = arg("dir") ?? projectCfg.specsDir ?? homeCfg.specsDir ?? "docs";
+  if (!existsSync(path.join(root, dir))) fail(`${root} 안에 문서 루트 '${dir}' 가 없다. --dir 로 지정할 것.`);
+
+  const g = (a) => {
+    try {
+      return execFileSync("git", a, { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim();
+    } catch {
+      return undefined;
+    }
+  };
+  // 사용자의 체크아웃이다 — fetch·pull·reset 그 무엇도 하지 않는다. 읽고 상태만 보고한다.
+  const out = {
+    repo: g(["config", "--get", "remote.origin.url"]) ?? "(git 저장소 아님)",
+    source: "local",
+    synced: false,
+    root,
+    specsDir: dir,
+    specs: path.join(root, dir),
+    branch: g(["rev-parse", "--abbrev-ref", "HEAD"]),
+    commit: g(["log", "-1", "--format=%h"]),
+    committedAt: g(["log", "-1", "--format=%cI"]),
+    dirty: g(["status", "--porcelain"]) ? true : false,
+  };
+  console.log(JSON.stringify(out, null, 2));
+  console.log(`\n✓ 로컬 체크아웃을 읽는다 — ${out.root}\n  설계서: ${out.specs}`);
+  console.log(
+    `  ⚠ 동기화하지 않았다(사용자의 체크아웃을 건드리지 않는다). ` +
+      `${out.branch ?? "?"} @ ${out.commit ?? "?"} (${out.committedAt ?? "?"})${out.dirty ? " · 커밋 안 된 변경 있음" : ""} 기준이며 ` +
+      `origin 최신이라는 보장은 없다 — 답변에 이 시점을 밝힐 것.`,
+  );
+  process.exit(0);
+}
 
 const resolved = [
   ["arg", arg("repo")],
@@ -109,7 +152,9 @@ try {
   if (/Permission denied|not found|Authentication failed|could not read Username/i.test(stderr)) {
     fail(
       `${repo} 를 읽을 권한이 없다. 비공개 저장소라면 지금 로그인된 계정에 접근 권한을 받아야 한다 ` +
-        `— \`gh auth status\` 로 계정 확인. 우회하지 말 것.\n${stderr.trim()}`,
+        `— \`gh auth status\` 로 계정 확인. 우회하지 말 것.\n` +
+        `  이 환경에 깃 자격증명이 아예 없다면(컨테이너 등), 이미 있는 체크아웃을 \`--local <경로>\` 로 읽을 수 있다 ` +
+        `— 클론·동기화를 하지 않으므로 최신 보장은 없고, 스크립트가 그 체크아웃의 커밋·시각을 알려준다.\n${stderr.trim()}`,
     );
   }
   fail(`git 동기화 실패:\n${stderr.trim() || e.message}`);
@@ -119,7 +164,7 @@ let saved;
 if (flag("save") || flag("save-global")) {
   const target = flag("save-global") ? HOME_CFG : PROJECT_CFG;
   mkdirSync(path.dirname(target), { recursive: true });
-  writeFileSync(target, JSON.stringify({ repo, ref, specsDir }, null, 2) + "\n");
+  writeFileSync(target, JSON.stringify({ repo, ref, specsDir, ...(localPath ? { localPath } : {}) }, null, 2) + "\n");
   saved = target;
 }
 
